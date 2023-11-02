@@ -1,0 +1,14 @@
+[
+  {
+    "name":"Радиатор чугунный",
+    "power_section":100,
+    "count_section":25,
+    "lambd":0.000007
+  },
+  {
+    "name":"Радиатор биметаллический",
+    "power_section":150,
+    "count_section":15,
+    "lambd":0.000007
+  }
+]

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Matvey Bashlykov">
+    <meta name="descriptioin" content="Page to use ANN models for prediction">
+
+    <!--<link rel="icon" href="Images/CreeperIcon.png" type="image/x-icon">-->
+    <!--<link rel="stylesheet" href="../static/main.css" type="text/css">-->
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/main.css" ) }}" type="text/css">
+    <script src="{{ url_for('static', filename='scripts/use_model.js')}}" defer></script>
+
+    <title>Прогнозирование</title>
+</head>
+
+
+<body>
+
+    <nav id="nav-menu">
+        <a href="/">Главная</a>
+        <a href="/create_model">Создать модель</a>
+        <a id="active" href="/use_model">Прогнозирование</a>
+        <a href="/about">О проекте</a>
+    </nav>
+
+    <main id="home-main">
+        <hr />
+
+        <h1>Прогнозирование</h1>
+
+        <hr />
+
+        <form action="#" method="post" enctype="multipart/form-data">
+            <h2>Загрузить набор данных для прогнозирования:</h2>
+            <p>Выберите один из вариантов:</p>
+            <p><label for="upload-dataset-file">1) Укажите файл на ПК и название для сохранения:</label></p>
+            <p><input type="file" name="upload-dataset-file" id="upload-dataset-file"></p>
+            <p><input type="text" name="upload-dataset-file-name" id="upload-dataset-file-name" autocomplete="off"
+                placeholder="Название набора данных"></p>
+
+            <p><label for="choose-dataset-file">2) Укажите файл из ранее загруженных:</label></p>
+            <p>
+                <select name="choose-dataset-file" id="choose-dataset-file">
+                    
+                    {% for dataset in list_datasets %}
+                    <option value="{{dataset}}">{{dataset}}</option> 
+                    {% endfor %}
+                
+                </select>
+            </p>
+
+            <h3>Укажите условия для чтения файла:</h3>
+
+            <p>
+                <input type="radio" name="dataset-settings" id="dataset-settings-default" value="Default" checked>
+                <label for="dataset-settings-default">По-умолчанию: валидационные данные на первом листе. 
+                    В первой строке указаны подписи, значения идут с второй строки. 
+                    Целевое значение записано в столбце A, начиная с столбца B – факторы подряд. Прогноз будет выведен в следующем 
+                    столбце после факторов. Остальные ячейки пусты.
+                </label>
+            </p>
+            <p>
+                <input type="radio" name="dataset-settings" id="dataset-settings-custom" value="Custom">
+                <label for="dataset-settings-custom">Индивидуальная настройка: валидационные данные на первом листе. 
+                    В первой строке указаны подписи, значения идут с второй строки. 
+                    Укажите ниже, в каких столбцах содержатся данные и в какой столбец вывести прогноз. 
+                </label>
+            </p>
+
+            <p>
+                <label for="factor-number">
+                    Текущее число столбцов-факторов (изменяется при добавлении или удалении фактора):
+                </label>
+                <input type="text" name="factor-number" id="factor-number" readonly value="1">
+            </p>
+            <input type="button" id="button-add-factor" value="Добавить фактор">
+            <input type="button" id="button-remove-factor" value="Убрать фактор">
+
+
+            <datalist id="choose-col">
+                {% for col in list_columns %}
+                <option value="{{col}}">{{col}}</option>
+                {% endfor %}
+            </datalist>
+
+
+            <div id="factors">
+                <div id="factor-1">
+                    <p><label for="choose-factor-1">Столбец фактора 1:</label></p>
+                    <p>
+                        <input list="choose-col" name="choose-factor-1" id="choose-factor-1"
+                        autocomplete="off" pattern="A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|
+                        Y|Z|AA|AB|AC|AD|AE|AF|AG|AH|AI|AJ|AK|AL|AM|AN|AO|AP|AQ|AR|AS|AT|AU|
+                        AV|AW|AX|AY|AZ">
+                    </p>
+                </div>
+            </div>
+
+            <div id="result">
+                <p><label for="choose-result">Столбец эталонного значения:</label></p>
+                <p>
+                    <input list="choose-col" name="choose-result" id="choose-result"
+                        autocomplete="off" pattern="A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|
+                        Y|Z|AA|AB|AC|AD|AE|AF|AG|AH|AI|AJ|AK|AL|AM|AN|AO|AP|AQ|AR|AS|AT|AU|
+                        AV|AW|AX|AY|AZ">
+                </p>
+            </div>
+
+            <!--
+
+            <div id="prediction">
+                <p><label for="choose-prediction">Столбец спрогнозированного значения:</label></p>
+                <p>
+                    <input list="choose-col" name="choose-prediction" id="choose-prediction"
+                        autocomplete="off" placeholder="A">
+                </p>
+            </div>
+            -->
+
+            <hr />
+
+            <h2>Выберите модель ИНС:</h2>
+            <p><label for="choose-ann-model">Укажите ранее сохранённую модель:</label></p>
+
+            <p>
+                <select name="choose-ann-model" id="choose-ann-model">
+                    
+                    {% for model in list_models %}
+                    <option value="{{model}}">{{model}}</option> 
+                    {% endfor %}
+                
+                </select>
+            </p>
+            
+            <hr />
+
+            <input type="submit" name="submit-ann-model-to-predict" id="submit-ann-model-to-predict">
+        </form>
+
+    </main>
+
+</body>
+
+
+</html>

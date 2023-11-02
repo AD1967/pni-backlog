@@ -1,0 +1,15 @@
+[
+    {
+        "id_user" : 0,
+        "name": "admin",
+        "password": "pbkdf2:sha256:260000$oEIvVkdYmjIq0tFe$c8ecee79f030aa4c6630c59ed86d2b8b0c209d00e3ced99a1c11c12bce158a05",
+        "token": "5",
+        "token_expiration": "1900-01-01 00:00:00"
+    },
+    {
+        "name": "Nikita",
+        "password": "pbkdf2:sha256:260000$oEIvVkdYmjIq0tFe$c8ecee79f030aa4c6630c59ed86d2b8b0c209d00e3ced99a1c11c12bce158a05",
+        "token": "5",
+        "token_expiration": "1900-01-01 00:00:00"
+    }
+]

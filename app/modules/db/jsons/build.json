@@ -1,0 +1,112 @@
+[
+    {
+        "date_build": "2011-12-15",
+        "floors": 5,
+        "height": 3.0,
+        "id_build": 1,
+        "id_user": 0,
+        "len_a": 10.0,
+        "len_b": 10.0,
+        "len_sum": 20.0,
+        "name": "Тестовая схема здания",
+        "temp_inside": 20.0,
+        "temp_outside": 5.0
+    },
+    {
+
+        "date_build": "2012-08-01",
+        "floors": 2,
+        "height": 3.0,
+        "id_build": 2,
+        "id_user": 0,
+        "len_a": 10.0,
+        "len_b": 10.0,
+        "len_sum": 30.0,
+        "name": "Коттедж ИЖС на одну семью",
+        "temp_inside": 20.0,
+        "temp_outside":	-10.0
+    },
+    {
+
+        "date_build": "1980-08-01",
+        "floors": 5,
+        "height": 2.4,
+        "id_build": 3,
+        "id_user": 0,
+        "len_a": 24.0,
+        "len_b": 108.0,
+        "len_sum": 380.0,
+        "name": "МКД \"хрущёвка\" 5 этажей, 3 подьезда,1980г.",
+        "temp_inside": 25.0,
+        "temp_outside":	0.0
+    },
+    {
+
+        "date_build": "2012-08-01",
+        "floors": 16,
+        "height": 3.0,
+        "id_build": 4,
+        "id_user": 0,
+        "len_a": 24.0,
+        "len_b": 72.0,
+        "len_sum": 250.0,
+        "name": "МКД монолит 128 , 16 этажей, 2 подъезда, 2012",
+        "temp_inside": 20.0,
+        "temp_outside":	36.0
+    },
+    {
+        "date_build": "2020-08-01",
+        "floors": 13,
+        "height": 3.5,
+        "id_build": 5,
+        "id_user": 0,
+        "len_a": 36.0,
+        "len_b": 78.0,
+        "len_sum": 350.0,
+        "name": "Офисный центр, 13 этажей, 2020г",
+        "temp_inside": 20.0,
+        "temp_outside":	5.0
+    },
+    {
+
+        "date_build": "2012-08-01",
+        "floors": 16,
+        "height": 2.6,
+        "id_build": 6,
+        "id_user": 0,
+        "len_a": 24.0,
+        "len_b": 108.0,
+        "len_sum": 380.0,
+        "name": "МКД панельная, 9 этажей, 3 подъезда, 2012г.",
+        "temp_inside": 20.0,
+        "temp_outside":	5.0
+    },
+    {
+
+        "date_build": "1980-08-01",
+        "floors": 3,
+        "height": 3.5,
+        "id_build": 7,
+        "id_user": 0,
+        "len_a": 16.0,
+        "len_b": 122.0,
+        "len_sum": 450.0,
+        "name": "Школа тип Самолёт, 1980г.",
+        "temp_inside": 20.0,
+        "temp_outside":	5.0
+    },
+    {
+
+        "date_build": "1980-08-01",
+        "floors": 3,
+        "height": 3.5,
+        "id_build": 8,
+        "id_user": 0,
+        "len_a": 16.0,
+        "len_b": 122.0,
+        "len_sum": 450.0,
+        "name": "Школа тип Самолёт, 2020г.",
+        "temp_inside": 20.0,
+        "temp_outside":	5.0
+    }
+]

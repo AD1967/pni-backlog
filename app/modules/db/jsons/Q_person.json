@@ -1,0 +1,58 @@
+[
+    {
+        "id_q_peoples" :	1,
+	    "mens":	20,
+	    "womens" :	30,
+	    "time_average" :	0.5,
+	    "id_build" :	1
+    },
+    {
+        "id_q_peoples" :	2,
+	    "mens":	40,
+	    "womens" :	50,
+	    "time_average" :	0.6,
+	    "id_build" :	2
+    },
+    {
+        "id_q_peoples" :	3,
+	    "mens":	60,
+	    "womens" :	70,
+	    "time_average" :	0.65,
+	    "id_build" :	3
+    },
+    {
+        "id_q_peoples" :	4,
+	    "mens":	80,
+	    "womens" :	90,
+	    "time_average" :	0.7,
+	    "id_build" :	4
+    },
+    {
+        "id_q_peoples" :	5,
+	    "mens":	10,
+	    "womens" :	20,
+	    "time_average" :	0.75,
+	    "id_build" :	5
+    },
+    {
+        "id_q_peoples" :	6,
+	    "mens":	35,
+	    "womens" :	45,
+	    "time_average" :	0.8,
+	    "id_build" :	6
+    },
+    {
+        "id_q_peoples" :	7,
+	    "mens":	55,
+	    "womens" :	65,
+	    "time_average" :	0.85,
+	    "id_build" :	7
+    },
+    {
+        "id_q_peoples" :	8,
+	    "mens":	75,
+	    "womens" :	85,
+	    "time_average" :	0.9,
+	    "id_build" :	8
+    }
+]

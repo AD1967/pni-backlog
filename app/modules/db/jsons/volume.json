@@ -1,0 +1,32 @@
+[
+    {
+        "id_volume" : 1,
+        "name" : "Дверь",
+        "value" : 0.064
+    },
+    {
+        "id_volume" : 2,
+        "name" : "Шкаф",
+        "value" : 0.150
+    },
+    {
+        "id_volume" : 3,
+        "name" : "Диван",
+        "value" : 0.107
+    },
+    {
+        "id_volume" : 4,
+        "name" : "Bett",
+        "value" : 0.120
+    },
+    {
+        "id_volume" : 5,
+        "name" : "Стол",
+        "value" : 0.0625
+    },
+    {
+        "id_volume" : 6,
+        "name" : "Навесной шкафчик",
+        "value" : 0.018
+    }
+]

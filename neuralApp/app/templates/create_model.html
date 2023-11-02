@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Matvey Bashlykov">
+    <meta name="descriptioin" content="Page to create ANN models">
+
+    <!--<link rel="icon" href="Images/CreeperIcon.png" type="image/x-icon">-->
+    <!--<link rel="stylesheet" href="../static/main.css" type="text/css">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='scripts/create_model.js')}}" defer></script>
+
+    <title>Создать модель</title>
+</head>
+
+
+<body>
+
+    <nav id="nav-menu">
+        <a href="/">Главная</a>
+        <a id="active" href="/create_model">Создать модель</a>
+        <a href="/use_model">Прогнозирование</a>
+        <a href="/about">О проекте</a>
+    </nav>
+
+
+    <main id="home-main">
+        <hr />
+
+        <h1>Создание модели ИНС</h1>
+
+        <hr />
+        <div id="div-create-model">
+            <form id="form-create" action="#" method="post" enctype="multipart/form-data">
+                <h2>Загрузить набор данных:</h2>
+                <p>Выберите один из вариантов:</p>
+                <p id="error-dataset">Ошибка: имя набора данных занято</p>
+                <p><label for="upload-dataset-file">1) Укажите файл на ПК и название для сохранения:</label></p>
+                <p><input type="file" name="upload-dataset-file" id="upload-dataset-file"></p>
+                <p><input type="text" name="upload-dataset-file-name" id="upload-dataset-file-name" autocomplete="off"
+                        placeholder="Название набора данных"></p>
+
+                <p><label for="choose-dataset-file">2) Укажите файл из ранее загруженных:</label></p>
+                <p>
+                    <select name="choose-dataset-file" id="choose-dataset-file">
+
+                        {% for dataset in list_datasets %}
+                        <option value="{{dataset}}">{{dataset}}</option>
+                        {% endfor %}
+
+                    </select>
+                </p>
+
+                <h3>Укажите условия для чтения файла:</h3>
+
+                <p>
+                    <input type="radio" name="dataset-settings" id="dataset-settings-default" value="Default" checked>
+                    <label for="dataset-settings-default">По-умолчанию: обучающие данные на первом листе,
+                        тестовые на втором. В первой строке указаны подписи, значения идут с второй строки.
+                        Целевое значение записано в столбце A, начиная с столбца B – факторы подряд. Остальные ячейки
+                        пусты.
+                    </label>
+                </p>
+                <p>
+                    <input type="radio" name="dataset-settings" id="dataset-settings-custom" value="Custom">
+                    <label for="dataset-settings-custom">Индивидуальная настройка: обучающие данные на первом листе,
+                        тестовые на втором. В первой строке указаны подписи, значения идут с второй строки.
+                        Укажите ниже, в каких столбцах содержатся данные.
+                    </label>
+                </p>
+
+                <div id="dataset-format">
+                    <p>
+                        <label for="factor-number">
+                            Текущее число столбцов-факторов (изменяется при добавлении или удалении фактора):
+                        </label>
+                        <input type="text" name="factor-number" id="factor-number" readonly value="1">
+                    </p>
+                    <input type="button" id="button-add-factor" value="Добавить фактор">
+                    <input type="button" id="button-remove-factor" value="Убрать фактор">
+    
+    
+                    <datalist id="choose-col">
+                        {% for col in list_columns %}
+                        <option value="{{col}}">{{col}}</option>
+                        {% endfor %}
+                    </datalist>
+    
+                    <div id="result">
+                        <p><label for="choose-result">Столбец эталонного значения:</label></p>
+                        <p>
+                            <input list="choose-col" name="choose-result" id="choose-result" autocomplete="off"
+                            pattern="A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|
+                            Y|Z|AA|AB|AC|AD|AE|AF|AG|AH|AI|AJ|AK|AL|AM|AN|AO|AP|AQ|AR|AS|AT|AU|
+                            AV|AW|AX|AY|AZ">
+                        </p>
+                    </div>
+    
+                    <div id="factors">
+                        <div id="factor-1">
+                            <p><label for="choose-factor-1">Столбец фактора 1:</label></p>
+                            <p>
+                                <input list="choose-col" name="choose-factor-1" id="choose-factor-1" autocomplete="off"
+                                    pattern="A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|
+                                    Y|Z|AA|AB|AC|AD|AE|AF|AG|AH|AI|AJ|AK|AL|AM|AN|AO|AP|AQ|AR|AS|AT|AU|
+                                    AV|AW|AX|AY|AZ">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <h3>Использование валидационного набора</h3>
+                <p>
+                    <input type="radio" name="dataset-settings-2" id="dataset-settings-validation" value="Yes" checked>
+                    <label for="dataset-settings-validation">Прогноз будет сохранён в отдельном файле</label>
+                </p>
+                <p>
+                    <input type="radio" name="dataset-settings-2" id="dataset-settings-no-validation" value="No">
+                    <label for="dataset-settings-no-validation">Прогноз не будет сохранён</label>
+                </p>
+
+                <!--
+                <div id="prediction">
+                    <p><label for="choose-prediction">Столбец спрогнозированного значения:</label></p>
+                    <p>
+                        <input list="choose-col" name="choose-prediction" id="choose-prediction" autocomplete="off"
+                            placeholder="A">
+                    </p>
+                </div>
+                -->
+
+                <hr />
+
+                <h2>Настроить модель ИНС:</h2>
+
+                <p>Должна быть заполнена информация о хотя бы первом скрытом слое (тип слоя, число узлов, функция
+                    активации).
+                    Тип слоя и функция активация должны быть указаны из приведённого списка. Число узлов должно быть
+                    положительным целым
+                    значением.
+                </p>
+
+                <p><label for="ann-model-name">Укажите название модели для сохранения:</label></p>
+                <p id="error-model">Ошибка: имя модели занято</p>
+                <p><input type="text" name="ann-model-name" id="ann-model-name" autocomplete="off" required></p>
+
+                <p><label for="epoch-number">Число эпох для обучения:</label></p>
+                <p><input type="number" name="epoch-number" id="epoch-number" autocomplete="off" min="1" value="1"
+                        required></p>
+
+                <p><label for="choose-loss">Выберите функцию потерь:</label></p>
+                <p>
+                    <select name="choose-loss" id="choose-loss">
+                        <option value="mse">MSE (среднее значение квадрата ошибки)</option>
+                        <option value="mae">MAE (среднее абсолютное значение ошибки)</option>
+                        <option value="mape">MAPE (среднее значение ошибки в процентах)</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="layers-number">
+                        Текущее число скрытых слоёв (меняется при добавлении или удалении слоя):
+                    </label>
+                    <input type="text" name="layers-number" id="layers-number" readonly value="1">
+                </p>
+
+                <input type="button" id="button-add-layer" value="Добавить слой">
+                <input type="button" id="button-remove-layer" value="Убрать слой">
+
+                <div id="layers">
+                    <div id="layer-1" class="layer">
+                        <p><label for="choose-hidden-layer-1">Тип скрытого слоя 1:</label></p>
+                        <p>
+                            <select name="choose-hidden-layer-1" id="choose-hidden-layer-1">
+                                <option value="Dense">Dense</option>
+                            </select>
+                        </p>
+
+                        <p><label for="hidden-units-1">Число узлов в скрытом слое 1:</label></p>
+                        <p><input type="number" name="hidden-units-1" id="hidden-units-1" autocomplete="off" min="1"
+                                value="1" required></p>
+
+                        <p><label for="choose-activation-1">Выберите функцию активации 1:</label></p>
+                        <p>
+                            <select name="choose-activation-1" id="choose-activation-1">
+                                <option value="linear">Линейная</option>
+                                <option value="relu">ReLU</option>
+                                <option value="leakyrelu">Leaky ReLU</option>
+                                <option value="sigmoid">Сигмоидальная</option>
+                                <option value="tanh">Гиперболический тангенс</option>
+                            </select>
+                        </p>
+
+                    </div>
+                </div>
+
+                <hr />
+
+                <input type="submit" name="submit-ann-model-to-train" id="submit-ann-model-to-train">
+            </form>
+        </div>
+
+        <!--
+        <div id="div-training-progress">
+
+        </div>
+        -->
+
+
+    </main>
+
+</body>
+
+
+</html>

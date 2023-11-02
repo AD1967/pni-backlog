@@ -1,0 +1,170 @@
+[
+    {
+        "capacity": 880.0,
+        "coeff": 0.26,
+        "density": 1000.0,
+        "id_material": 1,
+        "name": "Кирпич",
+        "thickness": 0.25
+    },
+    {
+        "capacity": 1060.0,
+        "coeff": 0.12,
+        "density": 550.0,
+        "id_material": 2,
+        "name": "Газобетон",
+        "thickness": null
+    },
+    {
+        "capacity": 840.0,
+        "coeff": 0.16,
+        "density": 1000.0,
+        "id_material": 3,
+        "name": "Пенобетон",
+        "thickness": null
+    },
+    {
+        "capacity": 840.0,
+        "coeff": 1.4,
+        "density": 2500.0,
+        "id_material": 4,
+        "name": "Железобетон",
+        "thickness": null
+    },
+    {
+        "capacity": 2300.0,
+        "coeff": 0.18,
+        "density": 500.0,
+        "id_material": 5,
+        "name": "Сосна",
+        "thickness": null
+    },
+    {
+        "capacity": 1340.0,
+        "coeff": 0.03,
+        "density": 35.0,
+        "id_material": 6,
+        "name": "Пенополистерол",
+        "thickness": null
+    },
+    {
+        "capacity": 840.0,
+        "coeff": 0.23,
+        "density": 800.0,
+        "id_material": 7,
+        "name": "Керамзитобетон",
+        "thickness": null
+    },
+    {
+        "capacity": 1600.0,
+        "coeff": null,
+        "density": 900.0,
+        "id_material": 8,
+        "name": "Ротбанд",
+        "thickness": 0.007
+    },
+    {
+        "capacity": 1800.0,
+        "coeff": 1.2,
+        "density": 1700.0,
+        "id_material": 9,
+        "name": "Штукатурка",
+        "thickness": 0.003
+    },
+    {
+        "capacity": 1005.0,
+        "coeff": 0.03,
+        "density": 1.205,
+        "id_material": 10,
+        "name": "Воздух при 20С",
+        "thickness": null
+    },
+    {
+        "capacity": 2000.0,
+        "coeff": 0.15,
+        "density": 800.0,
+        "id_material": 11,
+        "name": "ДСП, ОСП",
+        "thickness": 0.005
+    },
+    {
+        "capacity": 900.0,
+        "coeff": null,
+        "density": 2200.0,
+        "id_material": 12,
+        "name": "Плитка",
+        "thickness": 0.01
+    },
+    {
+        "capacity": 2300.0,
+        "coeff": 0.23,
+        "density": 700.0,
+        "id_material": 13,
+        "name": "Дуб",
+        "thickness": null
+    },
+    {
+        "capacity": 2600.0,
+        "coeff": 0.19,
+        "density": 650.0,
+        "id_material": 14,
+        "name": "Клен",
+        "thickness": null
+    },
+    {
+        "capacity": 2600.0,
+        "coeff": 0.15,
+        "density": 450.0,
+        "id_material": 15,
+        "name": "Липа",
+        "thickness": null
+    },
+    {
+        "capacity": 2700.0,
+        "coeff": 0.18,
+        "density": 500.0,
+        "id_material": 16,
+        "name": "Пихта",
+        "thickness": null
+    },
+    {
+        "capacity": 1470.0,
+        "coeff": 0.35,
+        "density": 1700.0,
+        "id_material": 17,
+        "name": "Линолеум",
+        "thickness": 0.0025
+    },
+    {
+        "capacity": null,
+        "coeff": null,
+        "density": null,
+        "id_material": 18,
+        "name": "Клей",
+        "thickness": 0.005
+    },
+    {
+        "capacity": null,
+        "coeff": null,
+        "density": null,
+        "id_material": 19,
+        "name": "Фанера",
+        "thickness": 0.005
+    },
+    {
+        "capacity": null,
+        "coeff": null,
+        "density": null,
+        "id_material": 20,
+        "name": "Паркет",
+        "thickness": 0.01
+    },
+    {
+        "capacity": null,
+        "coeff": null,
+        "density": null,
+        "id_material": 666,
+        "name": "Неизвестный материал",
+        "thickness": null
+    }
+]

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Matvey Bashlykov">
+    <meta name="descriptioin" content="Progres page">
+
+    <!--<link rel="icon" href="Images/CreeperIcon.png" type="image/x-icon">-->
+    <!--<link rel="stylesheet" href="../static/main.css" type="text/css">-->
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/main.css") }}" type="text/css">
+    <script src="{{ url_for('static', filename='scripts/progress.js')}}" defer></script>
+
+    <title>Прогнозирование спроса</title>
+</head>
+
+
+<body>
+
+    <nav id="nav-menu">
+        <a href="/">Главная</a>
+        <a href="/create_model">Создать модель</a>
+        <!--<a id="active" href="/progress">Прогресс обучения</a>-->
+        <!--<a href="/use_model">Прогнозирование</a>-->
+        <a href="/use_model">Прогнозирование</a>
+        <a href="/about">О проекте</a>
+    </nav>
+    <main id="home-main">
+        <hr />
+
+        <h1>Прогресс обучения модели ИНС</h1>
+
+        <hr />
+
+        <div id="progress-screen">
+        </div>
+        <!--
+        {% if model_training == true %}
+            <p>В данный момент сервер <b>ЗАНЯТ</b> обучением модели {{model_name}}</p>
+        {% else %}
+            <p>В данный момент сервер <b>НЕ ЗАНЯТ</b> обучением модели</p>
+        {% endif %}
+    -->
+
+        <hr />
+    </main>
+
+</body>
+
+
+</html>

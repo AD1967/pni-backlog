@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Matvey Bashlykov">
+    <meta name="descriptioin" content="A home page for bachelor project">
+
+    <!--<link rel="icon" href="Images/CreeperIcon.png" type="image/x-icon">-->
+    <!--<link rel="stylesheet" href="../static/main.css" type="text/css">-->
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/main.css") }}" type="text/css">
+    <!--<script src='Scripts/main.js' defer></script>-->
+
+    <title>Прогнозирование спроса</title>
+</head>
+
+
+<body>
+
+    <nav id="nav-menu">
+        <a id="active" href="/">Главная</a>
+        <a href="/create_model">Создать модель</a>
+        <a href="/use_model">Прогнозирование</a>
+        <a href="/about">О проекте</a>
+    </nav>
+    <main id="home-main">
+        <hr />
+
+        <h1>Домашняя страница нейросетевого ПО</h1>
+
+        <hr />
+
+        <h2>Текущий пользователь: {{user}}</h2>
+
+        <hr />
+
+        <form action="#" method="post" enctype="multipart/form-data">
+            <h2>Сохранённые наборы данных:</h2>
+
+            <p>
+                <select name="all-dataset-file" id="all-dataset-file">
+
+                {% for dataset in list_datasets %}
+                <option value="{{dataset}}">{{dataset}}</option>
+                {% endfor %}
+
+                </select>
+                <input type="submit" name="download-dataset" value="Скачать набор данных">
+                <input type="submit" name="delete-dataset" value="Удалить">
+            </p>
+
+            <p><input type="text" name="edit-dataset-name" autocomplete="off" placeholder="Новое название">
+                <input type="submit" name="edit-dataset" value="Редактировать"></p>
+
+            <hr />
+
+            <h2>Сохранённые модели ИНС:</h2>
+            {% if error %}
+                <p id="error">Ошибка: {{message}}</p>
+            {% endif %}
+            <p><select name="all-ann-models" id="all-ann-models">
+
+                {% for model in list_models %}
+                <option value="{{model}}">{{model}}</option>
+                {% endfor %}
+
+                </select>
+                <input type="submit" name="download-ann-model-report" value="Скачать информацию о модели">
+                <input type="submit" name="download-last-prediction" value="Скачать последний прогноз">
+                <input type="submit" name="delete-ann-model" value="Удалить">
+            </p>
+
+            <p><input type="text" name="edit-ann-model-name" autocomplete="off" placeholder="Новое название">
+                <input type="submit" name="edit-ann-model" value="Редактировать"></p>
+        </form>
+
+        <hr />
+    </main>
+
+</body>
+
+
+</html>

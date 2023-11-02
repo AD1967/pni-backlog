@@ -1,0 +1,45 @@
+[
+    {
+        "id_reliability": 1,
+        "value": 300
+    },
+    {
+        "id_reliability": 1,
+        "value": 300
+    },
+
+    {
+        "id_reliability": 5,
+        "value": 80
+    },
+    {
+        "id_reliability": 5,
+        "value": 50
+    },
+    {
+        "id_reliability": 5,
+        "value": 80
+    },
+    {
+        "id_reliability": 5,
+        "value": 120
+    },
+
+    {
+        "id_reliability": 7,
+        "value": 50
+    },
+    {
+        "id_reliability": 7,
+        "value": 80
+    },
+
+    {
+        "id_reliability": 8,
+        "value": 50
+    },
+    {
+        "id_reliability": 8,
+        "value": 80
+    }
+]

@@ -1,0 +1,50 @@
+[
+    {
+        "id_q_construct_roof":	1,
+	    "constructs_energoeff":	1,
+	    "roof_energoeff": 1,
+	    "id_build":	1
+    },
+    {
+        "id_q_construct_roof":	2,
+	    "constructs_energoeff":	2,
+	    "roof_energoeff": 2,
+	    "id_build":	2
+    },
+    {
+        "id_q_construct_roof":	3,
+	    "constructs_energoeff":	3,
+	    "roof_energoeff": 3,
+	    "id_build":	3
+    },
+    {
+        "id_q_construct_roof":	4,
+	    "constructs_energoeff":	1,
+	    "roof_energoeff": 1,
+	    "id_build":	4
+    },
+    {
+        "id_q_construct_roof":	5,
+	    "constructs_energoeff":	2,
+	    "roof_energoeff": 2,
+	    "id_build":	5
+    },
+    {
+        "id_q_construct_roof":	6,
+	    "constructs_energoeff":	3,
+	    "roof_energoeff": 3,
+	    "id_build":	6
+    },
+    {
+        "id_q_construct_roof":	7,
+	    "constructs_energoeff":	1,
+	    "roof_energoeff": 1,
+	    "id_build":	7
+    },
+    {
+        "id_q_construct_roof":	8,
+	    "constructs_energoeff":	2,
+	    "roof_energoeff": 2,
+	    "id_build":	8
+    }
+]
