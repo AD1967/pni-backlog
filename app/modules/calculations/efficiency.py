@@ -291,11 +291,9 @@ def Q_wnd_(build_id):
     t = math.floor((this_date - datetime.strptime(q_wnd.date_wnd.strftime('%Y-%m-%d'), '%Y-%m-%d')).days)/ dYears
     tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).days)/ dYears
 
-    print(cur_info)
-
+    ##print(cur_info)
     window_type = get_one_from_table(Window, int(cur_info['id_window']))
-
-    print(window_type.R)
+    ##print(window_type.R)
     k = 1
     if tBuild >= 40:
         k = 1.68
@@ -319,7 +317,6 @@ def Q_wnd_(build_id):
 def Q_wnd_inf(build_id):
     q_wnd = get_one_by_id_build(Q_wnd, build_id)
     build = q_wnd.build
-
     return 1.005 * dt * 2.388458966275e-7 * (build.temp_inside - test_temp) * q_wnd.count_windows * \
         (2 * q_wnd.length_wnd + 2 * q_wnd.height_wnd) * q_wnd.window.q * q_wnd.window.a
 
@@ -421,7 +418,6 @@ def Q_doors_(build_id):
 def Q_doors_inf(build_id):
     q_doors = get_one_by_id_build(Q_door, build_id)
     build = q_doors.build
-
     return 1.005 * dt * 2.388458966275e-7 * (build.temp_inside - test_temp) * q_doors.count_doors * \
         (2 * q_doors.length_door + 2 * q_doors.height_door) * q_doors.door.q * q_doors.door.a
 
@@ -612,7 +608,7 @@ def Q_hws_pipes(build_id):
     l = 2 * h * coun_room_with_sinks + \
         2 * (build.len_a + build.len_b)
 
-    return k * 3.14 * 0.028 * l * (1 - 0.7) * (60 - build.temp_inside) * \
+    return k * 3.14 * 0.028 * l * 0.3 * (60 - build.temp_inside) * \
          8.5984e-7 * dt
 
 ########################################################################################################################################################################
@@ -637,12 +633,12 @@ def Q_heat_pipes(build_id):
     if reliability.id_pipe <= 2:
        k = 12
 
-    h = build.height * build.floors
+    h = build.height
     l = 2 * (build.len_a + build.len_b) + h * q_wnd.count_windows / 2.0
 
     # Заменили 60 на 90
     # См. файл с диска
-    return k * 3.14 * 0.028 * l * (1 - 0.7) * (90 - build.temp_inside) * \
+    return k * 3.14 * 0.028 * l * 0.3 * (90 - build.temp_inside) * \
          8.5984e-7 * dt
 
 ########################################################################################################################################################################
@@ -741,7 +737,7 @@ def Q_hws_cranes(build_id):
     q_people = get_one_by_id_build(Q_person, build_id)
 
     return  0.00009 * 1000 * 4190 * (n_men + n_women + n_children) * \
-        180 * (60 - 15) / 86400 * 8.5984e-7 * dt
+        (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
@@ -779,7 +775,7 @@ def Q_hws_showers(build_id):
     q_people = get_one_by_id_build(Q_person, build_id)
 
     return  0.00018 * 1000 * 4190 * (n_men + n_women + n_children) * \
-        500 * (60 - 15) / 86400 * 8.5984e-7 * dt
+        500 * (60 - 15) / 84600 * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
 

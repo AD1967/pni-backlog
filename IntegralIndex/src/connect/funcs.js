@@ -154,6 +154,7 @@ function calc(id, self){
                 }
             }else{
                 let id_build = localStorage.getItem("this_build_id");
+                console.log("ID вызываемой функции: ", id);
                 let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
                 if(result['fail']){
                     if(result['error'] == 'connect'){

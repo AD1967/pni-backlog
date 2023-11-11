@@ -119,7 +119,7 @@ def api_calc_eff_roof():
 def api_calc_eff_hws_pipes():
     # id_build
     try:
-        data = convertGCal(calc_eff_hws_pipes(request.json["id"]))
+        data = printGCal(calc_eff_hws_pipes(request.json["id"]))
     except:
         data = None
     
@@ -132,7 +132,7 @@ def api_calc_eff_hws_pipes():
 def api_calc_eff_heat_pipes():
     # id_build
     try:
-        data = convertGCal(calc_eff_heat_pipes(request.json["id"]))
+        data = printGCal(calc_eff_heat_pipes(request.json["id"]))
     except:
         data = None
     
