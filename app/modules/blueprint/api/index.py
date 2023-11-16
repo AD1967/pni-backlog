@@ -53,7 +53,7 @@ def api_calc_eff_wnd():
 def api_calc_eff_wnd_inf():
     # id_build
     try:
-        data = printGCal(calc_eff_wnd(request.json["id"]) - calc_eff_wnd_inf(request.json["id"]))
+        data = printGCal(calc_eff_wnd_inf(request.json["id"]))
     except:
         data = None
     
@@ -79,7 +79,7 @@ def api_calc_eff_doors():
 def api_calc_eff_doors_inf():
     # id_build
     try:
-        data = printGCal(calc_eff_doors(request.json["id"]) - calc_eff_doors_inf(request.json["id"]))
+        data = printGCal(calc_eff_doors_inf(request.json["id"]))
     except:
         data = None
     

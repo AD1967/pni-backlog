@@ -1,39 +1,39 @@
 <template>
 <div class="app">
-  <div class="header">
+  <!-- Заголовок сайта ------------------------------------------------------------------------>
+  <div class="header"> 
     <div style="display: flex;">
-      <input class="cb_transparent" type="checkbox" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
+      <input class="header_cb_transparent" type="checkbox" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
       <label for="id_menu" class="header_menu">
         <label for="id_menu" class="strip"></label>
         <label for="id_menu" class="strip"></label>
         <label for="id_menu" class="strip"></label>
       </label>
     </div>
+    
     <div class="header_text">
       <div class="header_title">Интегральный индекс</div>
-      <div class="header_registration">
-        <!-- <input class="cb_transparent" type="checkbox" id="login_but" v-model="login_reg_check[0]" true-value=true false-value=false/> -->
-        <!-- <label for="login_but" class="reg_label">Вход</label> -->
-        <!-- <input class="cb_transparent" type="checkbox" id="reg_but" v-model="login_reg_check[1]" true-value=true false-value=false/> -->
-        <!-- <label for="reg_but" class="reg_label">Регистрация</label> -->
-        <!-- @click="Change_check_loadpat(top.name)" -->
-        <div for="login_but" class="reg_label" @click="logout()">Выход</div>
-      </div>
+      <div class="exit_label" @click="logout()">Выход</div>
     </div>
   </div>
-  <div class="main">  
+  <!--/Заголовок сайта------------------------------------------------------------------------>
+
+  <!-- Основная часть ------------------------------------------------------------------------>
+  <div class="body">  
+
+    <!-- Выпадающее меню слева---------------------------------------------------------------->
     <div v-show="menu_check==='20'">
-      <div class="function">
-        <div v-for="tname in topics_name" v-bind:key=tname>
-          <div v-if="tname.name!=='Общая характеристика здания'">
-            <h4 class="treecb1">
-              {{tname.name}}
+      <div class="left_panel">
+        <div v-for="bgsec_name in big_sections_name" :key=bgsec_name>
+          <div>
+            <h4 class="glob_section_title">
+              {{bgsec_name.name}}
             </h4>
-            <div v-for="top in topics" v-bind:key=top>
-              <div v-if="top.topic===tname.name">
-                <h5 class="treecb2">
-                  <input type="checkbox" :id=top.name v-model="top.check" true-value="true" false-value="false"/>
-                  <label :for=top.name> {{top.title}} </label>  
+            <div v-for="sec in sections" :key=sec>
+              <div v-if="sec.section===bgsec_name.name">
+                <h5 class="sub_section_title">
+                  <input type="checkbox" :id=sec.name v-model="sec.check" true-value="true" false-value="false"/>
+                  <label :for=sec.name> {{sec.title}} </label>  
                 </h5>
               </div>
             </div>
@@ -41,296 +41,302 @@
         </div>
       </div> 
     </div>
+    <!-- /Выпадающее меню слева--------------------------------------------------------------->
+
+
+    <!-- Основное рабочее пространство  ------------------ ----------------------------------->
     <div :style="{'width': 100+'%'}">
-    <div class="solution" :style="{'padding-left': menu_check+'%'}">
-      <div class="btn_div_global">
-        <div class="btn_patterns" >  
-          <div class="btn_loadpat">
-            <button class="btn_pat" @click="check_loadpat = !check_loadpat">
-              <div style="margin: 2%;"> Загрузить шаблон </div>
-            </button>
-            <div class="show_pat" v-if="check_loadpat">
-              <div class="content"> 
-                <b>Выберите шаблон</b>
-                
-                <select  v-model="load_pat.select.picked">
-                  <option style="" v-for="(build) in load_pat.select.variants" v-bind:key=build >
-                    {{build}}
-                  </option>
-                </select>
-                <div v-if="loadpat_error.show">
-                  <div v-if="loadpat_error.text == ''">
-                    <b style="color:red">
-                      Ошибка загрузки шаблона
-                    </b>
-                  </div>
-                  <div v-if="loadpat_error.text != ''">
-                    <b style="color:red">
-                      {{loadpat_error.text}}
-                    </b>
-                  </div>
-                </div>
-               
-              </div>
-              <div class="pat_buttons">
-                <button class="pat_btn" @click="import_from_server()">
-                  <div style="margin: 2%;"> ОК </div>
-                </button>
-                <button class="pat_btn" @click="check_loadpat = !check_loadpat">
-                  <div style="margin: 2%;"> Отмена </div>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="btn_savepat">
-            <button class="btn_pat" @click="check_savepat = !check_savepat; savepat_error.show = false">
-              <div style="margin: 2%;"> Сохранить шаблон </div>
-            </button> 
-            <div class="show_pat" v-if="check_savepat">
-              <div class="content"> 
-                <b>Название шаблона</b>
-                
-                <input class="inp_pat" type="text" v-model="functions[0].input[0][2]">
-                <br>
-                <div>
-                  <input type="radio" value="Загружать полностью" v-model="savepat.radio.picked">
-                  <label>Сохранять полностью</label>
-                </div>
-                <div>
-                  <input type="radio" value="Сохранять только из выбранных расчётов" v-model="savepat.radio.picked">
-                  <label>Сохранять только из выбранных расчётов</label>
-                </div>
-                <br>
-                <div v-if="savepat_error.show">
-                  <div v-if="savepat_error.text == ''">
-                    <b style="color:red"> Ошибка сохранения шаблона </b>
-                  </div>
-                  <div v-if="savepat_error.text != ''">
-                    <b style="color:red">
-                      {{savepat_error.text}}
-                    </b>
-                  </div>
-                </div>
-               
-              </div>
-              <div class="pat_buttons">
-                <button class="pat_btn" @click="export_to_server()">  
-                  <div style="margin: 2%;">ОК</div>
-                </button>
-                <button class="pat_btn" @click="check_savepat = !check_savepat">
-                 <div style="margin: 2%;"> Отмена </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="btn_calc" @click="calc_all()">
-          <div style="margin: 2%;"> Расчёт </div>
-        </button>
-      </div>
-      <div v-for="top in topics" v-bind:key=top>
-        <div v-show="top.check==='true'">
-        <div class="topics" :id="top.id">
-          <div class="mega_block_title"> {{top.title}} </div>
-          <div class="mega_block_borders">
-            <div class="mega_block">
-              <div class="main_block" :style="{'width': top.main_block_width+'%'}">
-                <div v-for="(func, index1) in functions" v-bind:key=func>
-                  <div v-if="func.id===top.name && func.render !== false">
-                    <div class="block" :id="func.id +'_'+ index1">
-                      <div class="block_title">{{ func.title }}</div><br>
-                      <div v-for="(inp, indexinp) in func.input" v-bind:key=inp>
-                      <div v-if="(inp[6]===undefined || inp[6]===null) || inp[6]()">
-                        <div v-if="inp[5]===undefined || inp[5]===null">
-                            {{inp[0]}}
-                            <input class="block_inp" type="text" :id="func.id +'_'+ index1+'_inp_'+indexinp" 
-                            :value="inp[2]" @input="changes(index1, 'input', indexinp, $event.target.value)">
-                            {{inp[1]}}
-                            <div v-if="!inp[4]">
-                            <b style="color:red" v-if="String(inp[2]).trim() === ''">поле не заполнено</b>
-                            <b style="color:red" v-if="String(inp[2]).trim() !== '' && (inp[3] == 'int' || inp[3] == 'uint') ">неправильный формат числа</b>
-                            </div>
-                        </div>
-                        <div v-else>
-                            {{inp[0]}}
-                            <input class="block_inp" type="text" :id="func.id +'_'+ index1+'_inp_'+indexinp" 
-                            :value="functions[inp[5][0]].input[inp[5][1]][2]" readonly>
-                            {{inp[1]}} <b style="color:grey">{{inp[5][2]}}</b>
-                            <div v-if="!functions[inp[5][0]].input[inp[5][1]][4]">
-                            <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() === ''">поле не заполнено</b>
-                            <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() !== '' && (functions[inp[5][0]].input[inp[5][1]][3] == 'int' || functions[inp[5][0]].input[inp[5][1]][3] == 'uint') ">неправильный формат числа</b>
-                            </div>
-                        </div>
-                        </div>  
-                      </div>
-                                               <!-- v-model="newPortalSelect" -->
-                       <!-- :value="func.radio_elem[0]" :change="changes(index1, 'radio', 0, $event.target.value)" -->
-                      <div v-for="(btn, indexrbtn) in func.r_btn" v-bind:key=btn>
-                        <input type="radio" name={{func}} :id="func.id +'_'+ index1+'_rbtn_'+indexrbtn"
-                         :value=btn
-                          v-on:change="changes(index1, 'radio', 0, $event.target.value)"
-                         :checked="btn==func.radio_elem[0]"
-                         >
-                        <label>{{btn}}</label>
-                      </div>
-                      <table>
-                        <tr>
-                          <div v-for="(sel, indexsel) in func.select" v-bind:key=sel>  
-                          <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">
-                            <div v-if="sel[4]===undefined || sel[4]===null">
-                                <td>{{sel[0]}}</td>
-                                <select 
-                                    :value="sel[3]" @change="changes(index1, 'select', indexsel, $event.target.value)"
-                                >
-                                <option style="" v-for="(selbody, indexbody) in sel[1]" v-bind:key=selbody :id="func.id +'_'+ index1+'_sel_'+indexsel+'_selnum_'+indexbody">
-                                    {{selbody}}
-                                </option>
-                                </select>
-                            </div>
-                            <div v-else>
-                                <td>{{sel[0] }} <b style="color:grey">{{sel[4][2]}}</b></td>
-                                <select :value="functions[sel[4][0]].select[sel[4][1]][3]" disabled="True">
-                                <option style="" v-for="(selbody, indexbody) in functions[sel[4][0]].select[sel[4][1]][1]" v-bind:key=selbody :id="func.id +'_'+ index1+'_sel_'+indexsel+'_selnum_'+indexbody" >
-                                    {{selbody}}
-                                </option>
-                                </select>
-                                
-                            </div>
-                           </div>
-                        </div>
-                        </tr>
-                      </table>
-                        <!-- :value="func.check_elem[indexcbox]" @change="changes(index1, 'checkbox', indexcbox, $event.target.value)" -->
-                       <!-- :checked="func.check_elem[indexcbox]" -->
-                      <p v-for="(box, indexcbox) in func.c_box" v-bind:key=box>
-                        <input type="checkbox" :id="func.id +'_'+ index1+'_cbox_'+indexcbox" 
-                           :checked="func.check_elem[indexcbox]"
-                            v-on:input="changes(index1, 'checkbox', indexcbox, $event.target.checked)"
-                        >
-                        {{box}}
-                      </p>
-                      <div v-for="(d, indexdate) in func.date" v-bind:key=d>
-                            <div v-if="d[2]===undefined || d[2]===null">
-                                {{d[0]}}
-                                <input type="date" :id="func.id +'_'+ index1+'_date_'+indexdate"
-                                :value="d[1]" @input="changes(index1, 'date', indexdate, $event.target.value)">
-                            </div>
-                            <div v-else>
-                                {{d[0]}}
-                                <input type="date" :id="func.id +'_'+ index1+'_date_'+indexdate"
-                                :value="functions[d[2][0]].date[d[2][1]][1]" readonly>
-                                <b  style="color:grey">{{d[2][2]}}</b>
-                            </div>
-                      </div>
+      <div class="solution" :style="{'padding-left': menu_check+'%'}">
+        <!-- Пространство кнопок загрузки шаблонов ------------------------------------------->
+        <div class="btn_div_global">
+          <div class="btn_patterns" >  
+            <!-- Кнопка загрузки шаблона -->
+            <div class="btn_loadpat">
+              <button class="btn_pat" @click="check_loadpat = !check_loadpat">
+                <div style="margin: 2%;"> Загрузить шаблон </div>
+              </button>
+              
+              <div class="show_pat" v-if="check_loadpat">
+                <div class="content"> 
+                  <b>Выберите шаблон</b>
+                  <select  v-model="load_pat.select.picked">
+                    <option style="" v-for="(build) in load_pat.select.variants" :key=build >
+                      {{build}}
+                    </option>
+                  </select>
+                  <div v-if="loadpat_error.show">
+                    <div v-if="loadpat_error.text == ''">
+                      <b style="color:red">
+                        Ошибка загрузки шаблона
+                      </b>
+                    </div>
+                    <div v-if="loadpat_error.text != ''">
+                      <b style="color:red">
+                        {{loadpat_error.text}}
+                      </b>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div v-show="top.name!=='general'" class="res_block">
-                <div class="block_r">
-                  <div v-for="result in results" v-bind:key=result>
-                    <div v-if="result.id===top.name">
-                      <span v-html="result.val"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-for="result in results" v-bind:key=result>
-              <div v-if="result.id===top.name" >
-                <div class="btn_div">
-                  <!--
-                  <div class="btn_patterns" :style="{'width': top.main_block_width+'%'}">  
-                    <div class="btn_loadpat">
-                      <button class="btn_pat" @click="Change_check_loadpat(top.name)">
-                        Загрузить шаблон
-                      </button>
-                      <div class="show_pat" v-if="top.check_loadpat">
-                        <div class="content"> 
-                          <b>Выберите шаблон</b>
-                          <select  v-model="load_pat.select.picked">
-                              <option style="" v-for="(build) in load_pat.select.variants" v-bind:key=build >
-                                {{build}}
-                              </option>
-                          </select>
-                          <div v-if="top.loadpat_error.show">
-                            <div v-if="top.loadpat_error.text == ''">
-                            <b style="color:red">
-                              Ошибка загрузки шаблона
-                            </b>
-                            </div>
-                            <div v-if="top.loadpat_error.text != ''">
-                            <b style="color:red">
-                                {{top.loadpat_error.text}}
-                            </b>
-                            </div>
-                          </div>
-      
-                        </div>
-                        <div class="pat_buttons">
-                          <button class="pat_btn"  @click="import_from_server()">
-                            ОК
-                          </button>
-                          <button class="pat_btn" @click="Change_check_loadpat(top.name)">
-                            Отмена
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="btn_savepat">
-                      <button class="btn_pat" @click="Change_check_savepat(top.name)">
-                        Сохранить шаблон
-                      </button> 
-                      <div class="show_pat" v-if="top.check_savepat">
-                        <div class="content"> 
-                          <b>Название шаблона</b>
-                          <input class="inp_pat" type="text" v-model="functions[0].input[0][2]">
-                          <br>
-                          <div>
-                            <input type="radio" value="Загружать полностью" v-model="savepat.radio.picked">
-                            <label>Сохранять полностью</label>
-                          </div>
-                          <div>
-                            <input type="radio" value="Сохранять только из выбранных расчётов" v-model="savepat.radio.picked">
-                            <label>Сохранять только из выбранных расчётов</label>
-                          </div>
-                          <br>
-                            <div v-if="top.savepat_error.show">
-                                <div v-if="top.savepat_error.text == ''">
-                                <b style="color:red"> Ошибка сохранения шаблона </b>
-                                </div>
-                                <div v-if="top.savepat_error.text != ''">
-                                <b style="color:red">
-                                    {{top.savepat_error.text}}
-                                </b>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="pat_buttons">
-                          <button class="pat_btn"  @click="export_to_server()">
-                            ОК
-                          </button>
-                          <button class="pat_btn" @click="Change_check_savepat(top.name)">
-                            Отмена
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  -->
-                  <button v-show="top.name!=='general'" class="btn_calc" v-on:click="cacl_result(result.id)">
-                    <div style="margin: 2%;"> Расчёт </div>
+                <div class="pat_buttons">
+                  <button class="pat_btn" @click="import_from_server()">
+                    <div style="margin: 2%;"> ОК </div>
+                  </button>
+                  <button class="pat_btn" @click="check_loadpat = !check_loadpat">
+                    <div style="margin: 2%;"> Отмена </div>
                   </button>
                 </div>
               </div>
             </div>
-          </div>   
+            <!-- /Кнопка загрузки шаблона -->
+
+            <!-- Кнопка сохранения шаблона -->
+            <div class="btn_savepat">
+              <button class="btn_pat" @click="check_savepat = !check_savepat; savepat_error.show = false">
+                <div style="margin: 2%;"> Сохранить шаблон </div>
+              </button> 
+              <div class="show_pat" v-if="check_savepat">
+                <div class="content"> 
+                  <b>Название шаблона</b>
+                  
+                  <input class="inp_pat" type="text" v-model="functions[0].input[0][2]">
+                  <br>
+                  <div>
+                    <input type="radio" value="Загружать полностью" v-model="savepat.radio.picked">
+                    <label>Сохранять полностью</label>
+                  </div>
+                  <div>
+                    <input type="radio" value="Сохранять только из выбранных расчётов" v-model="savepat.radio.picked">
+                    <label>Сохранять только из выбранных расчётов</label>
+                  </div>
+                  <br>
+                  <div v-if="savepat_error.show">
+                    <div v-if="savepat_error.text == ''">
+                      <b style="color:red"> Ошибка сохранения шаблона </b>
+                    </div>
+                    <div v-if="savepat_error.text != ''">
+                      <b style="color:red">
+                        {{savepat_error.text}}
+                      </b>
+                    </div>
+                  </div>
+                
+                </div>
+                <div class="pat_buttons">
+                  <button class="pat_btn" @click="export_to_server()">  
+                    <div style="margin: 2%;">ОК</div>
+                  </button>
+                  <button class="pat_btn" @click="check_savepat = !check_savepat">
+                  <div style="margin: 2%;"> Отмена </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- /Кнопка сохранения шаблона -->
+          </div>
+
+          <button class="btn_calc" @click="calc_all()">
+            <div style="margin: 2%;"> Расчёт </div>
+          </button>
         </div>
+        <!-- /Пространство кнопок загрузки шаблонов ------------------------------------------->
+
+        <!-- Отрисовка основных блоков расчета ------------------------------------------------>
+        <div v-for="section in sections" :key=section>
+          <div v-show="section.check==='true'">
+          <div class="mega_block_sections" :id="section.id">
+            <div class="mega_block_title"> {{section.title}} </div>
+            <div class="mega_block_borders">
+              <div class="mega_block">
+                <div :class="[section.name == 'reliability'? 'rel_block' : 'main_block']" :style="{'width': section.main_block_width+'%'}"> 
+                  <!-- Формы ввода для основных блоков   ------------------------------------->
+                  <div v-for="(func, index1) in functions" :key=func>
+                    <div v-if="func.id===section.name && func.render !== false">
+                      <div class="block" :id="func.id +'_'+ index1">
+                        <div class="block_title">{{ func.title }}</div><br>
+                        <div v-for="(inp, indexinp) in func.input" :key=inp>
+                        <div v-if="(inp[6]===undefined || inp[6]===null) || inp[6]()">
+                          <div v-if="inp[5]===undefined || inp[5]===null">
+                              {{inp[0]}}
+                              <input :class="[indexinp==0 ? 'block_inp_name':'block_inp']" type="text" :id="func.id +'_'+ index1+'_inp_'+indexinp" 
+                              :value="inp[2]" @input="changes(index1, 'input', indexinp, $event.target.value)">
+                              {{inp[1]}}
+                              <div v-if="!inp[4]">
+                              <b style="color:red" v-if="String(inp[2]).trim() === ''">поле не заполнено</b>
+                              <b style="color:red" v-if="String(inp[2]).trim() !== '' && (inp[3] == 'int' || inp[3] == 'uint') ">неправильный формат числа</b>
+                              </div>
+                          </div>
+                          <div v-else>
+                              {{inp[0]}}
+                              <input :class="[indexinp==0 ? 'block_inp_name':'block_inp']" type="text" :id="func.id +'_'+ index1+'_inp_'+indexinp" 
+                              :value="functions[inp[5][0]].input[inp[5][1]][2]" readonly>
+                              {{inp[1]}} <b style="color:grey">{{inp[5][2]}}</b>
+                              <div v-if="!functions[inp[5][0]].input[inp[5][1]][4]">
+                              <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() === ''">поле не заполнено</b>
+                              <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() !== '' && (functions[inp[5][0]].input[inp[5][1]][3] == 'int' || functions[inp[5][0]].input[inp[5][1]][3] == 'uint') ">неправильный формат числа</b>
+                              </div>
+                          </div>
+                          </div>  
+                        </div>
+                        <div v-for="(btn, indexrbtn) in func.r_btn" v-bind:key=btn>
+                          <input type="radio" name={{func}} :id="func.id +'_'+ index1+'_rbtn_'+indexrbtn"
+                          :value=btn
+                            v-on:change="changes(index1, 'radio', 0, $event.target.value)"
+                          :checked="btn==func.radio_elem[0]"
+                          >
+                          <label>{{btn}}</label>
+                        </div>
+                        <table>
+                          <tr>
+                            <div v-for="(sel, indexsel) in func.select" v-bind:key=sel>  
+                            <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">
+                              <div v-if="sel[4]===undefined || sel[4]===null">
+                                  <td>{{sel[0]}}</td>
+                                  <select 
+                                      :value="sel[3]" @change="changes(index1, 'select', indexsel, $event.target.value)"
+                                  >
+                                  <option style="" v-for="(selbody, indexbody) in sel[1]" v-bind:key=selbody :id="func.id +'_'+ index1+'_sel_'+indexsel+'_selnum_'+indexbody">
+                                      {{selbody}}
+                                  </option>
+                                  </select>
+                              </div>
+                              <div v-else>
+                                  <td>{{sel[0] }} <b style="color:grey">{{sel[4][2]}}</b></td>
+                                  <select :value="functions[sel[4][0]].select[sel[4][1]][3]" disabled="True">
+                                  <option style="" v-for="(selbody, indexbody) in functions[sel[4][0]].select[sel[4][1]][1]" v-bind:key=selbody :id="func.id +'_'+ index1+'_sel_'+indexsel+'_selnum_'+indexbody" >
+                                      {{selbody}}
+                                  </option>
+                                  </select>   
+                              </div>
+                            </div>
+                          </div>
+                          </tr>
+                        </table>
+                        <p v-for="(box, indexcbox) in func.c_box" :key=box>
+                          <input type="checkbox" :id="func.id +'_'+ index1+'_cbox_'+indexcbox" 
+                            :checked="func.check_elem[indexcbox]"
+                              v-on:input="changes(index1, 'checkbox', indexcbox, $event.target.checked)"
+                          >
+                          {{box}}
+                        </p>
+                        <div v-for="(d, indexdate) in func.date" v-bind:key=d>
+                              <div v-if="d[2]===undefined || d[2]===null">
+                                  {{d[0]}}
+                                  <input type="date" :id="func.id +'_'+ index1+'_date_'+indexdate"
+                                  :value="d[1]" @input="changes(index1, 'date', indexdate, $event.target.value)">
+                              </div>
+                              <div v-else>
+                                  {{d[0]}}
+                                  <input type="date" :id="func.id +'_'+ index1+'_date_'+indexdate"
+                                  :value="functions[d[2][0]].date[d[2][1]][1]" readonly>
+                                  <b  style="color:grey">{{d[2][2]}}</b>
+                              </div>
+                        </div>
+                      </div> 
+                    </div>
+                  </div>
+                  <!-- /Формы ввода для основных блоков   ------------------------------------>
+                  
+                  <!-- Дополнительный блок с расчетом суммарных притоков и потерь в главном блоке -->
+                  <div v-if="section.name == 'general'" class="sum_block"> 
+                    <div id="sum_minus">
+                        <div class="block_title"> Теплопотери</div><br> 
+                        <div class="sum_titles">
+                          <h1> Q<sub>окон</sub> </h1>
+                          <h1> Q<sub>рез.окон </sub> </h1>
+                          <h1> Q<sub>двери </sub> </h1>
+                          <h1> Q<sub>рез.двери</sub></h1>
+                          <h1> Q<sub>стен</sub> </h1>
+                          <h1> Q<sub>стен.инф.</sub> </h1>
+                          <h1> Q<sub>пол</sub> </h1>
+                          <h1> Q<sub>вент</sub> </h1>
+                          <h1> Q<sub>доп</sub></h1>
+                          <br>
+                          <hr>
+                          <h1 class="red_sum"> &Sum;<sub>потерь</sub></h1> 
+                          
+                        </div>  
+                        <div class="sum_results">
+                          <h1><sub> {{results[2].dec}} </sub> <sub></sub> </h1>
+                          <h1><sub> {{results[3].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[4].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[5].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[6].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[7].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[8].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[9].dec}}</sub> <sub></sub> </h1>
+                          <h1><sub> {{results[10].dec}}</sub> <sub></sub> </h1> 
+                          <br>
+                          <hr v-if="results[11].dec != ''">
+                          <h1 v-if="results[2].dec != ''" class ="red_sum"> <sub>{{ }}</sub></h1>
+                        </div>              
+                    </div>
+                    
+                    <div id="sum_plus">
+                        <div class="block_title"> Теплопритоки</div><br> 
+                        <div class="sum_titles">
+                          <h1> Q<sub>персонал</sub></h1>
+                          <h1> Q<sub>рук </sub></h1>
+                          <h1> Q<sub>душ </sub></h1>
+                          <h1> Q<sub>ЭЭ отоп.пер.</sub></h1>
+                          <h1> Q<sub>труб</sub></h1>
+                          <h1> Q<sub>труб.отопл.</sub></h1>
+                          <h1> <sub sub style="color: #e5e5dc">.</sub> </h1>
+                          <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
+                          <br>
+                          <hr>
+                          <h1 class="red_sum"> &Sum;<sub>притоков</sub></h1>  
+                        </div>
+                        
+                        <div class="sum_results">
+                          <h1><sub>{{results[11].dec}}</sub> </h1>
+                          <h1><sub>{{results[12].dec}}</sub> </h1>
+                          <h1><sub>{{results[13].dec}}</sub> </h1>
+                          <h1><sub>{{results[14].dec}}</sub> </h1>
+                          <h1><sub>{{results[15].dec}}</sub> </h1>
+                          <h1><sub>{{results[16].dec}}</sub> </h1>
+                          <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                          <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                          <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                          <br>
+                          <hr v-if="results[11].dec != ''">
+                          <h1 v-if="results[11].dec != ''" class ="red_sum"> <sub></sub></h1>
+                        </div>                            
+                    </div>
+                  </div>
+                   <!-- Конец доп. блока -------------------------------------------------------------->              
+                </div> 
+                
+                <div v-show="section.name!=='general'" class="res_block">
+                  <div class="block_r">
+                    <div v-for="result in results" :key=result>
+                      <div v-if="result.id===section.name">
+                        <span v-html="result.val"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-for="result in results" v-bind:key=result>
+                <div v-if="result.id===section.name" >
+                  <div class="btn_div">
+                    <button v-show="section.name!=='general'" class="btn_calc" v-on:click="cacl_result(result.id)">
+                      <div style="margin: 2%;"> Расчёт </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>   
+          </div>
+          </div>
         </div>
-      </div>  
-    </div>
+        <!-- /Отрисовка основных блоков расчета --------------------------------------------->
+      </div>
     </div>
   </div>
+  <!--/Основная часть ----------------------------------------------------------------------->
+
+
+
   <dialogbox-login v-model:show=login_reg_check>
   </dialogbox-login> 
   <dialogbox-reg v-model:show=login_reg_check>
@@ -342,6 +348,8 @@
   </dialog-buttons>     
 </div>
 </template>
+
+
 
 <script>
 import func from '@/connect/funcs'
@@ -369,58 +377,58 @@ export default{
       },
       loadpat_error: {show: false, text: ''},
       savepat_error: {show: false, text: ''},
-      topics_name:
+      
+      big_sections_name:
       [
-        {name: 'Общая характеристика здания'},
         {name: 'Надежность'},
         {name: 'Теплопотери'},
         {name: 'Теплопритоки'}
       ],
-      topics:
+      sections:
       [
-        {  topic:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'true', main_block_width: '100', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
-        {  topic:'Надежность', name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'heat_los_inpgr', title: 'Расчет тепловых потерь через входную группу', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'inf_inpgr', title: 'Расчет инфильтрации через входную группу', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери',  name: 'heat_los_heatcond_benv', title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'heat_los_heatcond_roof', title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'heat_los_floor', title: 'Расчет теплопотерь через пол', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'heat_los_vent', title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопотери', name: 'add_heatcosts', title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопритоки', name: 'heat_gains_people', title: 'Определение теплопритоков от людей', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопритоки', name: 'heat_gains_washstands', title: 'Определение затрат тепловой энергии на ГВС для рукомойников', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопритоки', name: 'heat_gains_showers', title: 'Определение затрат тепловой энергии на ГВС для душевых', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопритоки', name: 'heat_gains_electriclighting', title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопритоки', name: 'heat_gains_GVS', title: 'Определение теплопритока от неизолированных трубопроводов ГВС', check: 'false', main_block_width: '69'},
-        {  topic:'Теплопритоки', name: 'heat_gains_pipelines', title: 'Определение теплопритока от неизолированных трубопроводов отопления', check: 'false', main_block_width: '69'},
+        {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'true', main_block_width: '100', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
+        {  section:'Надежность', name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'heat_los_inpgr', title: 'Расчет тепловых потерь через входную группу', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'inf_inpgr', title: 'Расчет инфильтрации через входную группу', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери',  name: 'heat_los_heatcond_benv', title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'heat_los_heatcond_roof', title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'heat_los_floor', title: 'Расчет теплопотерь через пол', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'heat_los_vent', title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false', main_block_width: '69'},
+        {  section:'Теплопотери', name: 'add_heatcosts', title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров', check: 'false', main_block_width: '69'},
+        {  section:'Теплопритоки', name: 'heat_gains_people', title: 'Определение теплопритоков от людей', check: 'false', main_block_width: '69'},
+        {  section:'Теплопритоки', name: 'heat_gains_washstands', title: 'Определение затрат тепловой энергии на ГВС для рукомойников', check: 'false', main_block_width: '69'},
+        {  section:'Теплопритоки', name: 'heat_gains_showers', title: 'Определение затрат тепловой энергии на ГВС для душевых', check: 'false', main_block_width: '69'},
+        {  section:'Теплопритоки', name: 'heat_gains_electriclighting', title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', check: 'false', main_block_width: '69'},
+        {  section:'Теплопритоки', name: 'heat_gains_GVS', title: 'Определение теплопритока от неизолированных трубопроводов ГВС', check: 'false', main_block_width: '69'},
+        {  section:'Теплопритоки', name: 'heat_gains_pipelines', title: 'Определение теплопритока от неизолированных трубопроводов отопления', check: 'false', main_block_width: '69'},
       ],
       results: [
-        {id: 'general', val: ''},
-        {id: 'reliability', val: ''},
-        {id: 'heat_los_win', val: ''},
-        {id: 'inf_win', val: ''},
-        {id: 'heat_los_inpgr', val: ''},
-        {id: 'inf_inpgr', val: ''},
-        {id: 'heat_los_heatcond_benv', val: ''},
-        {id: 'heat_los_heatcond_roof', val: ''},
-        {id: 'heat_los_floor', val: ''},
-        {id: 'heat_los_vent', val: ''},
-        {id: 'add_heatcosts', val: ''},
-        {id: 'heat_gains_people', val: ''},
-        {id: 'heat_gains_washstands', val: ''},
-        {id: 'heat_gains_showers', val: ''},
-        {id: 'heat_gains_electriclighting', val: ''},
-        {id: 'heat_gains_GVS', val: ''},
-        {id: 'heat_gains_pipelines', val: ''},
+        {id: 'general', val: '', dec:''},
+        {id: 'reliability', val: '', dec:''},
+        {id: 'heat_los_win', val: '', dec:''},
+        {id: 'inf_win', val: '', dec:''},
+        {id: 'heat_los_inpgr', val: '', dec:''},
+        {id: 'inf_inpgr', val: '', dec:''},
+        {id: 'heat_los_heatcond_benv', val: '', dec:''},
+        {id: 'heat_los_heatcond_roof', val: '', dec:''},
+        {id: 'heat_los_floor', val: '', dec:''},
+        {id: 'heat_los_vent', val: '', dec:''},
+        {id: 'add_heatcosts', val: '', dec:''},
+        {id: 'heat_gains_people', val: '', dec:''},
+        {id: 'heat_gains_washstands', val: '', dec:''},
+        {id: 'heat_gains_showers', val: '', dec:''},
+        {id: 'heat_gains_electriclighting', val: '', dec:''},
+        {id: 'heat_gains_GVS', val: '', dec:''},
+        {id: 'heat_gains_pipelines', val: '', dec:''},
       ],
       functions:
       [
         // 0
         {
           id: 'general', 
-          title:'Общая характеристика здания', 
+          title:'Параметры', 
           //input[2] - значение, input[3] - тип, input[4] - валидность, input[5] - пусто/[func_index, input_index], input[6] - пусто/условный рендер - функция проверки
           input:[['Название','', '', 'str', false],['Этажность','', '', 'uint', false],['Длина здания','м', '', 'uint', false],['Ширина здания','м', '', 'uint', false],['Длина стен на одном этаже','м', '', 'uint', false],['Высота стен','м', '', 'uint', false],['Температура внутреннего воздуха','°C',  '', 'int', false],['Температура наружного воздуха','°C',  '', 'int', false]],
           r_btn:null,
@@ -689,7 +697,7 @@ export default{
       window.location.href = "/"
     },
     Change_check_loadpat(name){
-      this.topics.forEach(function(item){
+      this.sections.forEach(function(item){
         if(item.name === name){
           item.check_loadpat = !item.check_loadpat;
         }
@@ -697,7 +705,7 @@ export default{
       return name;
     },
     Change_check_savepat(name){
-      this.topics.forEach(function(item){
+      this.sections.forEach(function(item){
         if(item.name === name){
           item.check_savepat = !item.check_savepat;
         }
@@ -706,51 +714,53 @@ export default{
     },
     cacl_result(id){
         let self = this
+        console.log(self)
       this.results.forEach(function(item){
         if(item.id == id){
             item.val = func.calc(id, self)
+            item.dec = func.calc_dec(id, self)
             return false
         }
       })
       return id
     },
-	calc_all_server(){
-		let self = this
-		this.topics.forEach(function(item){
-			if(item.check){
-				self.cacl_result(item.name, self)
-			}
-		})
-	},
+  calc_all_server(){
+    let self = this
+    this.sections.forEach(function(item){
+      if(item.check){
+        self.cacl_result(item.name, self)
+      }
+    })
+  },
     calc_all(){
         console.log(this.functions[1].radio_elem)
-		if(this.build_changes.size > 0){
-			this.dialog_buttons_check = true
-		}
-		else{
-			this.calc_all_server()
-		}
+    if(this.build_changes.size > 0){
+      this.dialog_buttons_check = true
+    }
+    else{
+      this.calc_all_server()
+    }
     },
-	calc_all_after_dialog(val_pair){
+  calc_all_after_dialog(val_pair){
     let val = val_pair[0]
     let mode = val_pair[1]
-		switch (val) {
-			//save
-			case 0:
+    switch (val) {
+      //save
+      case 0:
         this.export_to_server_and_calc(mode)
-				break;
-			//server
-			case 1:
-				this.calc_all_server()
-				break;
-			//отмена
-			case 2:
-				break;
-			default:
-				console.log("calc_all_after_dialog:logic_error")
-				break;
-		}
-	},
+        break;
+      //server
+      case 1:
+        this.calc_all_server()
+        break;
+      //отмена
+      case 2:
+        break;
+      default:
+        console.log("calc_all_after_dialog:logic_error")
+        break;
+    }
+  },
     validate_input(val, type){
       if(type == 'str'){
         return val.length > 0
@@ -796,8 +806,6 @@ export default{
         }
         else if(type == "radio"){
             if(this.functions[func_ind].radio_elem[0] !== new_val){
-                // console.log(this.functions[func_ind].radio_elem[0])
-                // console.log(new_val)
                 this.functions[func_ind].radio_elem[0] = new_val
                 result = true
             }
@@ -854,21 +862,7 @@ export default{
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
 }
-input[type="date"]{
-  background-color: #e5e5dc; 
-  border: 2px solid #435d6b;
-  border-radius: 4px; 
-  padding-left: 1%;
-  padding-right: 1%;
-  margin: 0.25%;
-  width: 20%;
-}
-input[type="checkbox"]{
-  background-color: #e5e5dc; 
-  border: 2px solid #435d6b;
-  border-radius: 4px; 
-  transform:scale(1.2);
-}
+/* Глобальные --------------------------------------------------------------- */
 select{
   background-color: #e5e5dc; 
   border: 2px solid #435d6b;
@@ -889,6 +883,14 @@ label{
   width: 100%;
   height: 100%;
 }
+br{
+margin: 0;
+padding: 0;
+}
+/* /Глобальные --------------------------------------------------------------- */
+
+
+/*--Заголовок---------------------------------------------------------------- */
 .header{
   position: fixed;
   display: flex;
@@ -897,24 +899,10 @@ label{
   width: 100%;
   height: 50px;
   background: #26495c;
-  
   color: #e5e5dc;
+  z-index: 20;
 }
-.header_title{
-  font-size: 36px;
-}
-.cb_transparent{
-  opacity: 0;
-}
-.header_registration{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  height: 100%;
-}
-.reg_label{
+.exit_label{
   display: flex;
   align-items: center;
   user-select: none; 
@@ -927,29 +915,40 @@ label{
   align-items: center;
   width: 50px;
 }
-.strip{
-  width: 35px;
-  height: 6px;
-  background-color: #e5e5dc;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
 .header_text{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   width: 100%;
 }
-.main{
+.header_title{
+  font-size: 36px;
+}
+.header_cb_transparent{
+  opacity: 0;
+}
+.strip{
+  width: 35px;
+  height: 5px;
+  background-color: #e5e5dc;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+/*--/Заголовок--------------------------------------------------------------- */
+
+
+.body{
   margin-top: 50px;
   width: 100%;
   height: 80%;
   display: flex;
   flex-direction: row;
 }
-.function{
+
+/*-- Вкладки в левой части экрана ------------------------------------------- */
+.left_panel{
   position: fixed;
   background: #e28a16;
   top: 50px;
@@ -957,13 +956,9 @@ label{
   width: 20%;
   overflow-y: scroll;
   min-width: 170px;
+  z-index: 20;
 }
-.solution{ 
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-.treecb1{
+.glob_section_title{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -971,45 +966,32 @@ label{
   color: #e5e5dc;
   font-size: 16px;
 }
-.treecb2{
+.sub_section_title{
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-height: 35px;
+  min-height: 38px;
   margin: 2%;
   color: #0b161d;
   border-bottom: 2px dotted rgb(0, 0, 0);
   user-select: none;
 }
-.treecb2:hover{
+.sub_section_title:hover{
   background-color: #e0886563;
   cursor: pointer;
   transition: background-color 300 ms;
 }
-.topics{
-  display: flex; 
-  flex-direction: column;
-  margin: 1%;
-}
-.mega_block_borders{
-  display: flex; 
-  flex-direction: column;
-  justify-content: right;
-  background-color: #e5e5dc; 
-  border: 2px solid #e28a16;
-  border-radius: 10px; 
-  box-shadow: 0 0 10px #cf7b0c;
-  margin: 1% 1% 0%;
-}
-.mega_block_title{
-  font-size: 20px;
-}
-.btn_div{
+/*-- /Вкладки в левой части экрана ------------------------------------------- */
+
+
+/* Основное рабочее пространство ---------------------------------------------*/
+.solution{ 
   display: flex;
-  align-items: center;
-  justify-content: right;
-  margin: 1%;
+  flex-direction: column;
+  width: 100%;
 }
+
+  /* Пространство кнопок загрузки шаблонов и расчета */
 .btn_div_global{
   display: flex;
   align-items: start;
@@ -1022,14 +1004,37 @@ label{
   justify-content: space-between;
   width: 69%;
 }
+.btn_loadpat{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 48%;
+}
+.btn_pat{
+  width: 100%; 
+  background-color: #e28a16; 
+  border: 2px solid #d47e0c;
+  border-radius: 10px; 
+  box-shadow: 0 0 10px #b96e0b;
+  color: #e5e5dc;
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+}
+.btn_pat:hover{
+  width: 100%; 
+  background-color: #e28a16; 
+  border: 2px solid #d47e0c;
+  border-radius: 10px; 
+  box-shadow: 0 0 5px #b96e0b inset;
+  color: #e5e5dc;
+}
 .show_pat{
   display: flex;
   flex-direction: column;
   align-items: left;
   justify-content: center;
-
   background: #e5e5dc;
   border: 2px solid #e28a16;
+  position: relative;
   border-radius: 4px; 
   padding: 2%;
   margin: 1%;
@@ -1038,14 +1043,6 @@ label{
   display: flex;
   flex-direction: column;
   margin: 1%;
-}
-.inp_pat{
-  background-color: #e5e5dc; 
-  border: 2px solid #435d6b;
-  border-radius: 4px; 
-  padding-left: 1%;
-  padding-right: 1%;
-  margin: 0.25%;
 }
 .pat_buttons{
   display: flex;
@@ -1078,28 +1075,13 @@ label{
   justify-content: center;
   width: 48%; 
 }
-.btn_loadpat{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 48%;
-}
-.btn_pat{
-  width: 100%; 
-  background-color: #e28a16; 
-  border: 2px solid #d47e0c;
-  border-radius: 10px; 
-  box-shadow: 0 0 10px #b96e0b;
-  color: #e5e5dc;
-  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-}
-.btn_pat:hover{
-  width: 100%; 
-  background-color: #e28a16; 
-  border: 2px solid #d47e0c;
-  border-radius: 10px; 
-  box-shadow: 0 0 5px #b96e0b inset;
-  color: #e5e5dc;
+.inp_pat{
+  background-color: #e5e5dc; 
+  border: 2px solid #435d6b;
+  border-radius: 4px; 
+  padding-left: 1%;
+  padding-right: 1%;
+  margin: 0.25%;
 }
 .btn_calc{
   display: flex;
@@ -1122,16 +1104,44 @@ label{
   box-shadow: 0 0 5px #1e3a49 inset;
   color: #e5e5dc;
 }
+  /* /Пространство кнопок загрузки шаблонов и расчета */
+
+  /* Отрисовка основных блоков расчета */
+.mega_block_sections{
+display: flex; 
+flex-direction: column;
+margin: 1%;
+}
+.mega_block_title{
+  font-size: 20px;
+  margin-left: 2%;
+}
+.mega_block_borders{
+  display: flex; 
+  flex-direction: column;
+  justify-content: right;
+  border: 2px solid #e28a16;
+  border-radius: 10px; 
+  box-shadow: 0 0 10px #cf7b0c;
+  background-color: #f9d2a2; 
+  margin: 1% 1% 0%;
+}
 .mega_block{
   display: flex;
   flex-direction: row;
+  background-color: #f9d2a2; 
+  border: 6px solid #f9d2a2; 
+  border-top: #e28a16; 
+  border-right: #e28a16; 
+  border-radius: 10px; 
 }
-.main_block{
-  margin: 1% 1% 0%;
+.main_block, .rel_block{
+  margin: 1% 2% 0%;
+  position: relative;
+  display: flex;
 }
-.res_block{
-  width: 29%;
-  margin: 1% 1% 0%;
+.rel_block{
+  flex-direction: column;
 }
 .block{
   background-color: #e5e5dc; 
@@ -1140,20 +1150,74 @@ label{
   box-shadow: 0 0 10px #cf7b0c;
   width: 100%;
   margin-bottom: 1%;
-  padding: 20px 40px;
+  padding: 10px;
 }
+
 .block_title{
   font-size: 16px;
   color:#1e3a49;
 }
-.block_inp{
+.block_inp, .block_inp_name{
   background-color: #e5e5dc; 
   border: 2px solid #435d6b;
   border-radius: 4px; 
   padding-left: 1%;
   padding-right: 1%;
-  margin: 0.25%;
-  width: 25%;
+  margin: 0.55%;
+  width: 15%;
+}
+.block_inp_name{
+  width: 75%;
+}
+.sum_block{
+  background-color: #e5e5dc; 
+  margin-bottom: 1%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #234455;
+  box-shadow: 0 0 10px #26495c;
+  display: flex;
+  width: 75%;
+  position: relative;
+  float: right;
+  margin-top: 0%;
+  margin-left: 2%;
+  justify-content: space-between;
+}
+#sum_minus {
+float: left; 
+display: block;
+width: 48%;
+position: relative;
+justify-content: space-between;
+}
+#sum_plus {
+float: right;
+display: block;
+width: 48%;
+position: relative;
+justify-content: space-between;
+}
+.red_sum{
+  color: #234455;
+  vertical-align: text-bottom ;
+  display: inline;
+}
+.sum_titles{
+  display: flexbox;
+  float: left;
+  width: 30%;
+}
+.sum_results{
+  display: flexbox;
+  float: right;
+  width: 68%;
+  margin-right: 2%;
+  text-align: right;
+}
+.res_block{
+  width: 29%;
+  margin: 1% 1% 0%;
 }
 .block_r{
   background-color: #e5e5dc; 
@@ -1165,4 +1229,30 @@ label{
   margin-bottom: 1%;
   padding: 20px 40px;
 }
+.btn_div{
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin: 1%;
+  background-color: #f9d2a2;
+}
+input[type="date"]{
+  background-color: #e5e5dc; 
+  border: 2px solid #435d6b;
+  border-radius: 4px; 
+  padding-left: 1%;
+  padding-right: 1%;
+  margin: 0.25%;
+  width: 35%;
+}
+input[type="checkbox"]{
+  background-color: #e5e5dc; 
+  border: 2px solid #435d6b;
+  border-radius: 4px; 
+  transform:scale(1.2);
+}
+  /* /Отрисовка основных блоков расчета */
+
+/* /Основное рабочее пространство--------------------------------------------*/
+
 </style>

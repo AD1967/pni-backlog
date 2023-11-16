@@ -137,7 +137,6 @@ function calc(id, self){
     console.log(self)
     let export_build_r = export_funcs.export_build(self, false);
     if(export_build_r.error){
-        
         export_error_alert(self,export_build_r.text)
         return "ошибка вычислений, проверьте наличие данных и их корректность"
     }
@@ -161,7 +160,6 @@ function calc(id, self){
                         return "ошибка подключения к серверу"
                     }
                     else{
-                        console.log(result)
                         return "ошибка вычислений, проверьте наличие данных и их корректность"
                     }
                 }
@@ -197,7 +195,24 @@ function check_token_before_render(data){
     return flag
 }
 
-
+function calc_dec(id, self){       // ,self)
+    console.log("calc_dec")
+    console.log(self)
+    let id_build = localStorage.getItem("this_build_id");
+    let result = requests.default_spost_request(id_mappers.calc_map[id], {"id":id_build}, self)       // ,self)
+    if(result['fail']){
+        if(result['error'] == 'connect'){
+            return "ошибка подключения к серверу"
+        }
+        else{
+            console.log(result)
+            return "ошибка вычислений, проверьте наличие данных и их корректность"
+        }
+    }
+    else {
+        return id_mappers.calc_dec_result_map[id](result["result"])
+    }
+}
 
 let funcs = {};
 funcs.start = start
@@ -206,5 +221,5 @@ funcs.export = exportf
 funcs.load = load
 funcs.import = import_from_server
 funcs.check_token_before_render = check_token_before_render
-
+funcs.calc_dec = calc_dec
 export default funcs

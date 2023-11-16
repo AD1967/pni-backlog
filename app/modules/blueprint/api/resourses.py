@@ -74,5 +74,6 @@ def api_data_add_elem(type):
 @main.route("/data/cur_build", methods=["PUT"])
 @token_auth.login_required
 def update_iformation():
+    print(request.json)
     data = update_cur_info(request.json)
     return default_json_response(not data is None, "error" if data is None else data)

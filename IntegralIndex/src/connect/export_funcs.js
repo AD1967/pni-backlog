@@ -5,6 +5,7 @@ import id_mappers from '@/connect/id_mappers'
 //функции получения значений полей 
 
 function get_input(self, id, number){
+    console.log(self.functions[id_mappers.input_mapper[id]].input)
     if(!self.functions[id_mappers.input_mapper[id]].input[number][4]){
         throw "Ошибка в выбранных блоках есть ошибочные поля"
     }
@@ -14,6 +15,7 @@ function get_input(self, id, number){
 function get_select(self, id, number){
     let result = null
     self.functions[id_mappers.input_mapper[id]].select[number][1].forEach(function(item, index){
+        
         if (item == self.functions[id_mappers.input_mapper[id]].select[number][3]){
             result = self.functions[id_mappers.input_mapper[id]].select[number][2][index]
             return false
@@ -39,7 +41,7 @@ function get_r_btn(self, id){
 
 function is_block_checked(self, id){
     let result = false
-    self.topics.forEach(function(item){
+    self.sections.forEach(function(item){
         if(item.name == id){
             result = item.check === 'true'
             return false
@@ -101,7 +103,6 @@ function export_build(self, full){
         else{
             console.log("skip reliability")
         }
-
         // Блок heat_los_win
         if (full || is_block_checked(self, "heat_los_win")){
             build.count_windows=                    get_input(self, "heat_los_win", 0)
@@ -121,14 +122,14 @@ function export_build(self, full){
         
         // Блок inf_win
         if (full || is_block_checked(self, "inf_win")){
-            // build.count_windows=                    get_input(self, "inf_win", 0)
+             build.count_windows=                    get_input(self, "inf_win", 0)
             // build.temp_inside=                    get_input(self, "inf_win", 1)
             // build.temp_outside=                    get_input(self, "inf_win", 2)
-            // build.length_wnd=                    get_input(self, "inf_win", 1)
-            // build.height_wnd=                    get_input(self, "inf_win", 2)
+             build.length_wnd=                    get_input(self, "inf_win", 1)
+             build.height_wnd=                    get_input(self, "inf_win", 2)
 
-            // build.id_window=                    get_select(self, "inf_win", 0)
-            // build.date_wnd=                    get_date(self, "inf_win", 0)
+             build.id_window=                    get_select(self, "inf_win", 0)
+             build.date_wnd=                    get_date(self, "inf_win", 0)
         } 
         else {
             console.log("skip inf_win")
@@ -150,14 +151,14 @@ function export_build(self, full){
 
         // Блок inf_inpgr
         if (full || is_block_checked(self, "inf_inpgr")){
-            // build.count_doors=                    get_input(self, "inf_inpgr", 0)
+             build.count_doors=                    get_input(self, "inf_inpgr", 0)
             // build.temp_inside=                    get_input(self, "inf_inpgr", 1)
             // build.temp_outside=                    get_input(self, "inf_inpgr", 2)
-            // build.length_door=                    get_input(self, "inf_inpgr", 1)
-            // build.height_door=                    get_input(self, "inf_inpgr", 2)
+             build.length_door=                    get_input(self, "inf_inpgr", 1)
+             build.height_door=                    get_input(self, "inf_inpgr", 2)
 
-            // build.id_door=                    get_select(self, "inf_inpgr", 0)
-            // build.date_doors=                    get_date(self, "inf_inpgr", 0)
+             build.id_door=                    get_select(self, "inf_inpgr", 0)
+             build.date_doors=                    get_date(self, "inf_inpgr", 0)
         } 
         else {
             console.log("skip inf_inpgr")

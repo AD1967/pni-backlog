@@ -277,7 +277,6 @@ def calc_eff(build_id):
 #}
 
 def Q_wnd_(build_id):
-    #print(cur_info)
     q_wnd = get_one_by_id_build(Q_wnd, build_id)
     build = q_wnd.build
     this_date = datetime.now()
@@ -290,16 +289,12 @@ def Q_wnd_(build_id):
     dYears = 365 
     t = math.floor((this_date - datetime.strptime(q_wnd.date_wnd.strftime('%Y-%m-%d'), '%Y-%m-%d')).days)/ dYears
     tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).days)/ dYears
-
-    ##print(cur_info)
     window_type = get_one_from_table(Window, int(cur_info['id_window']))
-    ##print(window_type.R)
     k = 1
     if tBuild >= 40:
         k = 1.68
     elif tBuild > 1:
         k = 1 + 0.0169 * tBuild
-
     return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
         k * 8.5984e-7 * dt / window_type.R
 
@@ -397,6 +392,7 @@ def Q_doors_(build_id):
     t = math.floor((this_date - datetime.strptime(q_doors.date_doors.strftime('%Y-%m-%d'), '%Y-%m-%d')).days) / dYears
     tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).days) / dYears
 
+
     k = 1
     if tBuild >= 40:
         k = 1.68
@@ -418,6 +414,7 @@ def Q_doors_(build_id):
 def Q_doors_inf(build_id):
     q_doors = get_one_by_id_build(Q_door, build_id)
     build = q_doors.build
+    print(cur_info)
     return 1.005 * dt * 2.388458966275e-7 * (build.temp_inside - test_temp) * q_doors.count_doors * \
         (2 * q_doors.length_door + 2 * q_doors.height_door) * q_doors.door.q * q_doors.door.a
 

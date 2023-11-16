@@ -109,12 +109,31 @@ let calc_result_map = {
     "heat_gains_pipelines":         function(result){
         return "Теплоприток от неизолированных трубопроводов отопления<br>Q<sub>труб. отопл.</sub> = " + result}
 }
-
+let calc_dec_result_map = {
+    "general":                  function(result){return result},
+    "reliability":              function(result){return result},
+    "heat_los_win":             function(result){return result},
+    "inf_win":                  function(result){return result},
+    "heat_los_inpgr":           function(result){return result},
+    "inf_inpgr":                function(result){return result},
+    "heat_los_heatcond_benv":   function(result){return result},
+    "heat_los_heatcond_roof":   function(result){return result},
+    "heat_los_floor":           function(result){return result},
+    "heat_los_vent":            function(result){return result},
+    "add_heatcosts":            function(result){return result[0]},
+    
+    "heat_gains_people":        function(result){return result},
+    "heat_gains_washstands":    function(result){return result},
+    "heat_gains_showers":       function(result){return result},
+    "heat_gains_electriclighting": function(result){return result},
+    "heat_gains_GVS":           function(result){return result},
+    "heat_gains_pipelines":     function(result){return result}
+}
 
 let id_mappers = {};
 id_mappers.input_mapper = input_mapper
 id_mappers.calc_map = calc_map
 id_mappers.calc_result_map = calc_result_map
-
+id_mappers.calc_dec_result_map = calc_dec_result_map
 
 export default id_mappers
