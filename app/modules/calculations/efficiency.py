@@ -29,7 +29,10 @@ def convertGCal(value):
 #}
 
 def printGCal(value):
-    return f"{value:.{countOfPoint}f} Гкал"
+    return f"{value:.{countOfPoint}f}"
+
+
+
 #######################################################################################################################################################################
 test_temp = -20
 n_men  = 10

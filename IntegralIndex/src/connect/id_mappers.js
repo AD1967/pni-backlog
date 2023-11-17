@@ -19,12 +19,12 @@ let input_mapper = {
     "add_heatcosts:1":              14,
     "add_heatcosts:2":              15,
     'heat_gains_people':            16,
-    'heat_gains_washstands':            17,
-    'heat_gains_showers':            18,
-    'heat_gains_electriclighting':            19,
-    'heat_gains_GVS':            20,
-    'heat_gains_pipelines':            21,
-    'reliability:4':            22,
+    'heat_gains_washstands':        17,
+    'heat_gains_showers':           18,
+    'heat_gains_electriclighting':  19,
+    'heat_gains_GVS':               20,
+    'heat_gains_pipelines':         21,
+    'reliability:4':                22,
 }
 
 

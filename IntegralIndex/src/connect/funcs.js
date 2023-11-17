@@ -138,7 +138,8 @@ function calc(id, self){
     let export_build_r = export_funcs.export_build(self, false);
     if(export_build_r.error){
         export_error_alert(self,export_build_r.text)
-        return "ошибка вычислений, проверьте наличие данных и их корректность"
+        //return "ошибка вычислений, проверьте наличие данных и их корректность"
+        return "error calc"
     }
     else {
         export_error_alert(self,null)
@@ -160,7 +161,8 @@ function calc(id, self){
                         return "ошибка подключения к серверу"
                     }
                     else{
-                        return "ошибка вычислений, проверьте наличие данных и их корректность"
+                        //return "ошибка вычислений, проверьте наличие данных и их корректность"
+                        return "error calc"
                     }
                 }
                 else {
@@ -206,7 +208,8 @@ function calc_dec(id, self){       // ,self)
         }
         else{
             console.log(result)
-            return "ошибка вычислений, проверьте наличие данных и их корректность"
+            //return "ошибка вычислений, проверьте наличие данных и их корректность"
+            return "error calc"
         }
     }
     else {

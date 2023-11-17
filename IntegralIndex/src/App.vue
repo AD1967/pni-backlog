@@ -49,7 +49,16 @@
       <div class="solution" :style="{'padding-left': menu_check+'%'}">
         <!-- Пространство кнопок загрузки шаблонов ------------------------------------------->
         <div class="btn_div_global">
-          <div class="btn_patterns" >  
+          <div class="btn_patterns" >
+            
+            <!-- Кнопка создания шаблона -->
+            <div class="btn_newpat">
+              <button class="btn_pat" @click="check_newpat = !check_newpat">
+                <div style="margin: 2%;"> Создать шаблон </div>
+              </button>    
+            </div>
+            <!-- /Кнопка создания шаблона -->
+
             <!-- Кнопка загрузки шаблона -->
             <div class="btn_loadpat">
               <button class="btn_pat" @click="check_loadpat = !check_loadpat">
@@ -256,17 +265,19 @@
                           
                         </div>  
                         <div class="sum_results">
-                          <h1><sub> {{results[2].dec}} </sub> <sub></sub> </h1>
-                          <h1><sub> {{results[3].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[4].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[5].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[6].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[7].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[8].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[9].dec}}</sub> <sub></sub> </h1>
-                          <h1><sub> {{results[10].dec}}</sub> <sub></sub> </h1> 
+                          <div v-if="results[2].dec != ''">
+                            <h1><sub> {{results[2].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[3].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[4].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[5].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[6].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[7].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[8].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[9].dec}} Гкал</sub> </h1>
+                            <h1><sub> {{results[10].dec}}</sub> <sub></sub> </h1> 
+                          </div>
                           <br>
-                          <hr v-if="results[11].dec != ''">
+                          <hr v-if="results[2].dec != ''">
                           <h1 v-if="results[2].dec != ''" class ="red_sum"> <sub>{{ }}</sub></h1>
                         </div>              
                     </div>
@@ -277,10 +288,11 @@
                           <h1> Q<sub>персонал</sub></h1>
                           <h1> Q<sub>рук </sub></h1>
                           <h1> Q<sub>душ </sub></h1>
-                          <h1> Q<sub>ЭЭ отоп.пер.</sub></h1>
+                          <h1> Q<sub>ЭЭ.отоп.пер.</sub></h1>
                           <h1> Q<sub>труб</sub></h1>
                           <h1> Q<sub>труб.отопл.</sub></h1>
                           <h1> <sub sub style="color: #e5e5dc">.</sub> </h1>
+                          <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
                           <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
                           <br>
                           <hr>
@@ -288,15 +300,17 @@
                         </div>
                         
                         <div class="sum_results">
-                          <h1><sub>{{results[11].dec}}</sub> </h1>
-                          <h1><sub>{{results[12].dec}}</sub> </h1>
-                          <h1><sub>{{results[13].dec}}</sub> </h1>
-                          <h1><sub>{{results[14].dec}}</sub> </h1>
-                          <h1><sub>{{results[15].dec}}</sub> </h1>
-                          <h1><sub>{{results[16].dec}}</sub> </h1>
-                          <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                          <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                          <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                          <div v-if="results[11].dec != ''">
+                            <h1><sub>{{results[11].dec}} Гкал</sub> </h1>
+                            <h1><sub>{{results[12].dec}} Гкал</sub> </h1>
+                            <h1><sub>{{results[13].dec}} Гкал</sub> </h1>
+                            <h1><sub>{{results[14].dec}} Гкал</sub> </h1>
+                            <h1><sub>{{results[15].dec}} Гкал</sub> </h1>
+                            <h1><sub>{{results[16].dec}} Гкал</sub> </h1>
+                            <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                            <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                            <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                          </div>
                           <br>
                           <hr v-if="results[11].dec != ''">
                           <h1 v-if="results[11].dec != ''" class ="red_sum"> <sub></sub></h1>
@@ -1002,14 +1016,30 @@ padding: 0;
   display: flex;
   align-items: start;
   justify-content: space-between;
-  width: 69%;
+  width: 73%;
 }
+
+.btn_newpat{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 32%;
+}
+
 .btn_loadpat{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 48%;
+  width: 32%;
 }
+
+.btn_savepat{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 32%; 
+}
+
 .btn_pat{
   width: 100%; 
   background-color: #e28a16; 
@@ -1069,12 +1099,7 @@ padding: 0;
   box-shadow: 0 0 5px #1e3a49 inset;
   color: #e5e5dc;
 }
-.btn_savepat{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 48%; 
-}
+
 .inp_pat{
   background-color: #e5e5dc; 
   border: 2px solid #435d6b;
@@ -1086,7 +1111,7 @@ padding: 0;
 .btn_calc{
   display: flex;
   justify-content: center;
-  width: 29%; 
+  width: 25%; 
   background-color: #26495c; 
   border: 2px solid #234455;
   border-radius: 10px; 
@@ -1097,7 +1122,7 @@ padding: 0;
 .btn_calc:hover{
   display: flex;
   justify-content: center;
-  width: 29%; 
+  width: 25%; 
   background-color: #26495c; 
   border: 2px solid #234455;
   border-radius: 10px; 
@@ -1187,14 +1212,14 @@ margin: 1%;
 #sum_minus {
 float: left; 
 display: block;
-width: 48%;
+width: 46%;
 position: relative;
 justify-content: space-between;
 }
 #sum_plus {
 float: right;
 display: block;
-width: 48%;
+width: 50%;
 position: relative;
 justify-content: space-between;
 }
