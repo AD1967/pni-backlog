@@ -235,15 +235,15 @@ function load_build(self, id_build, result_func){
 
                 // Блок inf_win
                 if ("id_q_wnd" in build) {
-                     set_input(self, "inf_win", 0, build.count_windows)
+                     //set_input(self, "inf_win", 0, build.count_windows)
                      //set_input(self, "inf_win", 1, build.temp_inside)
                      //set_input(self, "inf_win", 2, build.temp_outside)
-                     set_input(self, "inf_win", 1, build.length_wnd)
-                     set_input(self, "inf_win", 2, build.height_wnd)
+                     //set_input(self, "inf_win", 1, build.length_wnd)
+                     //set_input(self, "inf_win", 2, build.height_wnd)
 
-                    set_select_variants(self, "inf_win", 0, windows, "id_window")
-                     set_select_with_name(self, "inf_win", 0, windows, "id_window", build.id_window)
-                     set_date(self, "inf_win", 0, build.date_wnd)
+                    //set_select_variants(self, "inf_win", 0, windows, "id_window")
+                    // set_select_with_name(self, "inf_win", 0, windows, "id_window", build.id_window)
+                     //set_date(self, "inf_win", 0, build.date_wnd)
                 } else {
                     set_select_variants(self, "inf_win", 0, windows, "id_window")
                 }

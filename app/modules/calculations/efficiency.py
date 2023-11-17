@@ -315,6 +315,7 @@ def Q_wnd_(build_id):
 def Q_wnd_inf(build_id):
     q_wnd = get_one_by_id_build(Q_wnd, build_id)
     build = q_wnd.build
+    print(cur_info)
     return 1.005 * dt * 2.388458966275e-7 * (build.temp_inside - test_temp) * q_wnd.count_windows * \
         (2 * q_wnd.length_wnd + 2 * q_wnd.height_wnd) * q_wnd.window.q * q_wnd.window.a
 
