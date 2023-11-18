@@ -14,7 +14,7 @@ dt = 1 # Единичный временной промежуток
 
 def toGCal(value):
     new_value = value * 2.3884e-10
-    return f"{new_value:.{countOfPoint}f} Гкал"
+    return f"{new_value:.{countOfPoint}f}"
 
 #function convertGCal (x) {
 #    return (x * 4230.7e-6).toFixed((5)) + " Гкал";

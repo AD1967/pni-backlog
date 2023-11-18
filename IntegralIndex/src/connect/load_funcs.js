@@ -224,6 +224,9 @@ function load_build(self, id_build, result_func){
                     // set_input(self, "heat_los_win", 2, build.temp_outside)
                     set_input(self, "heat_los_win", 1, build.length_wnd)
                     set_input(self, "heat_los_win", 2, build.height_wnd)
+                    set_input(self, "heat_los_win", 3, build.temp_inside)
+                    set_input(self, "heat_los_win", 4, build.temp_outside)
+
 
                     set_select_with_name(self, "heat_los_win", 0, windows, "id_window", build.id_window)
                     console.log(build.date_wnd)
