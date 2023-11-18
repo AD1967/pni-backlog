@@ -14,6 +14,7 @@ from app.modules.blueprint.all_routes_settings import token_auth
 @main.route("/calc_index", methods=["POST"])
 @token_auth.login_required
 def api_calc_index():
+    print(request.json["id"])
     try:
         data = calc_index(request.json["id"])
     except:
@@ -27,7 +28,7 @@ def api_calc_index():
 def api_calc_eff():
     # id_build
     try:
-        data = calc_eff(request.json["id"])
+        data = calc_eff(request.json["id"]["id_build"])
     except:
         data = None
 

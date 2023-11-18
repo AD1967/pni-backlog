@@ -95,13 +95,12 @@ def calc_index(build_id):
     #t = math.floor(
     #    (this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')
     #).total_seconds()) / msHours
-
-    t = math.floor(
-        (this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).hours) 
+    print(this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d'))
+    t = math.floor((
+        (this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).seconds)/3600)
     l_shutoff = reliability.shutoffvalve.lambd
     l_pump = reliability.pump.lambd
     l_heat_exchanger = reliability.heatexchanger.lambd
-
     if (reliability.ihp):
         if(reliability.ventsys):
             if (reliability.ascents_hws != 0):
