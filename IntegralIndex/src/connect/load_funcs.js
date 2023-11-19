@@ -162,7 +162,6 @@ function load_build(self, id_build, result_func){
                 set_input(self, "general", 5, build.height)
                 set_input(self, "general", 6, build.temp_inside)
                 set_input(self, "general", 7, build.temp_outside)
-
                 set_date(self, "general", 0, build.date_build)
 
 
@@ -189,7 +188,6 @@ function load_build(self, id_build, result_func){
                             })
                         }
                         )
-
                     }
 
                     set_input(self, "reliability:2", 0, build.ascents_hws)
@@ -220,8 +218,6 @@ function load_build(self, id_build, result_func){
                 // Блок heat_los_win
                 if ("id_q_wnd" in build) {
                     set_input(self, "heat_los_win", 0, build.count_windows)
-                    // set_input(self, "heat_los_win", 1, build.temp_inside)
-                    // set_input(self, "heat_los_win", 2, build.temp_outside)
                     set_input(self, "heat_los_win", 1, build.length_wnd)
                     set_input(self, "heat_los_win", 2, build.height_wnd)
                     set_input(self, "heat_los_win", 3, build.temp_inside)
@@ -239,12 +235,12 @@ function load_build(self, id_build, result_func){
                 // Блок inf_win
                 if ("id_q_wnd" in build) {
                      set_input(self, "inf_win", 0, build.count_windows)
-                     //set_input(self, "inf_win", 1, build.temp_inside)
-                     //set_input(self, "inf_win", 2, build.temp_outside)
                      set_input(self, "inf_win", 1, build.length_wnd)
                      set_input(self, "inf_win", 2, build.height_wnd)
-
-                    set_select_variants(self, "inf_win", 0, windows, "id_window")
+                     set_input(self, "inf_win", 3, build.temp_inside)
+                     set_input(self, "inf_win", 4, build.temp_outside)
+                     
+                     set_select_variants(self, "inf_win", 0, windows, "id_window")
                      set_select_with_name(self, "inf_win", 0, windows, "id_window", build.id_window)
                      set_date(self, "inf_win", 0, build.date_wnd)
                 } else {
@@ -254,11 +250,13 @@ function load_build(self, id_build, result_func){
                 // Блок heat_los_inpgr
                 if ("id_q_floor" in build) {
                     set_input(self, "heat_los_inpgr", 0, build.q_doors_count_doors)
-                    // set_input(self, "heat_los_inpgr", 1, build.temp_inside)
-                    // set_input(self, "heat_los_inpgr", 2, build.temp_outside)
                     set_input(self, "heat_los_inpgr", 1, build.length_door)
                     set_input(self, "heat_los_inpgr", 2, build.height_door)
-
+                    set_input(self, "heat_los_inpgr", 3, build.floors)
+                    set_input(self, "heat_los_inpgr", 4, build.height)
+                    set_input(self, "heat_los_inpgr", 5, build.temp_inside)
+                    set_input(self, "heat_los_inpgr", 6, build.temp_outside)
+                
                     set_select_with_name(self, "heat_los_inpgr", 0, doors, "id_door", build.id_door)
                     set_date(self, "heat_los_inpgr", 0, build.date_doors)
                 } else {
@@ -268,12 +266,14 @@ function load_build(self, id_build, result_func){
                 // Блок inf_inpgr
                 if ("id_q_floor" in build) {
                      set_input(self, "inf_inpgr", 0, build.count_doors)
-                    // set_input(self, "inf_inpgr", 1, build.temp_inside)
-                    // set_input(self, "inf_inpgr", 2, build.temp_outside)
                      set_input(self, "inf_inpgr", 1, build.length_door)
                      set_input(self, "inf_inpgr", 2, build.height_door)
+                     set_input(self, "inf_inpgr", 3, build.floors)
+                     set_input(self, "inf_inpgr", 4, build.height)
+                     set_input(self, "inf_inpgr", 5, build.temp_inside)
+                     set_input(self, "inf_inpgr", 6, build.temp_outside)
 
-                    set_select_variants(self, "inf_inpgr", 0, doors, "id_door")
+                     set_select_variants(self, "inf_inpgr", 0, doors, "id_door")
                      set_select_with_name(self, "inf_inpgr", 0, doors, "id_door", build.id_door)
                      set_date(self, "inf_inpgr", 0, build.date_doors)
                 } else {
@@ -282,6 +282,19 @@ function load_build(self, id_build, result_func){
 
                 // Блок heat_los_heatcond_benv
                 if ("id_q_construct_roof" in build) {
+                    set_input(self, "heat_los_heatcond_benv", 0, build.temp_inside)
+                    set_input(self, "heat_los_heatcond_benv", 1, build.temp_outside)
+                    set_input(self, "heat_los_heatcond_benv", 2, build.len_a)
+                    set_input(self, "heat_los_heatcond_benv", 3, build.len_b)
+                    set_input(self, "heat_los_heatcond_benv", 4, build.floors)
+                    set_input(self, "heat_los_heatcond_benv", 5, build.height)
+                    set_input(self, "heat_los_heatcond_benv", 6, build.count_windows)
+                    set_input(self, "heat_los_heatcond_benv", 7, build.length_wnd)
+                    set_input(self, "heat_los_heatcond_benv", 8, build.height_wnd)
+                    set_input(self, "heat_los_heatcond_benv", 9, build.q_doors_count_doors)
+                    set_input(self, "heat_los_heatcond_benv", 10, build.length_door)
+                    set_input(self, "heat_los_heatcond_benv", 11, build.height_door)
+                    
                     set_select_with_name(self, "heat_los_heatcond_benv", 0, energoeffs, "id_energoeff", build.constructs_energoeff)
                 } else {
                     set_select_variants(self, "heat_los_heatcond_benv", 0, energoeffs, "id_energoeff")
@@ -289,6 +302,11 @@ function load_build(self, id_build, result_func){
 
                 // Блок heat_los_heatcond_roof
                 if ("id_q_construct_roof" in build) {
+                    set_input(self, "heat_los_heatcond_roof", 0, build.temp_inside)
+                    set_input(self, "heat_los_heatcond_roof", 1, build.temp_outside)
+                    set_input(self, "heat_los_heatcond_roof", 2, build.len_a)
+                    set_input(self, "heat_los_heatcond_roof", 3, build.len_b)
+                    
                     set_select_with_name(self, "heat_los_heatcond_roof", 0, energoeffs, "id_energoeff", build.roof_energoeff)
                 } else {
                     set_select_variants(self, "heat_los_heatcond_roof", 0, energoeffs, "id_energoeff")
@@ -297,22 +315,27 @@ function load_build(self, id_build, result_func){
                 // Блок heat_los_floor
                 if ("id_q_floor" in build) {
                     console.log("Q_floor")
-
                     set_input(self, "heat_los_floor", 0, build.height_floor)
-                    // set_input(self, "heat_los_floor", 1, build.temp_inside)
-                    // set_input(self, "heat_los_floor", 2, build.temp_outside)
-
+                    set_input(self, "heat_los_floor", 1, build.temp_inside)
+                    set_input(self, "heat_los_floor", 2, build.temp_outside)
+                    set_input(self, "heat_los_floor", 3, build.len_a)
+                    set_input(self, "heat_los_floor", 4, build.len_b)
+                    set_input(self, "heat_los_floor", 5, build.len_sum)
                 }
                 else {
                     console.log("skip Q_floor")
                 }
 
-                //ВРЕМЕННО
+                //ВРЕМЕННО????????
                 let cond = true
                 // Блок heat_los_vent
                 if (cond) {
-                    // set_input(self, "heat_los_vent", 0, build.temp_inside)
-                    // set_input(self, "heat_los_vent", 1, build.temp_outside)
+                    set_input(self, "heat_los_vent", 0, build.temp_inside)
+                    set_input(self, "heat_los_vent", 1, build.temp_outside)
+                    set_input(self, "heat_los_vent", 2, build.len_a)
+                    set_input(self, "heat_los_vent", 3, build.len_b)
+                    set_input(self, "heat_los_vent", 4, build.height)
+
                 } else {
                     console.log("skip heat_los_vent")
                 }
@@ -327,6 +350,11 @@ function load_build(self, id_build, result_func){
                     set_input(self, "add_heatcosts:0", 2, build.count_divan)
                     set_input(self, "add_heatcosts:0", 3, build.count_table)
                     set_input(self, "add_heatcosts:0", 4, build.count_shkafchik)
+                    set_input(self, "add_heatcosts:0", 5, build.floors)
+                    set_input(self, "add_heatcosts:0", 6, build.len_a)
+                    set_input(self, "add_heatcosts:0", 7, build.len_b)
+                    set_input(self, "add_heatcosts:0", 8, build.len_sum)
+                    set_input(self, "add_heatcosts:0", 9, build.height)
 
                     set_select_with_name(self, "add_heatcosts:1", 0, periods, "id_period", build.id_period)
 
@@ -360,12 +388,48 @@ function load_build(self, id_build, result_func){
                     set_input(self, "heat_gains_people", 0, build.mens)
                     set_input(self, "heat_gains_people", 1, build.womens)
                     set_input(self, "heat_gains_people", 2, build.time_average)
+                    set_input(self, "heat_gains_people", 3, build.temp_inside)
                 } else {
                     console.log("skip Q_people")
                 }
 
+                // Блоки без проверок heat_gains_washstands heat_gains_showers VREMENNO!!!!!!!
+                
+                if (cond){
+                    set_input(self, "heat_gains_washstands", 0, build.mens)
+                    set_input(self, "heat_gains_washstands", 1, build.womens)
+                    
+                    set_input(self, "heat_gains_showers", 0, build.mens)
+                    set_input(self, "heat_gains_showers", 1, build.womens)  
+
+                    
+                    set_input(self, "heat_gains_GVS", 0, build.temp_outside)
+                    set_input(self, "heat_gains_GVS", 1, build.len_a)
+                    set_input(self, "heat_gains_GVS", 2, build.len_b)
+                    set_input(self, "heat_gains_GVS", 3, build.floors)
+                    set_input(self, "heat_gains_GVS", 4, build.height)
+                    set_input(self, "heat_gains_GVS", 5, build.ascents_hws)
+                    set_input(self, "heat_gains_GVS", 6, build.descents_hws)
+                    set_select_with_name(self, "heat_gains_GVS", 0, pipes, "id_pipe", build.id_pipe)
+
+                    set_input(self, "heat_gains_pipelines", 0, build.temp_outside)
+                    set_input(self, "heat_gains_pipelines", 1, build.len_a)
+                    set_input(self, "heat_gains_pipelines", 2, build.len_b)
+                    set_input(self, "heat_gains_pipelines", 3, build.floors)
+                    set_input(self, "heat_gains_pipelines", 4, build.height)
+                    set_input(self, "heat_gains_pipelines", 5, build.ascents_heat)
+                    set_input(self, "heat_gains_pipelines", 6, build.descents_heat)  
+                    set_select_with_name(self, "heat_gains_pipelines", 0, pipes, "id_pipe", build.id_pipe)
+                }
+
+
+
                 // Блок heat_gains_electriclighting
                 if ("id_q_elec" in build) {
+                    set_input(self, "heat_gains_electriclighting", 0, build.len_a)
+                    set_input(self, "heat_gains_electriclighting", 1, build.len_b)
+                    set_input(self, "heat_gains_electriclighting", 2, build.floors)
+           
                     if (build.elec_consumption_by_period === null) {
                         set_c_box(self, "heat_gains_electriclighting", 0, true)
                     } else {
@@ -375,9 +439,6 @@ function load_build(self, id_build, result_func){
                 } else {
                     console.log("skip Q_elec")
                 }
-
-
-
                 return result_func(self, { "fail": false })
             }
             catch (error) {

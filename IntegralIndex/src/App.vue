@@ -156,27 +156,24 @@
             <div class="mega_block_title"> {{section.title}} </div>
             <div class="mega_block_borders">
               <div class="mega_block">
-                <div :class="[section.name == 'reliability'? 'rel_block' : 'main_block']" :style="{'width': section.main_block_width+'%'}"> 
+                <div :class="[section.name == 'reliability' || section.name == 'add_heatcosts' ? 'rel_block' : 'main_block']" :style="{'width': section.main_block_width+'%'}"> 
                   <!-- Формы ввода для основных блоков   ------------------------------------->
                   <div v-for="(func, ind) in functions" :key=func>
                     <div v-if="func.id===section.name && func.render !== false">
-                      <div class="block">
+                      <div :class="[section.name == 'general'|| section.name == 'reliability' || section.name == 'add_heatcosts' ? 'gen_block' : 'block']">
                         <div class="block_title">{{ func.title }}</div><br>
                         <div v-for="(inp, indexinp) in func.input" :key=inp>
                           <div v-if="(inp[6]===undefined || inp[6]===null) || inp[6]()">
-                            <div>  <!-- Если независимая характеристика  -->
                                 {{inp[0]}} <!-- текстовый вывод названия поля -->
-                                <input :class="[indexinp==0 ? 'field_inp_name':'field_inp']" type="text" 
+                                <input :class="[indexinp==0 && section.name == 'general' ? 'field_inp_name':'field_inp']" type="text" 
                                 :value="inp[2]" @input="changes(ind, 'input', indexinp, $event.target.value)">
                                 {{inp[1]}} <!--текстовый вывод ед.измерения--> 
                                 <div v-if="!inp[4]"> <!-- проверка заполнения -->
                                 <b style="color:red" v-if="String(inp[2]).trim() === ''">Поле не заполнено.</b>
                                 <b style="color:red" v-if="String(inp[2]).trim() !== '' && (inp[3] == 'int' || inp[3] == 'uint') ">Неверный формат числа.</b>
                                 </div>
-                            </div>
                           </div>  
                         </div>
-
                         <div v-for="(btn, indexrbtn) in func.r_btn" :key=btn>
                           <input type="radio" name={{func}} :id="func.id +'_'+ ind+'_rbtn_'+indexrbtn"
                           :value=btn
@@ -187,26 +184,16 @@
                         </div>
                         <table>
                           <tr>
-                            <div v-for="(sel, indexsel) in func.select" v-bind:key=sel>  
-                            <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">
-                              <div v-if="sel[4]===undefined || sel[4]===null">
-                                  <td>{{sel[0]}}</td>
-                                  <select 
-                                      :value="sel[3]" @change="changes(ind, 'select', indexsel, $event.target.value)"
-                                  >
-                                  <option style="" v-for="(selbody, indexbody) in sel[1]" v-bind:key=selbody :id="func.id +'_'+ ind+'_sel_'+indexsel+'_selnum_'+indexbody">
-                                      {{selbody}}
-                                  </option>
-                                  </select>
-                              </div>
-                              <div v-else>
-                                  <td>{{sel[0] }} <b style="color:grey">{{sel[4][2]}}</b></td>
-                                  <select :value="functions[sel[4][0]].select[sel[4][1]][3]" disabled="True">
-                                  <option style="" v-for="(selbody, indexbody) in functions[sel[4][0]].select[sel[4][1]][1]" v-bind:key=selbody :id="func.id +'_'+ ind+'_sel_'+indexsel+'_selnum_'+indexbody" >
-                                      {{selbody}}
-                                  </option>
-                                  </select>   
-                              </div>
+                            <div v-for="(sel, indexsel) in func.select" :key=sel>  
+                            <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
+                              <td>{{sel[0]}}</td>
+                              <select 
+                                  :value="sel[3]" @change="changes(ind, 'select', indexsel, $event.target.value)"
+                              >
+                              <option style="" v-for="(selbody, indexbody) in sel[1]" :key=selbody :id="func.id +'_'+ ind+'_sel_'+indexsel+'_selnum_'+indexbody">
+                                  {{selbody}}
+                              </option>
+                              </select>
                             </div>
                           </div>
                           </tr>
@@ -218,7 +205,7 @@
                             >
                             {{box}}
                           </p>
-                          <div v-for="(d, indexdate) in func.date" v-bind:key=d>
+                          <div v-for="(d, indexdate) in func.date" :key=d>
                                 <div v-if="d[2]===undefined || d[2]===null">
                                     {{d[0]}}
                                     <input type="date" :id="func.id +'_'+ ind+'_date_'+indexdate"
@@ -228,17 +215,26 @@
                                     {{d[0]}}
                                     <input type="date" :id="func.id +'_'+ ind+'_date_'+indexdate"
                                     :value="functions[d[2][0]].date[d[2][1]][1]" readonly>
-                                    <b  style="color:grey">{{d[2][2]}}</b>
+                                    <b  style="color:green">{{d[2][2]}}</b>
                                 </div>
                           </div>
                       </div> 
                     </div>
+                  </div>         
+                </div> 
+                <!-- /Формы ввода для основных блоков   ------------------------------------>  
+                <div v-if="section.name!=='general'" class="res_block">
+                  <div class= "res_block block_r">
+                    <div v-for="result in results" :key=result>
+                      <div v-if="result.id===section.name">
+                        <span v-html="result.val"></span>
+                      </div>
+                    </div>
                   </div>
-                  <!-- /Формы ввода для основных блоков   ------------------------------------>
-                  
-                  <!-- Дополнительный блок с расчетом суммарных притоков и потерь в главном блоке -->
-                  <div v-if="section.name == 'general'" class="sum_block"> 
-                    <div id="sum_minus">
+                </div>
+                <!-- Дополнительный блок с расчетом суммарных притоков и потерь в главном блоке -->
+                <div v-else class="sum_block">
+                  <div id="sum_minus">
                         <div class="block_title"> Теплопотери</div><br> 
                         <div class="sum_titles">
                           <h1> Q<sub>окон</sub> </h1>
@@ -307,19 +303,9 @@
                           <h1 v-if="results[11].dec != ''" class ="red_sum"> <sub></sub></h1>
                         </div>                            
                     </div>
-                  </div>
-                   <!-- Конец доп. блока -------------------------------------------------------------->              
-                </div> 
-                
-                <div v-show="section.name!=='general'" class="res_block">
-                  <div class="block_r">
-                    <div v-for="result in results" :key=result>
-                      <div v-if="result.id===section.name">
-                        <span v-html="result.val"></span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+                <!-- Конец доп. блока -------------------------------------------------------------->   
+
               </div>
               <div v-for="result in results" v-bind:key=result>
                 <div v-if="result.id===section.name" >
@@ -391,7 +377,7 @@ export default{
       ],
       sections:
       [
-        {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'true', main_block_width: '100', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
+        {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'true', main_block_width: '50', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
         {  section:'Надежность', name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
@@ -1155,13 +1141,16 @@ margin: 1%;
   border-right: #e28a16; 
   border-radius: 10px; 
 }
-.main_block, .rel_block{
+.main_block{
   margin: 1% 2% 0%;
   position: relative;
-  display: flex;
+  display: block;
 }
 .rel_block{
   flex-direction: column;
+  margin: 1% 2% 0%;
+  position: relative;
+  display: flex;
 }
 .block{
   background-color: #e5e5dc; 
@@ -1172,6 +1161,16 @@ margin: 1%;
   margin-bottom: 1%;
   padding: 10px;
 }
+.gen_block{
+  background-color: #e5e5dc; 
+  border: 2px solid #e28a16;
+  border-radius: 10px; 
+  box-shadow: 0 0 10px #cf7b0c;
+  width: 100%;
+  margin-bottom: 1%;
+  padding: 10px;
+}
+
 
 .block_title{
   font-size: 16px;
@@ -1191,7 +1190,8 @@ margin: 1%;
 }
 .sum_block{
   background-color: #e5e5dc; 
-  margin-bottom: 1%;
+  margin: 1%;
+  margin-bottom: 0%;
   padding: 10px;
   border-radius: 10px;
   border: 2px solid #234455;
@@ -1200,8 +1200,6 @@ margin: 1%;
   width: 75%;
   position: relative;
   float: right;
-  margin-top: 0%;
-  margin-left: 2%;
   justify-content: space-between;
 }
 #sum_minus {
