@@ -28,7 +28,7 @@ def api_calc_index():
 def api_calc_eff():
     # id_build
     try:
-        data = calc_eff(request.json["id"]["id_build"])
+        data = calc_eff(request.json["id"])
     except:
         data = None
 

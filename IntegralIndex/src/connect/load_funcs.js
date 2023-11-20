@@ -408,8 +408,8 @@ function load_build(self, id_build, result_func){
                     set_input(self, "heat_gains_GVS", 2, build.len_b)
                     set_input(self, "heat_gains_GVS", 3, build.floors)
                     set_input(self, "heat_gains_GVS", 4, build.height)
-                    set_input(self, "heat_gains_GVS", 5, build.ascents_hws)
-                    set_input(self, "heat_gains_GVS", 6, build.descents_hws)
+                    set_input(self, "heat_gains_GVS", 5, build.count_crane)
+                    //set_input(self, "heat_gains_GVS", 6, build.descents_hws)
                     set_select_with_name(self, "heat_gains_GVS", 0, pipes, "id_pipe", build.id_pipe)
 
                     set_input(self, "heat_gains_pipelines", 0, build.temp_outside)
@@ -417,8 +417,8 @@ function load_build(self, id_build, result_func){
                     set_input(self, "heat_gains_pipelines", 2, build.len_b)
                     set_input(self, "heat_gains_pipelines", 3, build.floors)
                     set_input(self, "heat_gains_pipelines", 4, build.height)
-                    set_input(self, "heat_gains_pipelines", 5, build.ascents_heat)
-                    set_input(self, "heat_gains_pipelines", 6, build.descents_heat)  
+                    set_input(self, "heat_gains_pipelines", 5, build.count_windows)
+                    //set_input(self, "heat_gains_pipelines", 6, build.descents_heat)  
                     set_select_with_name(self, "heat_gains_pipelines", 0, pipes, "id_pipe", build.id_pipe)
                 }
 

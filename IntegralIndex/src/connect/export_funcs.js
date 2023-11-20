@@ -122,14 +122,14 @@ function export_build(self, full){
         
         // Блок inf_win
         if (full || is_block_checked(self, "inf_win")){
-             build.count_windows=                    get_input(self, "inf_win", 0)
+             build.count_windows_inf=                    get_input(self, "inf_win", 0)
             // build.temp_inside=                    get_input(self, "inf_win", 1)
             // build.temp_outside=                    get_input(self, "inf_win", 2)
-             build.length_wnd=                    get_input(self, "inf_win", 1)
-             build.height_wnd=                    get_input(self, "inf_win", 2)
+             build.length_wnd_inf=                    get_input(self, "inf_win", 1)
+             build.height_wnd_inf=                    get_input(self, "inf_win", 2)
 
-             build.id_window=                    get_select(self, "inf_win", 0)
-             build.date_wnd=                    get_date(self, "inf_win", 0)
+             build.id_window_inf=                    get_select(self, "inf_win", 0)
+             build.date_wnd_inf=                    get_date(self, "inf_win", 0)
         } 
         else {
             console.log("skip inf_win")
@@ -151,14 +151,14 @@ function export_build(self, full){
 
         // Блок inf_inpgr
         if (full || is_block_checked(self, "inf_inpgr")){
-             build.count_doors=                    get_input(self, "inf_inpgr", 0)
+             build.count_doors_inf=                    get_input(self, "inf_inpgr", 0)
             // build.temp_inside=                    get_input(self, "inf_inpgr", 1)
             // build.temp_outside=                    get_input(self, "inf_inpgr", 2)
-             build.length_door=                    get_input(self, "inf_inpgr", 1)
-             build.height_door=                    get_input(self, "inf_inpgr", 2)
+             build.length_door_inf=                    get_input(self, "inf_inpgr", 1)
+             build.height_door_inf=                    get_input(self, "inf_inpgr", 2)
 
-             build.id_door=                    get_select(self, "inf_inpgr", 0)
-             build.date_doors=                    get_date(self, "inf_inpgr", 0)
+             build.id_door_inf=                    get_select(self, "inf_inpgr", 0)
+             build.date_doors_inf=                    get_date(self, "inf_inpgr", 0)
         } 
         else {
             console.log("skip inf_inpgr")
@@ -167,6 +167,12 @@ function export_build(self, full){
         // Блок heat_los_heatcond_benv
         if (full || is_block_checked(self, "heat_los_heatcond_benv")) {
             build.constructs_energoeff=                    get_select(self, "heat_los_heatcond_benv", 0) 
+            build.count_windows_c = get_input(self, "heat_los_heatcond_benv", 0)
+            build.length_wnd_c=                    get_input(self, "heat_los_heatcond_benv", 1)
+            build.height_wnd_c=                    get_input(self, "heat_los_heatcond_benv", 2)
+            build.count_doors_c=                    get_input(self, "heat_los_heatcond_benv", 3)
+            build.length_door_c=                    get_input(self, "heat_los_heatcond_benv", 4)
+            build.height_door_c=                    get_input(self, "heat_los_heatcond_benv", 5)
         }
         else {
             console.log("skip heat_los_heatcond_benv")
@@ -244,7 +250,24 @@ function export_build(self, full){
         } else {
             console.log("skip heat_gains_people")
         }
-
+        // heat_gains_washstands
+        if (full || is_block_checked(self, "heat_gains_washstands")) {
+            console.log("Q_people")
+            build.mens_w = get_input(self, "heat_gains_washstands", 0)
+            build.womens_w = get_input(self, "heat_gains_washstands", 1)
+            //build.time_average = get_input(self, "heat_gains_washstands", 2)
+        } else {
+            console.log("skip heat_gains_washstands")
+        }
+        // heat_gains_showers
+        if (full || is_block_checked(self, "heat_gains_showers")) {
+            console.log("Q_people")
+            build.mens_s = get_input(self, "heat_gains_showers", 0)
+            build.womens_s = get_input(self, "heat_gains_showers", 1)
+            //build.time_average = get_input(self, "heat_gains_washstands", 2)
+        } else {
+            console.log("skip heat_gains_showers")
+        }
         // Блок heat_gains_electriclighting
         if (full || is_block_checked(self, "heat_gains_electriclighting")) {
             let tmp = get_c_box(self, "heat_gains_electriclighting", 0)
@@ -258,6 +281,23 @@ function export_build(self, full){
             console.log("skip heat_gains_electriclighting")
         }
 
+        //heat_gains_GVS
+        if (full || is_block_checked(self, "heat_gains_GVS")) {
+            console.log("heat_gains_GVS")
+            build.count_crane = get_input(self, "heat_gains_GVS", 5)
+            build.hws_type = get_select(self, "heat_gains_GVS", 0)
+        } else {
+            console.log("skip heat_gains_GVS")
+        }
+
+        //heat_gains_pipelines
+        if (full || is_block_checked(self, "heat_gains_pipelines")) {
+            console.log("heat_gains_pipelines")
+            build.count_windows_pip = get_input(self, "heat_gains_pipelines", 5)
+            build.pip_type = get_select(self, "heat_gains_pipelines", 0)
+        } else {
+            console.log("skip heat_gains_pipelines")
+        }
 
         return {"error": false, "result": build}
     } 
