@@ -151,6 +151,8 @@ def get_weather_by_time(cur_time):
         res = 1
         cur_time = datetime.combine(cur_time.date(), time(cur_time.hour, (30 if cur_time.minute >= 30 else 0), cur_time.second))
         res = Weather.query.filter(Weather.Time == datetime.strftime(cur_time, "%Y-%m-%d %H:%M:%S")).first();
+        if(res == None or res.T == ''):
+            res = Weather.query.filter(Weather.Time == '2023-05-31 00:00:00').first();
         if res == None : 
             raise
         return res

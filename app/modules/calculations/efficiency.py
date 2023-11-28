@@ -1,11 +1,11 @@
-import datetime
+from datetime import datetime, timedelta, time, date
 import math
 from ..db.common_gets import *
 from ..db.model import *
 
 # ДОПОЛНИТЕЛЬНЫЕ ЗАТРАТЫ НА ПРОГРЕВ
 
-countOfPoint = 8 #Количество выводимых знаков после запятой
+countOfPoint = 4 #Количество выводимых знаков после запятой
 dt = 1 # Единичный временной промежуток
 #function toGCal (x) {
 
@@ -44,7 +44,7 @@ air_humidity = 0.7
 P0 = 101325
 cur_info = ""
 
-test_date = "2023-05-31 23:30:00"
+test_date = ""
 ########################################################################################################################################################################
 
 #function Q_walls() {
@@ -292,7 +292,9 @@ def calc_eff(build_id):
 def Q_wnd_(build_id):
     #q_wnd = get_one_by_id_build(Q_wnd, build_id)
     #build = q_wnd.build
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
+    print(this_date)
     weather = get_weather_by_time(this_date)
     #msYears = 1000 * 60 * 60 * 24 * 365
     #t = math.floor((this_date - datetime.strptime(q_wnd.date_wnd.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
@@ -324,7 +326,8 @@ def Q_wnd_(build_id):
 def Q_wnd_inf(build_id):
     #q_wnd = get_one_by_id_build(Q_wnd, build_id)
     #build = q_wnd.build
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
     window_type = get_one_from_table(Window, int(cur_info['id_window_inf']))
     return 1.005 * dt * 2.388458966275e-7 * (int(cur_info['temp_inside']) - weather.T) * int(cur_info['count_windows_inf']) * \
@@ -367,9 +370,23 @@ def Q_wnd_inf(build_id):
 # }
 
 def calc_eff_wnd(build_id):
-    return Q_wnd_(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_wnd_(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 def calc_eff_wnd_inf(build_id):
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    global test_date
+    test_date = st
     return Q_wnd_inf(build_id)
 
 ########################################################################################################################################################################

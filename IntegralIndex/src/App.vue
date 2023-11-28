@@ -712,8 +712,10 @@ export default{
         console.log(self)
       this.results.forEach(function(item){
         if(item.id == id){
-            item.val = func.calc(id, self)
-            item.dec = func.calc_dec(id, self)
+            let calc_res = func.calc(id, self)
+            console.log(calc_res)
+            item.val = calc_res[0]
+            item.dec = func.calc_dec(id, self, calc_res[1])
             return false
         }
       })

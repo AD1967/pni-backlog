@@ -44,7 +44,7 @@ function gen_ajax(type, url, json_flag, auth_flag, async_flag, data = null){
     if(data !== null){
         if(params.contentType ==  "application/json")
         {
-            console.log( JSON.stringify(data))
+            //console.log( JSON.stringify(data))
             params.data = JSON.stringify(data)
         }
         else{

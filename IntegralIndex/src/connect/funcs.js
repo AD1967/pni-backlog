@@ -144,30 +144,54 @@ function calc(id, self){
     else {
         export_error_alert(self,null)
         console.log("to_server")
-            let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)       // ,self)
-            if(result.fail){
-                if(result.error == 'connect'){
-                    export_error_alert(self,"Ошибка подключения к серверу")
-                }
-                else{
-                    export_error_alert(self,"Ошибка выполнения операции")
-                }
-            }else{
-                let id_build = localStorage.getItem("this_build_id");
-                console.log("ID вызываемой функции: ", id);
-                let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
-                if(result['fail']){
-                    if(result['error'] == 'connect'){
-                        return "ошибка подключения к серверу"
+            const startDate = new Date('2022-09-01');
+            const endDate = new Date('2022-09-01');
+
+            let currentDate = new Date(startDate);
+
+            let fatal_fail = false;
+            let sum_res = 0.0
+            while(currentDate <= endDate){
+                let year = currentDate.getFullYear();
+                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                let day = String(currentDate.getDate()).padStart(2, '0');
+                let formattedDate = `${year}-${month}-${day}`;
+
+                //console.log(formattedDate)
+
+                export_build_r.result["cur_date"] = formattedDate
+                let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)       // ,self)
+                if(result.fail){
+                    if(result.error == 'connect'){
+                        export_error_alert(self,"Ошибка подключения к серверу")
+                        fatal_fail = true
+                        break;
                     }
                     else{
-                        //return "ошибка вычислений, проверьте наличие данных и их корректность"
-                        return "error calc"
+                        export_error_alert(self,"Ошибка выполнения операции")
+                        fatal_fail = true
+                        break;
+                    }
+                }else{
+                    let id_build = localStorage.getItem("this_build_id");
+                    let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
+                    if(result['fail']){
+                        if(result['error'] == 'connect'){
+                            return ["ошибка подключения к серверу", "ошибка подключения к серверу"]
+                        }
+                        else{
+                            //return "ошибка вычислений, проверьте наличие данных и их корректность"
+                            return ["error calc", "error calc"]
+                        }
+                    }
+                    else {
+                        sum_res += parseFloat(result["result"])
+                        currentDate.setDate(currentDate.getDate() + 1);
                     }
                 }
-                else {
-                    return id_mappers.calc_result_map[id](result["result"])
-                }
+            }
+            if(!fatal_fail){
+                return [id_mappers.calc_result_map[id](sum_res), sum_res];
             }
     }    
 }
@@ -197,24 +221,10 @@ function check_token_before_render(data){
     return flag
 }
 
-function calc_dec(id, self){       // ,self)
-    console.log("calc_dec")
-    console.log(self)
-    let id_build = localStorage.getItem("this_build_id");
-    let result = requests.default_spost_request(id_mappers.calc_map[id], {"id":id_build}, self)       // ,self)
-    if(result['fail']){
-        if(result['error'] == 'connect'){
-            return "ошибка подключения к серверу"
-        }
-        else{
-            console.log(result)
-            //return "ошибка вычислений, проверьте наличие данных и их корректность"
-            return "error calc"
-        }
-    }
-    else {
-        return id_mappers.calc_dec_result_map[id](result["result"])
-    }
+function calc_dec(id, self, res){       
+    // ,self)
+    
+        return id_mappers.calc_dec_result_map[id](res)
 }
 
 let funcs = {};
