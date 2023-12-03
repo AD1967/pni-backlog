@@ -10,9 +10,17 @@
         <label for="id_menu" class="strip"></label>
       </label>
     </div>
-    
+
     <div class="header_text">
       <div class="header_title">Интегральный индекс</div>
+      <div style="display: flex; position: relative; left: 100px;">
+        <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20" style=" position: relative; left: 180px;" />
+        <div style="display:flex; position: relative; left: 200px"> 
+          <label for="id_settings" class="header_menu"  style="width:28px; height: 28px;">
+            <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; right:28px;"/> 
+          </label>
+        </div>
+      </div>
       <div class="exit_label" @click="logout()">Выход</div>
     </div>
   </div>
@@ -43,6 +51,89 @@
     </div>
     <!-- /Выпадающее меню слева--------------------------------------------------------------->
 
+    <!-- Меню настроек---------------------------------------------------------------->
+    <div v-show="settings_check==='20'">
+      <div class="right_panel">
+      <h1 class="settings_title">Настройка параметров здания</h1> 
+      <h1 class="settings_param_name">Этажность здания</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Длина здания, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Ширина здания, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Длина стен на одном этаже, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Высота стен на одном этаже, м </h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Температура внутреннего воздуха, грд C</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Дата постройки</h1>
+      <input class="settings_param_date" type="date">
+      <h1 class="settings_param_name">Число окон в здании</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Длина типового окна, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Высота типового окна, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Дата установки окон</h1>
+      <input class="settings_param_input" type="date">
+      <h1 class="settings_param_name">Тип окон (сопротивление теплопередаче Rокна)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип окон (а - притвора окон)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип окон (q - инфильтрации окон)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число входных дверей с улицы</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Длина типовой входной двери с улицы, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Высота типовой входной двери, м</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип уличной двери (сопротивление теплопередаче Rдвери)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип двери (βдвери)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Дата установки дверей</h1>
+      <input class="settings_param_input" type="date">
+      <h1 class="settings_param_name">Тип двери (a притвора_двер)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип двери (q инф_двер кг/(ч•м))</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Класс энергетической эффективности ограждающих конструкций (сопротивление теплопередаче)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Дата утепления стен</h1>
+      <input class="settings_param_input" type="date">
+      <h1 class="settings_param_name">Тип объекта (кратность воздухообмена), куб. м / ч</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число внутренних дверей в здании</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число шкафов</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число диванов</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число столов</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число навесных шкафчиков</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число максимальное посетителей/жильцов мужчин</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число максимальное посетителей/жильцов женщин</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Число максимальное посетителей/жильцов детей</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Среднее время пребывания посетителей/жильцов в сутки</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип трубы для ГВС (определяет коэффициент теплопередачи)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Тип трубы системы отопления(определяет коэффициент теплопередачи)</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Количество помещений с раковинами на этаже</h1>
+      <input class="settings_param_input" type="text">
+      <h1 class="settings_param_name">Высота подвала, м</h1>
+      <input class="settings_param_input" type="text">
+      </div> 
+    </div>
+    <!-- /Меню настроек--------------------------------------------------------------->
 
     <!-- Основное рабочее пространство  ------------------ ----------------------------------->
     <div :style="{'width': 100+'%'}">
@@ -50,14 +141,6 @@
         <!-- Пространство кнопок загрузки шаблонов ------------------------------------------->
         <div class="btn_div_global">
           <div class="btn_patterns" >
-            
-            <!-- Кнопка создания шаблона -->
-            <div class="btn_newpat">
-              <button class="btn_pat" @click="check_newpat = !check_newpat">
-                <div style="margin: 2%;"> Создать шаблон </div>
-              </button>    
-            </div>
-            <!-- /Кнопка создания шаблона -->
 
             <!-- Кнопка загрузки шаблона -->
             <div class="btn_loadpat">
@@ -351,6 +434,7 @@ export default{
       dialog_buttons_check: false,
       login_reg_check:[false,false],
       menu_check: '20',
+      settings_check: '20',
       check_savepat: false,
       check_loadpat: false,
       build_changes: new Set(),
@@ -903,8 +987,44 @@ padding: 0;
   display: flex;
   align-items: center;
   user-select: none; 
+  font-size: 110%;
   height: 100%;
 }
+.settings_title
+{
+  margin-top: 10px;
+  margin-left: 3%;
+  margin-bottom: 2%;
+  font-size: 130%;
+  color: #435d6b;
+}
+
+.settings_param_name
+{
+  color: black;
+  margin: 0.3%;
+  margin-left: 2%;
+}
+.settings_param_input{
+  background-color: #e5e5dc;
+  border: 2px solid #435d6b;
+  border-radius: 4px; 
+  padding-left: 1%;
+  padding-right: 1%;
+  margin: 0.3%;
+  margin-left: 2%;
+  width: 26%;
+}
+.settings_param_date{
+  background-color: #e5e5dc;
+  border: 2px solid #435d6b;
+  border-radius: 4px; 
+  padding-left: 1%;
+  padding-right: 1%;
+  margin: 0.3%;
+  margin-left: 2%;
+}
+
 .header_menu{
   display: flex;
   flex-direction: column;
@@ -943,7 +1063,18 @@ padding: 0;
   display: flex;
   flex-direction: row;
 }
-
+.right_panel
+{
+  position: fixed;
+  border-left: 5px solid #435d6b;
+  background: #e5e5dc;
+  top: 50px;
+  bottom: 0px;
+  left: 70%; 
+  width: 100%;
+  overflow-y: scroll;
+  z-index: 100;
+}
 /*-- Вкладки в левой части экрана ------------------------------------------- */
 .left_panel{
   position: fixed;
@@ -1002,25 +1133,18 @@ padding: 0;
   width: 73%;
 }
 
-.btn_newpat{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 32%;
-}
-
 .btn_loadpat{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 32%;
+  width: 48%;
 }
 
 .btn_savepat{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 32%; 
+  width: 48%; 
 }
 
 .btn_pat{
@@ -1173,7 +1297,6 @@ margin: 1%;
   padding: 10px;
 }
 
-
 .block_title{
   font-size: 16px;
   color:#1e3a49;
@@ -1263,7 +1386,8 @@ input[type="date"]{
   padding-left: 1%;
   padding-right: 1%;
   margin: 0.25%;
-  width: 35%;
+  margin-left: 2%;
+  width: 26%;
 }
 input[type="checkbox"]{
   background-color: #e5e5dc; 
