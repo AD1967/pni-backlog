@@ -383,11 +383,17 @@ def calc_eff_wnd(build_id):
     return res
 
 def calc_eff_wnd_inf(build_id):
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
-    global test_date
-    test_date = st
-    return Q_wnd_inf(build_id)
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_wnd_inf(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -415,7 +421,8 @@ def Q_doors_(build_id):
     #q_doors = get_one_by_id_build(Q_door, build_id)
     #build = q_doors.build
     #this_date = datetime.now()
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
     #msYears = 1000 * 60 * 60 * 24 * 365
     #t = math.floor((this_date - datetime.strptime(q_doors.date_doors.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
@@ -448,7 +455,8 @@ def Q_doors_(build_id):
 def Q_doors_inf(build_id):
     #q_doors = get_one_by_id_build(Q_door, build_id)
     #build = q_doors.build
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
     door_type = get_one_from_table(Door, int(cur_info['id_door_inf']))
     print(cur_info)
@@ -493,10 +501,30 @@ def Q_doors_inf(build_id):
 # }
 
 def calc_eff_doors(build_id):
-    return Q_doors_(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_doors_(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 def calc_eff_doors_inf(build_id):
-    return Q_doors_inf(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_doors_inf(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -530,7 +558,8 @@ def Q_constructs_(build_id):
     #construct = get_one_by_id_build(Q_construct_roof, build_id)
     energoeff = get_one_from_table(Energoeff, int(cur_info['constructs_energoeff']))
 
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
     #msYears = 1000 * 60 * 60 * 24 * 365
     dYears = 365
@@ -573,7 +602,8 @@ def Q_roof_(build_id):
     #roof = get_one_by_id_build(Q_construct_roof, build_id)
     #build = roof.build
     print(cur_info)
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
     energoeff = get_one_from_table(Energoeff, int(cur_info['roof_energoeff']))
     return float(cur_info['len_a']) * float(cur_info['len_b']) * (float(cur_info['temp_inside']) - weather.T) * \
@@ -615,10 +645,30 @@ def Q_roof_(build_id):
 # }
 
 def calc_eff_constructs(build_id):
-    return Q_constructs_(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_constructs_(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 def calc_eff_roof(build_id):
-    return Q_roof_(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_roof_(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -716,10 +766,30 @@ def Q_heat_pipes(build_id):
 # }
 
 def calc_eff_hws_pipes(build_id):
-    return Q_hws_pipes(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_hws_pipes(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 def calc_eff_heat_pipes(build_id):
-    return Q_heat_pipes(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_heat_pipes(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -762,7 +832,17 @@ def Q_people(build_id):
 # }
 
 def calc_eff_people(build_id):
-    return Q_people(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_people(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -802,7 +882,17 @@ def Q_hws_cranes(build_id):
 # }
 
 def calc_eff_hws_cranes(build_id):
-    return Q_hws_cranes(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_hws_cranes(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -841,7 +931,17 @@ def Q_hws_showers(build_id):
 # }
 
 def calc_eff_hws_showers(build_id):
-    return Q_hws_showers(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_hws_showers(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -880,7 +980,17 @@ def Q_electro(build_id):
 # }
 
 def calc_eff_electro(build_id):
-    return Q_electro(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_electro(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -902,7 +1012,8 @@ def calc_eff_electro(build_id):
 # }
 
 def Q_vent(build_id):
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
     #build = get_one_by_id_build(Build, build_id)
 
@@ -947,7 +1058,17 @@ def Q_vent(build_id):
 # }
 
 def calc_eff_vent(build_id):
-    return Q_vent(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_vent(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
@@ -1008,7 +1129,8 @@ def calc_eff_vent(build_id):
 
 def Q_floor_(build_id):
 
-    this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    this_date = test_date
     weather = get_weather_by_time(this_date)
 
     #build = get_one_by_id_build(Build, build_id)
@@ -1079,7 +1201,17 @@ def Q_floor_(build_id):
 # }
 
 def calc_eff_floor(build_id):
-    return Q_floor_(build_id)
+    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    while(st <= fn):
+        global test_date
+        test_date = st
+        res += Q_floor_(build_id)
+        st += timedelta(seconds = 1800)
+    return res
 
 ########################################################################################################################################################################
 
