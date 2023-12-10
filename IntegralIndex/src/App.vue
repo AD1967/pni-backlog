@@ -17,7 +17,7 @@
         <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20" style=" position: relative; left: 180px;" />
         <div style="display:flex; position: relative; left: 240px"> 
           <label for="id_settings" class="header_menu"  style="width:28px; height: 28px;">
-            <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; left: 160%;"/> 
+            <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; right: 350%;"/> 
           </label>
         </div>
       </div>
@@ -135,17 +135,18 @@
       <input class="settings_param_input" type="text" :value="functions[13].input[3][2]" @input="changes(13, 'input', 3, $event.target.value)">
       <h1 class="settings_param_name">Число навесных шкафчиков</h1>
       <input class="settings_param_input" type="text" :value="functions[13].input[4][2]" @input="changes(13, 'input', 4, $event.target.value)">
-      <h1 class="settings_param_name">Максимальное число посетителей/жильцов мужчин</h1>
+      <h1 class="settings_param_name">Максимальное число посетителей мужчин</h1>
       <input class="settings_param_input" type="text" :value="functions[16].input[0][2]" @input="changes(16, 'input', 0, $event.target.value)">
-      <h1 class="settings_param_name">Максимальное число посетителей/жильцов женщин</h1>
+      <h1 class="settings_param_name">Максимальное число посетителей женщин</h1>
       <input class="settings_param_input" type="text" :value="functions[16].input[1][2]" @input="changes(16, 'input', 1, $event.target.value)">
-      <h1 class="settings_param_name">Максимальное число посетителей/жильцов детей</h1>
+      <h1 class="settings_param_name">Максимальное число посетителей детей</h1>
       <input class="settings_param_input" type="text" :value="functions[16].input[2][2]" @input="changes(16, 'input', 2, $event.target.value)">
 
-      <h1 class="settings_param_name">Среднее время пребывания посетителей/жильцов</h1>
+      <h1 class="settings_param_name">Среднее время пребывания посетителей</h1>
       <h1 class="settings_param_name">в сутки</h1>
       <input class="settings_param_input" type="text" :value="functions[16].input[3][2]" @input="changes(16, 'input', 3, $event.target.value)">
-      <h1 class="settings_param_name">Количество помещений с раковинами на этаже</h1>
+      <h1 class="settings_param_name">Количество помещений с раковинами </h1>
+      <h1 class="settings_param_name">на этаже</h1>
       <input class="settings_param_input" type="text" :value="functions[20].input[5][2]" @input="changes(16, 'input', 5, $event.target.value)">
       <h1 class="settings_param_name">Высота подвала, м</h1>
       <input class="settings_param_input" type="text" :value="functions[11].input[0][2]" @input="changes(11, 'input', 0, $event.target.value)">
@@ -1030,9 +1031,8 @@ padding: 0;
 .exit_label{
   display: flex;
   align-items: center;
-  float: left;
   user-select: none; 
-  font-size: 110%;
+  font-size: 150%;
   height: 100%;
 }
 .settings_title
@@ -1083,7 +1083,7 @@ padding: 0;
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
-  width: 90.5%;
+  width: 90%;
 }
 .header_title{
   font-size: 36px;
@@ -1363,7 +1363,7 @@ margin-right: 6%;
   width: 75%;
 }
 .field_select_readonly{
-  width: 350%;
+  width: 280%;
 }
 .sum_block{
   background-color: #e5e5dc; 
