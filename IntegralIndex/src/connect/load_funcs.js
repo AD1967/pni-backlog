@@ -387,8 +387,8 @@ function load_build(self, id_build, result_func){
                     console.log("Q_people")
                     set_input(self, "heat_gains_people", 0, build.mens)
                     set_input(self, "heat_gains_people", 1, build.womens)
-                    set_input(self, "heat_gains_people", 2, build.time_average)
-                    set_input(self, "heat_gains_people", 3, build.temp_inside)
+                    set_input(self, "heat_gains_people", 3, build.time_average)
+                    set_input(self, "heat_gains_people", 4, build.temp_inside)
                 } else {
                     console.log("skip Q_people")
                 }

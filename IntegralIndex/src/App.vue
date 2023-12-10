@@ -15,9 +15,9 @@
       <div class="header_title">Интегральный индекс</div>
       <div style="display: flex; position: relative; left: 100px;">
         <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20" style=" position: relative; left: 180px;" />
-        <div style="display:flex; position: relative; left: 200px"> 
+        <div style="display:flex; position: relative; left: 240px"> 
           <label for="id_settings" class="header_menu"  style="width:28px; height: 28px;">
-            <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; right:28px;"/> 
+            <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; left: 160%;"/> 
           </label>
         </div>
       </div>
@@ -54,83 +54,101 @@
     <!-- Меню настроек---------------------------------------------------------------->
     <div v-show="settings_check==='20'">
       <div class="right_panel">
-      <h1 class="settings_title">Настройка параметров здания</h1> 
+      <h1 class="settings_title">Настройка параметров </h1> 
+      
+      <!-------Основные настройки------------------------->
       <h1 class="settings_param_name">Этажность здания</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[0].input[1][2]" @input="changes(0, 'input', 1, $event.target.value)" >
       <h1 class="settings_param_name">Длина здания, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[0].input[2][2]" @input="changes(0, 'input', 2, $event.target.value)">
       <h1 class="settings_param_name">Ширина здания, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[0].input[3][2]" @input="changes(0, 'input', 3, $event.target.value)">
       <h1 class="settings_param_name">Длина стен на одном этаже, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[0].input[4][2]" @input="changes(0, 'input', 4, $event.target.value)">
       <h1 class="settings_param_name">Высота стен на одном этаже, м </h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[0].input[5][2]" @input="changes(0, 'input', 5, $event.target.value)">
       <h1 class="settings_param_name">Температура внутреннего воздуха, грд C</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[0].input[6][2]" @input="changes(0, 'input', 6, $event.target.value)">
+      <h1 class="settings_param_name">Температура наружного воздуха, грд C</h1>
+      <input class="settings_param_input" type="text" :value="functions[0].input[7][2]" @input="changes(0, 'input', 7, $event.target.value)">
       <h1 class="settings_param_name">Дата постройки</h1>
-      <input class="settings_param_date" type="date">
+      <input class="settings_param_date" type="date" :value="functions[0].date[0][1]"   @input="changes(0, 'date', 0, $event.target.value)">
+      
+
+      <!--- Настройки окон----------------------------->  
       <h1 class="settings_param_name">Число окон в здании</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[5].input[0][2]" @input="changes(5, 'input', 0, $event.target.value)">
       <h1 class="settings_param_name">Длина типового окна, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[5].input[1][2]" @input="changes(5, 'input', 1, $event.target.value)">
       <h1 class="settings_param_name">Высота типового окна, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[5].input[2][2]" @input="changes(5, 'input', 2, $event.target.value)" >
       <h1 class="settings_param_name">Дата установки окон</h1>
-      <input class="settings_param_input" type="date">
-      <h1 class="settings_param_name">Тип окон (сопротивление теплопередаче Rокна)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип окон (а - притвора окон)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип окон (q - инфильтрации окон)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Число входных дверей с улицы</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Длина типовой входной двери с улицы, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="date" :value="functions[5].date[0][1] " @input="changes(5, 'date', 0, $event.target.value)">     
+      <h1 class="settings_param_name">Тип окон</h1>
+      <div v-for="(sel, indexsel) in functions[5].select" :key=sel>  
+        <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
+          <select :value="sel[3]" @change="changes(5, 'select', indexsel, $event.target.value)">
+          <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
+              {{selbody}}
+          </option> 
+          </select>
+        </div>
+      </div>
+      
+      <!--------------- Двери ------------------------------>
+      <h1 class="settings_param_name">Число дверей </h1>
+      <input class="settings_param_input" type="text" :value="functions[7].input[0][2]" @input="changes(7, 'input', 0, $event.target.value)">
+      <h1 class="settings_param_name">Длина типовой двери, м</h1>
+      <input class="settings_param_input" type="text" :value="functions[7].input[1][2]" @input="changes(7, 'input', 1, $event.target.value)">
       <h1 class="settings_param_name">Высота типовой входной двери, м</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип уличной двери (сопротивление теплопередаче Rдвери)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип двери (βдвери)</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[7].input[2][2]" @input="changes(7, 'input', 2, $event.target.value)">
+      <h1 class="settings_param_name">Тип дверей </h1>
+      <div v-for="(sel, indexsel) in functions[7].select" :key=sel>  
+        <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
+          <select :value="sel[3]" @change="changes(7, 'select', indexsel, $event.target.value)">
+          <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
+              {{selbody}}
+          </option> 
+          </select>
+        </div>
+      </div>
       <h1 class="settings_param_name">Дата установки дверей</h1>
-      <input class="settings_param_input" type="date">
-      <h1 class="settings_param_name">Тип двери (a притвора_двер)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип двери (q инф_двер кг/(ч•м))</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Класс энергетической эффективности ограждающих конструкций (сопротивление теплопередаче)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Дата утепления стен</h1>
-      <input class="settings_param_input" type="date">
-      <h1 class="settings_param_name">Тип объекта (кратность воздухообмена), куб. м / ч</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Число внутренних дверей в здании</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="date" :value="functions[7].date[0][1]"   @input="changes(7, 'date', 0, $event.target.value)">
+      <h1 class="settings_param_name">Класс энергетической эффективности </h1>
+      <h1 class="settings_param_name">ограждающих конструкций </h1>
+      <div v-for="(sel, indexsel) in functions[9].select" :key=sel>  
+        <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
+          <select :value="sel[3]" @change="changes(9, 'select', indexsel, $event.target.value)">
+          <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
+              {{selbody}}
+          </option> 
+          </select>
+        </div>
+      </div>
+
+      <!-- Мебель и жильцы--------------------------------------------->
       <h1 class="settings_param_name">Число шкафов</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[13].input[1][2]" @input="changes(13, 'input', 1, $event.target.value)">
       <h1 class="settings_param_name">Число диванов</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[13].input[2][2]" @input="changes(13, 'input', 2, $event.target.value)">
       <h1 class="settings_param_name">Число столов</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[13].input[3][2]" @input="changes(13, 'input', 3, $event.target.value)">
       <h1 class="settings_param_name">Число навесных шкафчиков</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Число максимальное посетителей/жильцов мужчин</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Число максимальное посетителей/жильцов женщин</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Число максимальное посетителей/жильцов детей</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Среднее время пребывания посетителей/жильцов в сутки</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип трубы для ГВС (определяет коэффициент теплопередачи)</h1>
-      <input class="settings_param_input" type="text">
-      <h1 class="settings_param_name">Тип трубы системы отопления(определяет коэффициент теплопередачи)</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[13].input[4][2]" @input="changes(13, 'input', 4, $event.target.value)">
+      <h1 class="settings_param_name">Максимальное число посетителей/жильцов мужчин</h1>
+      <input class="settings_param_input" type="text" :value="functions[16].input[0][2]" @input="changes(16, 'input', 0, $event.target.value)">
+      <h1 class="settings_param_name">Максимальное число посетителей/жильцов женщин</h1>
+      <input class="settings_param_input" type="text" :value="functions[16].input[1][2]" @input="changes(16, 'input', 1, $event.target.value)">
+      <h1 class="settings_param_name">Максимальное число посетителей/жильцов детей</h1>
+      <input class="settings_param_input" type="text" :value="functions[16].input[2][2]" @input="changes(16, 'input', 2, $event.target.value)">
+
+      <h1 class="settings_param_name">Среднее время пребывания посетителей/жильцов</h1>
+      <h1 class="settings_param_name">в сутки</h1>
+      <input class="settings_param_input" type="text" :value="functions[16].input[3][2]" @input="changes(16, 'input', 3, $event.target.value)">
       <h1 class="settings_param_name">Количество помещений с раковинами на этаже</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[20].input[5][2]" @input="changes(16, 'input', 5, $event.target.value)">
       <h1 class="settings_param_name">Высота подвала, м</h1>
-      <input class="settings_param_input" type="text">
+      <input class="settings_param_input" type="text" :value="functions[11].input[0][2]" @input="changes(11, 'input', 0, $event.target.value)">
       </div> 
     </div>
     <!-- /Меню настроек--------------------------------------------------------------->
@@ -138,6 +156,83 @@
     <!-- Основное рабочее пространство  ------------------ ----------------------------------->
     <div :style="{'width': 100+'%'}">
       <div class="solution" :style="{'padding-left': menu_check+'%'}">
+
+        <input id="name_of_scheme" type="text" :value="functions[0].input[0][2]" @input="changes(0, 'input', 0, $event.target.value)">
+        <!-- Блок с расчетом суммарных притоков и потерь -->
+        <div class="sum_block">
+          <div id="sum_minus">
+                <div class="block_title"> Теплопотери</div><br> 
+                <div class="sum_titles">
+                  <h1> Q<sub>окон</sub> </h1>
+                  <h1> Q<sub>рез.окон </sub> </h1>
+                  <h1> Q<sub>двери </sub> </h1>
+                  <h1> Q<sub>рез.двери</sub></h1>
+                  <h1> Q<sub>стен</sub> </h1>
+                  <h1> Q<sub>стен.инф.</sub> </h1>
+                  <h1> Q<sub>пол</sub> </h1>
+                  <h1> Q<sub>вент</sub> </h1>
+                  <h1> Q<sub>доп</sub></h1>
+                  <br>
+                  <hr>
+                  <h1 class="red_sum"> &Sum;<sub>потерь</sub></h1> 
+                  
+                </div>  
+                <div class="sum_results">
+                  <div v-if="results[2].dec != ''">
+                    <h1><sub> {{results[2].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[3].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[4].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[5].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[6].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[7].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[8].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[9].dec}} Гкал</sub> </h1>
+                    <h1><sub> {{results[10].dec}}Гкал</sub> <sub></sub> </h1> 
+                  </div>
+                  <br>
+                  <hr v-if="results[2].dec != ''">
+                  <h1 v-if="results[2].dec != ''" class ="red_sum"> <sub>{{ }}</sub></h1>
+                </div>              
+            </div>
+            
+            <div id="sum_plus">
+                <div class="block_title"> Теплопритоки</div><br> 
+                <div class="sum_titles">
+                  <h1> Q<sub>персонал</sub></h1>
+                  <h1> Q<sub>рук </sub></h1>
+                  <h1> Q<sub>душ </sub></h1>
+                  <h1> Q<sub>ЭЭ.отоп.пер.</sub></h1>
+                  <h1> Q<sub>труб</sub></h1>
+                  <h1> Q<sub>труб.отопл.</sub></h1>
+                  <h1> <sub sub style="color: #e5e5dc">.</sub> </h1>
+                  <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
+                  <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
+                  <br>
+                  <hr>
+                  <h1 class="red_sum"> &Sum;<sub>притоков</sub></h1>  
+                </div>
+                
+                <div class="sum_results">
+                  <div v-if="results[11].dec != ''">
+                    <h1><sub>{{results[11].dec}} Гкал</sub> </h1>
+                    <h1><sub>{{results[12].dec}} Гкал</sub> </h1>
+                    <h1><sub>{{results[13].dec}} Гкал</sub> </h1>
+                    <h1><sub>{{results[14].dec}} Гкал</sub> </h1>
+                    <h1><sub>{{results[15].dec}} Гкал</sub> </h1>
+                    <h1><sub>{{results[16].dec}} Гкал</sub> </h1>
+                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                  </div>
+                  <br>
+                  <hr v-if="results[11].dec != ''">
+                  <h1 v-if="results[11].dec != ''" class ="red_sum"> <sub></sub></h1>
+                </div>                            
+            </div>
+        </div>
+        <!-- Конец блока c расчетом суммарных притоков и потерь ------------------------------------------------------------->
+        
+        
         <!-- Пространство кнопок загрузки шаблонов ------------------------------------------->
         <div class="btn_div_global">
           <div class="btn_patterns" >
@@ -151,7 +246,7 @@
               <div class="show_pat" v-if="check_loadpat">
                 <div class="content"> 
                   <b>Выберите шаблон</b>
-                  <select  v-model="load_pat.select.picked">
+                  <select id="big_select" v-model="load_pat.select.picked">
                     <option style="" v-for="(build) in load_pat.select.variants" :key=build >
                       {{build}}
                     </option>
@@ -232,6 +327,7 @@
         </div>
         <!-- /Пространство кнопок загрузки шаблонов ------------------------------------------->
 
+
         <!-- Отрисовка основных блоков расчета ------------------------------------------------>
         <div v-for="section in sections" :key=section>
           <div v-show="section.check==='true'">
@@ -240,44 +336,61 @@
             <div class="mega_block_borders">
               <div class="mega_block">
                 <div :class="[section.name == 'reliability' || section.name == 'add_heatcosts' ? 'rel_block' : 'main_block']" :style="{'width': section.main_block_width+'%'}"> 
-                  <!-- Формы ввода для основных блоков   ------------------------------------->
+                   <!-- Формы ввода для основных блоков   ------------------------------------->
                   <div v-for="(func, ind) in functions" :key=func>
                     <div v-if="func.id===section.name && func.render !== false">
                       <div :class="[section.name == 'general'|| section.name == 'reliability' || section.name == 'add_heatcosts' ? 'gen_block' : 'block']">
                         <div class="block_title">{{ func.title }}</div><br>
                         <div v-for="(inp, indexinp) in func.input" :key=inp>
                           <div v-if="(inp[6]===undefined || inp[6]===null) || inp[6]()">
-                                {{inp[0]}} <!-- текстовый вывод названия поля -->
+                            <div v-if="inp[5]===undefined || inp[5]===null">
+                                {{inp[0]}}  <!-- текстовый вывод названия поля -->
                                 <input :class="[indexinp==0 && section.name == 'general' ? 'field_inp_name':'field_inp']" type="text" 
-                                :value="inp[2]" @input="changes(ind, 'input', indexinp, $event.target.value)">
-                                {{inp[1]}} <!--текстовый вывод ед.измерения--> 
-                                <div v-if="!inp[4]"> <!-- проверка заполнения -->
+                                :value="inp[2]" @input="changes(ind, 'input', indexinp, $event.target.value)" readonly>
+                                {{inp[1]}} <!--текстовый вывод ед.измерения-->
+                                <div v-if="!inp[4]">  <!-- проверка заполнения -->
                                 <b style="color:red" v-if="String(inp[2]).trim() === ''">Поле не заполнено.</b>
                                 <b style="color:red" v-if="String(inp[2]).trim() !== '' && (inp[3] == 'int' || inp[3] == 'uint') ">Неверный формат числа.</b>
                                 </div>
+                            </div>
+                            <div v-else>
+                              {{inp[0]}}
+                              <input :class="[indexinp==0 && section.name == 'general' ? 'field_inp_name':'field_inp']" type="text"
+                              :value="functions[inp[5][0]].input[inp[5][1]][2]" readonly>
+                              {{inp[1]}} <b style="color:grey">{{inp[5][2]}}</b>
+                              <div v-if="!functions[inp[5][0]].input[inp[5][1]][4]">
+                              <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() === ''">поле не заполнено</b>
+                              <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() !== '' && (functions[inp[5][0]].input[inp[5][1]][3] == 'int' || functions[inp[5][0]].input[inp[5][1]][3] == 'uint') ">неправильный формат числа</b>
+                              </div>
+                          </div>
                           </div>  
                         </div>
                         <div v-for="(btn, indexrbtn) in func.r_btn" :key=btn>
                           <input type="radio" name={{func}} :id="func.id +'_'+ ind+'_rbtn_'+indexrbtn"
                           :value=btn
                             v-on:change="changes(ind, 'radio', 0, $event.target.value)"
-                          :checked="btn==func.radio_elem[0]"
+                          :checked="btn==func.radio_elem[0]" readonly
                           >
                           <label>{{btn}}</label>
                         </div>
                         <table>
                           <tr>
                             <div v-for="(sel, indexsel) in func.select" :key=sel>  
-                            <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
-                              <td>{{sel[0]}}</td>
-                              <select 
-                                  :value="sel[3]" @change="changes(ind, 'select', indexsel, $event.target.value)"
-                              >
-                              <option style="" v-for="(selbody, indexbody) in sel[1]" :key=selbody :id="func.id +'_'+ ind+'_sel_'+indexsel+'_selnum_'+indexbody">
-                                  {{selbody}}
-                              </option>
-                              </select>
-                            </div>
+                            <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()"> 
+                              <div v-if="sel[4]===undefined || sel[4]===null">
+                                <td>{{sel[0]}}</td>
+                                <input v-if="func.id != 'add_heatcosts'" class="field_select_readonly" type="text" :value="sel[3]" @change="changes(ind, 'select', indexsel, $event.target.value)" readonly>
+                                <select id="big_select" v-else :value="sel[3]" @change="changes(index1, 'select', indexsel, $event.target.value)">
+                                  <option style="" v-for="(selbody, indexbody) in sel[1]" v-bind:key=selbody :id="func.id +'_'+ index1+'_sel_'+indexsel+'_selnum_'+indexbody">
+                                      {{selbody}}
+                                  </option>
+                                </select>
+                              </div>
+                              <div v-else>
+                                  <td>{{sel[0] }}</td>
+                                  <input class="field_select_readonly" type="text" :value="functions[sel[4][0]].select[sel[4][1]][3]" readonly>
+                              </div>
+                            </div> 
                           </div>
                           </tr>
                         </table>
@@ -285,27 +398,28 @@
                             <input type="checkbox" :id="func.id +'_'+ ind+'_cbox_'+indexcbox" 
                               :checked="func.check_elem[indexcbox]"
                                 v-on:input="changes(ind, 'checkbox', indexcbox, $event.target.checked)"
-                            >
+                                readonly
+                              >
                             {{box}}
                           </p>
                           <div v-for="(d, indexdate) in func.date" :key=d>
                                 <div v-if="d[2]===undefined || d[2]===null">
                                     {{d[0]}}
                                     <input type="date" :id="func.id +'_'+ ind+'_date_'+indexdate"
-                                    :value="d[1]" @input="changes(ind, 'date', indexdate, $event.target.value)">
+                                    :value="d[1]" @input="changes(ind, 'date', indexdate, $event.target.value)" readonly>
                                 </div>
                                 <div v-else>
                                     {{d[0]}}
                                     <input type="date" :id="func.id +'_'+ ind+'_date_'+indexdate"
                                     :value="functions[d[2][0]].date[d[2][1]][1]" readonly>
-                                    <b  style="color:green">{{d[2][2]}}</b>
+                                    <b style="color:green">{{d[2][2]}}</b>
                                 </div>
                           </div>
                       </div> 
                     </div>
                   </div>         
                 </div> 
-                <!-- /Формы ввода для основных блоков   ------------------------------------>  
+            <!-- /Формы ввода для основных блоков   ----------------------------------->
                 <div v-if="section.name!=='general'" class="res_block">
                   <div class= "res_block block_r">
                     <div v-for="result in results" :key=result>
@@ -315,80 +429,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- Дополнительный блок с расчетом суммарных притоков и потерь в главном блоке -->
-                <div v-else class="sum_block">
-                  <div id="sum_minus">
-                        <div class="block_title"> Теплопотери</div><br> 
-                        <div class="sum_titles">
-                          <h1> Q<sub>окон</sub> </h1>
-                          <h1> Q<sub>рез.окон </sub> </h1>
-                          <h1> Q<sub>двери </sub> </h1>
-                          <h1> Q<sub>рез.двери</sub></h1>
-                          <h1> Q<sub>стен</sub> </h1>
-                          <h1> Q<sub>стен.инф.</sub> </h1>
-                          <h1> Q<sub>пол</sub> </h1>
-                          <h1> Q<sub>вент</sub> </h1>
-                          <h1> Q<sub>доп</sub></h1>
-                          <br>
-                          <hr>
-                          <h1 class="red_sum"> &Sum;<sub>потерь</sub></h1> 
-                          
-                        </div>  
-                        <div class="sum_results">
-                          <div v-if="results[2].dec != ''">
-                            <h1><sub> {{results[2].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[3].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[4].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[5].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[6].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[7].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[8].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[9].dec}} Гкал</sub> </h1>
-                            <h1><sub> {{results[10].dec}}Гкал</sub> <sub></sub> </h1> 
-                          </div>
-                          <br>
-                          <hr v-if="results[2].dec != ''">
-                          <h1 v-if="results[2].dec != ''" class ="red_sum"> <sub>{{ }}</sub></h1>
-                        </div>              
-                    </div>
-                    
-                    <div id="sum_plus">
-                        <div class="block_title"> Теплопритоки</div><br> 
-                        <div class="sum_titles">
-                          <h1> Q<sub>персонал</sub></h1>
-                          <h1> Q<sub>рук </sub></h1>
-                          <h1> Q<sub>душ </sub></h1>
-                          <h1> Q<sub>ЭЭ.отоп.пер.</sub></h1>
-                          <h1> Q<sub>труб</sub></h1>
-                          <h1> Q<sub>труб.отопл.</sub></h1>
-                          <h1> <sub sub style="color: #e5e5dc">.</sub> </h1>
-                          <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
-                          <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
-                          <br>
-                          <hr>
-                          <h1 class="red_sum"> &Sum;<sub>притоков</sub></h1>  
-                        </div>
-                        
-                        <div class="sum_results">
-                          <div v-if="results[11].dec != ''">
-                            <h1><sub>{{results[11].dec}} Гкал</sub> </h1>
-                            <h1><sub>{{results[12].dec}} Гкал</sub> </h1>
-                            <h1><sub>{{results[13].dec}} Гкал</sub> </h1>
-                            <h1><sub>{{results[14].dec}} Гкал</sub> </h1>
-                            <h1><sub>{{results[15].dec}} Гкал</sub> </h1>
-                            <h1><sub>{{results[16].dec}} Гкал</sub> </h1>
-                            <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                            <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                            <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                          </div>
-                          <br>
-                          <hr v-if="results[11].dec != ''">
-                          <h1 v-if="results[11].dec != ''" class ="red_sum"> <sub></sub></h1>
-                        </div>                            
-                    </div>
-                </div>
-                <!-- Конец доп. блока -------------------------------------------------------------->   
-
+              
               </div>
               <div v-for="result in results" v-bind:key=result>
                 <div v-if="result.id===section.name" >
@@ -434,7 +475,7 @@ export default{
       dialog_buttons_check: false,
       login_reg_check:[false,false],
       menu_check: '20',
-      settings_check: '20',
+      settings_check: '0',
       check_savepat: false,
       check_loadpat: false,
       build_changes: new Set(),
@@ -461,7 +502,7 @@ export default{
       ],
       sections:
       [
-        {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'true', main_block_width: '50', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
+        {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'false', main_block_width: '50', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
         {  section:'Надежность', name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
@@ -500,7 +541,7 @@ export default{
       ],
       functions:
       [    
-        // 0 Главный блок - общая характеристика здания---------------------------------------------------------------------
+        // 0 общая характеристика здания  ---------------------------------------------------------------------
         {
           id: 'general', 
           title:'Параметры', 
@@ -560,7 +601,7 @@ export default{
         {
           id: 'heat_los_win', 
           title:'Характеристика окон', 
-          input:[['Число окон','ед.',  '', 'uint', false],['Длина типового окна','м',  '', 'uint', false],['Высота типового окна','м',  '', 'uint', false], ['Температура внутреннего воздуха','°C',  '', 'uint', false, [0, 6, '']],['Расчётная температура наружного воздуха','°C',  '', 'uint', false, [0, 7, '']]],
+          input:[['Число окон','ед.', '', 'uint', false],['Длина типового окна','м',  '', 'uint', false],['Высота типового окна','м',  '', 'uint', false], ['Температура внутреннего воздуха','°C',  '', 'uint', false, [0, 6, '']],['Расчётная температура наружного воздуха','°C',  '', 'uint', false, [0, 7, '']]],
           r_btn:null, 
           select:[['Тип окон',['Деревянные окна с двойным остеклением','Стеклопакет 24мм (4-16-4) в корпусе ПВХ','Стеклопакет 24мм (4-16-4) в корпусе ПВХ, низкоэмиссионное покрытие','Стеклопакет 36мм (4-10-4-14-4) в корпусе ПВХ','Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ','Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ, низкоэмиссионное покрытие']]],
           c_box:null,
@@ -586,9 +627,7 @@ export default{
           c_box:null,
           //data[2]  - пусто/[func_index, input_index, text]
           date: [['Дата установки дверей','2011-11-12'], ['Дата постройки','2011-12-15', [0, 0,'']]]
-        },
-        
-        
+        }, 
         
         // 8
         {
@@ -674,7 +713,7 @@ export default{
         {
           id: 'heat_gains_people', 
           title:'Определение теплопритоков людей', 
-          input:[['Число посетителей/жильцов мужчин','чел.', '', 'uint', false],['Число посетителей/жильцов женщин','чел.', '', 'uint', false],['Среднее время пребывания посетителей/жильцов в сутки','чел./сутки', '', 'uint', false], ['Температура внутреннего воздуха','°C',  '', 'uint', false, [0, 6, '']]],
+          input:[['Число посетителей/жильцов мужчин','чел.', '', 'uint', false],['Число посетителей/жильцов женщин','чел.', '', 'uint', false],['Число посетителей/жильцов детей','чел.', '', 'uint', false], ['Среднее время пребывания посетителей/жильцов в сутки','чел./сутки', '', 'uint', false], ['Температура внутреннего воздуха','°C',  '', 'uint', false, [0, 6, '']]],
           r_btn:null, 
           select:null,
           c_box:null,
@@ -684,7 +723,7 @@ export default{
         {
           id: 'heat_gains_washstands', 
           title:'Определение затрат тепловой энергии на ГВС для рукомойников', 
-          input:[['Число посетителей/жильцов мужчин', 'чел.', '', 'uint', false, [16, 0, '']],['Число посетителей/жильцов женщин','чел.', '', 'uint', false, [16, 1, '']]],
+          input:[['Число посетителей/жильцов мужчин', 'чел.', '', 'uint', false, [16, 0, '']],['Число посетителей/жильцов женщин','чел.', '', 'uint', false, [16, 1, '']],['Число посетителей/жильцов детей','чел.', '', 'uint', false, [16, 2, '']]],
           r_btn:null, 
           select:null,
           c_box:null,
@@ -694,7 +733,7 @@ export default{
         {
           id: 'heat_gains_showers', 
           title:'Определение затрат тепловой энергии на ГВС для душевых', 
-          input:[['Число посетителей/жильцов мужчин', 'чел.', '', 'uint', false, [16, 0, '']],['Число посетителей/жильцов женщин','чел.', '', 'uint', false, [16, 1, '']]],
+          input:[['Число посетителей/жильцов мужчин', 'чел.', '', 'uint', false, [16, 0, '']],['Число посетителей/жильцов женщин','чел.', '', 'uint', false, [16, 1, '']], ['Число посетителей/жильцов детей','чел.', '', 'uint', false, [16, 2, '']]],
           r_btn:null, 
           select:null,
           c_box:null,
@@ -950,7 +989,12 @@ select{
   border-radius: 4px; 
   padding-left: 1%;
   padding-right: 1%;
-  margin: 0.25%;
+  margin:0.25%;
+  margin-left: 2%;
+  width: 26%;
+}
+#big_select{
+  width:100%;
 }
 label{
   margin-left: 2%;
@@ -986,6 +1030,7 @@ padding: 0;
 .exit_label{
   display: flex;
   align-items: center;
+  float: left;
   user-select: none; 
   font-size: 110%;
   height: 100%;
@@ -1038,7 +1083,7 @@ padding: 0;
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
-  width: 100%;
+  width: 90.5%;
 }
 .header_title{
   font-size: 36px;
@@ -1122,13 +1167,15 @@ padding: 0;
   /* Пространство кнопок загрузки шаблонов и расчета */
 .btn_div_global{
   display: flex;
-  align-items: start;
   justify-content: space-between;
   margin: 2%;
+  margin-left:  8%;
+  margin-right: 8%;
+  align-items: start;
 }
 .btn_patterns{
   display: flex;
-  align-items: start;
+  align-items: start; 
   justify-content: space-between;
   width: 73%;
 }
@@ -1243,6 +1290,8 @@ padding: 0;
 display: flex; 
 flex-direction: column;
 margin: 1%;
+margin-left: 6%;
+margin-right: 6%;
 }
 .mega_block_title{
   font-size: 20px;
@@ -1301,7 +1350,7 @@ margin: 1%;
   font-size: 16px;
   color:#1e3a49;
 }
-.field_inp, .field_inp_name{
+.field_inp, .field_inp_name, .field_select_readonly{
   background-color: #e5e5dc; 
   border: 2px solid #435d6b;
   border-radius: 4px; 
@@ -1313,31 +1362,34 @@ margin: 1%;
 .field_inp_name{
   width: 75%;
 }
+.field_select_readonly{
+  width: 350%;
+}
 .sum_block{
   background-color: #e5e5dc; 
-  margin: 1%;
-  margin-bottom: 0%;
+  margin: 2%;
+  margin-left:  8%;
+  margin-right: 8%;
   padding: 10px;
   border-radius: 10px;
-  border: 2px solid #234455;
-  box-shadow: 0 0 10px #26495c;
-  display: flex;
-  width: 75%;
-  position: relative;
-  float: right;
-  justify-content: space-between;
+  border: 2px solid #e28a16;
+  box-shadow: 0 0 10px #cf7b0c;
+  
 }
 #sum_minus {
 float: left; 
 display: block;
-width: 46%;
+width: 44%;
+margin-left: 4%;
 position: relative;
 justify-content: space-between;
 }
 #sum_plus {
 float: right;
 display: block;
-width: 50%;
+width: 44%;
+margin-left: 4%;
+margin-right: 4%;
 position: relative;
 justify-content: space-between;
 }
@@ -1394,6 +1446,19 @@ input[type="checkbox"]{
   border: 2px solid #435d6b;
   border-radius: 4px; 
   transform:scale(1.2);
+}
+
+#name_of_scheme
+{
+  font-size: 24px;
+  margin: 2%;
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-bottom: 0%;
+  border: 2px solid #435d6b;
+  box-shadow: 0 0 10px #1e3a49;
+  border-radius: 4px;
+  padding-left: 1%;
 }
   /* /Отрисовка основных блоков расчета */
 
