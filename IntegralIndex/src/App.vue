@@ -179,20 +179,20 @@
                   
                 </div>  
                 <div class="sum_results">
-                  <div v-if="results[2].dec != ''">
-                    <h1><sub> {{results[2].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[3].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[4].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[5].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[6].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[7].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[8].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[9].dec}} Гкал</sub> </h1>
-                    <h1><sub> {{results[10].dec}}Гкал</sub> <sub></sub> </h1> 
+                  <div v-if="results[2].val != ''">
+                    <h1><sub> {{results[2].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[3].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[4].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[5].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[6].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[7].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[8].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[9].val}} Гкал</sub> </h1>
+                    <h1><sub> {{results[10].val}}Гкал</sub> <sub></sub> </h1> 
                   </div>
                   <br>
-                  <hr v-if="results[2].dec != ''">
-                  <h1 v-if="results[2].dec != ''" class ="red_sum"> <sub>{{ }}</sub></h1>
+                  <hr v-if="results[2].val != ''">
+                  <h1 v-if="results[2].val != ''" class ="red_sum"> <sub>{{ }}</sub></h1>
                 </div>              
             </div>
             
@@ -214,20 +214,20 @@
                 </div>
                 
                 <div class="sum_results">
-                  <div v-if="results[11].dec != ''">
-                    <h1><sub>{{results[11].dec}} Гкал</sub> </h1>
-                    <h1><sub>{{results[12].dec}} Гкал</sub> </h1>
-                    <h1><sub>{{results[13].dec}} Гкал</sub> </h1>
-                    <h1><sub>{{results[14].dec}} Гкал</sub> </h1>
-                    <h1><sub>{{results[15].dec}} Гкал</sub> </h1>
-                    <h1><sub>{{results[16].dec}} Гкал</sub> </h1>
+                  <div v-if="results[11].val != ''">
+                    <h1><sub>{{results[11].val}} Гкал</sub> </h1>
+                    <h1><sub>{{results[12].val}} Гкал</sub> </h1>
+                    <h1><sub>{{results[13].val}} Гкал</sub> </h1>
+                    <h1><sub>{{results[14].val}} Гкал</sub> </h1>
+                    <h1><sub>{{results[15].val}} Гкал</sub> </h1>
+                    <h1><sub>{{results[16].val}} Гкал</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                   </div>
                   <br>
-                  <hr v-if="results[11].dec != ''">
-                  <h1 v-if="results[11].dec != ''" class ="red_sum"> <sub></sub></h1>
+                  <hr v-if="results[11].val != ''">
+                  <h1 v-if="results[11].val != ''" class ="red_sum"> <sub></sub></h1>
                 </div>                            
             </div>
         </div>
