@@ -4,7 +4,7 @@ import load_funcs from '@/connect/load_funcs'
 import export_funcs from './export_funcs'
 
 import $ from 'jquery'
-let server_url = "http://127.0.0.1:5000"
+let server_url = "https://localhost:5000"
 
 function start(self){       // ,self)
     if (localStorage.getItem("this_build_id") === null) {
