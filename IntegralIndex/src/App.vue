@@ -326,6 +326,13 @@
             <div style="margin: 2%;"> Расчёт </div>
           </button>
         </div>
+        <select>
+            <option>2018-2019</option>
+            <option>2018-2019</option>
+            <option>2019-2020</option>
+            <option>2020-2021</option>
+            <option>2021-2022</option>
+        </select>
         <!-- /Пространство кнопок загрузки шаблонов ------------------------------------------->
 
 
