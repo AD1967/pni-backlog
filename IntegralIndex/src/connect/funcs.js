@@ -4,7 +4,7 @@ import load_funcs from '@/connect/load_funcs'
 import export_funcs from './export_funcs'
 
 import $ from 'jquery'
-let server_url = "https://localhost:5000"
+let server_url = "http://127.0.0.1:5000"
 
 function start(self){       // ,self)
     if (localStorage.getItem("this_build_id") === null) {
@@ -191,7 +191,7 @@ function calc(id, self){
                 }
             }
             if(!fatal_fail){
-                return [id_mappers.calc_result_map[id](sum_res), sum_res];
+                return [id_mappers.calc_dec_result_map[id](sum_res), sum_res];
             }
     }    
 }
