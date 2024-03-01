@@ -120,7 +120,7 @@ let calc_dec_result_map = {
     "heat_los_heatcond_roof":   function(result){return result},
     "heat_los_floor":           function(result){return result},
     "heat_los_vent":            function(result){return result},
-    "add_heatcosts":            function(result){return result[0]},
+    "add_heatcosts":            function(result){return result},
     
     "heat_gains_people":        function(result){return result},
     "heat_gains_washstands":    function(result){return result},

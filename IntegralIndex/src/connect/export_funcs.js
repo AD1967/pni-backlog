@@ -246,7 +246,8 @@ function export_build(self, full){
             console.log("Q_people")
             build.mens = get_input(self, "heat_gains_people", 0)
             build.womens = get_input(self, "heat_gains_people", 1)
-            build.time_average = get_input(self, "heat_gains_people", 2)
+            build.children = get_input(self, "heat_gains_people", 2)//!!!!!!!!!!
+            build.time_average = get_input(self, "heat_gains_people", 3)//!!!!!!!!!!
         } else {
             console.log("skip heat_gains_people")
         }
