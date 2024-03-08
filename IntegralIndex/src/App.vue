@@ -34,26 +34,15 @@
       <div class="left_panel">
         <div v-for="bgsec_name in big_sections_name" :key=bgsec_name>
           <div >
-            <div v-if="bgsec_name.name != 'Надежность'" >
-              <h4  class="glob_section_title">
-                {{bgsec_name.name}}
-              </h4>
-            </div>
+            <h4  class="glob_section_title">
+              {{bgsec_name.name}}
+            </h4>
             <div v-for="sec in sections" :key=sec>
               <div v-if="sec.section===bgsec_name.name">
-                <h5 class="sub_section_title">
-                  <div v-if="bgsec_name.name === 'Надежность'" style="width:100%"> 
-                    <input type="checkbox" v-on:click="check_true_all()" :id=sec.name v-model="sec.check" true-value="true" false-value="false"/>
-                    <label :for=sec.name> {{sec.title}} </label>  
-                  </div>
-
-                  <div v-else>
+                <h5 class="sub_section_title">      
                     <input type="checkbox" :id=sec.name v-model="sec.check" true-value="true" false-value="false"/>
-                    <label :for=sec.name> {{sec.title}} </label>  
-                  </div>       
-                </h5>
-                  
-                      
+                    <label :for=sec.name> {{sec.title}} </label>           
+                </h5>                
               </div>
             </div>
           </div>
@@ -204,7 +193,7 @@
                   <br>
                   <hr v-if="results[2].val != ''">
                   <h1 v-if="results[2].val != ''" class ="red_sum"> <sub>
-                    {{(results[2].val + results[3].val+ results[4].val + results[5].val + results[6].val + results[7].val + results[8].val + results[9].val + results[10].val)}} Гкал
+                    {{(results[2].val + results[3].val+ results[4].val + results[5].val + results[6].val + results[7].val + results[8].val + results[9].val + results[10].val).toFixed(3)}} Гкал
                   </sub></h1>
                 </div>              
             </div>
@@ -241,7 +230,7 @@
                   <br>
                   <hr v-if="results[11].val != ''">
                   <h1 v-if="results[11].val != ''" class ="red_sum"> <sub>
-                    {{results[11].val + results[12].val + results[13].val + results[14].val + results[15].val + results[16].val}}Гкал</sub>
+                    {{(results[11].val + results[12].val + results[13].val + results[14].val + results[15].val + results[16].val).toFixed(3)}} Гкал</sub>
                   </h1>
                 </div>                            
             </div>
@@ -292,6 +281,11 @@
             </div>
             <!-- /Кнопка загрузки шаблона -->
 
+
+          <button class="btn_calc" @click="calc_all()">
+            <div style="margin: 2%;"> Расчёт </div>
+          </button>
+
             <!-- Кнопка сохранения шаблона -->
             <div class="btn_savepat">
               <button class="btn_pat" @click="check_savepat = !check_savepat; savepat_error.show = false">
@@ -337,9 +331,7 @@
             <!-- /Кнопка сохранения шаблона -->
           </div>
 
-          <button class="btn_calc" @click="calc_all()">
-            <div style="margin: 2%;"> Расчёт </div>
-          </button>
+          
         </div>
         
         
@@ -348,7 +340,7 @@
 
         <!-- Отрисовка основных блоков расчета ------------------------------------------------>
         <div v-for="section in sections" :key=section>
-          <div v-show="section.check==='true' && section.name !== 'reliability'">
+          <div v-show="section.check==='true'">
             <div class="mega_block_sections">
               <div class="mega_block_title"> {{section.title}} </div>
               <div class="mega_block_borders">
@@ -522,7 +514,7 @@ export default{
       sections:
       [
         {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'false', main_block_width: '50', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
-        {  section:'Надежность', name: 'reliability', title: 'Выбрать все', check: 'false', main_block_width: '69'},
+        {  section:'Надежность', name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
         {  section:'Теплопотери', name: 'heat_los_inpgr', title: 'Расчет тепловых потерь через входную группу', check: 'false', main_block_width: '69'},
@@ -867,7 +859,6 @@ export default{
             let calc_res = func.calc(id, self)
             console.log(calc_res)
             item.val = calc_res[0]
-            item.dec = func.calc_dec(id, self, calc_res[1])
             return false
         }
       })
@@ -876,9 +867,7 @@ export default{
   calc_all_server(){
     let self = this
     this.sections.forEach(function(item){
-      if(item.check){
         self.cacl_result(item.name, self)
-      }
     })
   },
     calc_all(){
@@ -887,7 +876,9 @@ export default{
       this.dialog_buttons_check = true
     }
     else{
+      this.check_true_all()
       this.calc_all_server()
+      this.check_true_all()
     }
     },
   calc_all_after_dialog(val_pair){
@@ -1203,23 +1194,46 @@ padding: 0;
 }
 .btn_patterns{
   display: flex;
-  align-items: start; 
+  align-items:start; 
   justify-content: space-between;
-  width: 73%;
+  width: 100%;
 }
 
 .btn_loadpat{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 48%;
+  width: 31%;
 }
 
 .btn_savepat{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 48%; 
+  width: 31%; 
+}
+
+.btn_calc{
+  display: flex;
+  justify-content: center;
+  width: 31%; 
+  background-color: #26495c; 
+  border: 2px solid #234455;
+  border-radius: 10px; 
+  box-shadow: 0 0 10px #1e3a49;
+  color: #e5e5dc;
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  margin-right: 2%;
+  margin-left: 2%;
+}
+.btn_calc:hover{
+  display: flex;
+  justify-content: center;
+  background-color: #26495c; 
+  border: 2px solid #234455;
+  border-radius: 10px; 
+  box-shadow: 0 0 5px #1e3a49 inset;
+  color: #e5e5dc;
 }
 
 .btn_pat{
@@ -1290,27 +1304,7 @@ padding: 0;
   padding-right: 1%;
   margin: 0.25%;
 }
-.btn_calc{
-  display: flex;
-  justify-content: center;
-  width: 25%; 
-  background-color: #26495c; 
-  border: 2px solid #234455;
-  border-radius: 10px; 
-  box-shadow: 0 0 10px #1e3a49;
-  color: #e5e5dc;
-  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-}
-.btn_calc:hover{
-  display: flex;
-  justify-content: center;
-  width: 25%; 
-  background-color: #26495c; 
-  border: 2px solid #234455;
-  border-radius: 10px; 
-  box-shadow: 0 0 5px #1e3a49 inset;
-  color: #e5e5dc;
-}
+
   /* /Пространство кнопок загрузки шаблонов и расчета */
 
   /* Отрисовка основных блоков расчета */

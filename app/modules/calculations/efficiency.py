@@ -5,28 +5,18 @@ from ..db.model import *
 
 # ДОПОЛНИТЕЛЬНЫЕ ЗАТРАТЫ НА ПРОГРЕВ
 
-countOfPoint = 4 #Количество выводимых знаков после запятой
+countOfPoint = 3 #Количество выводимых знаков после запятой
 dt = 1 # Единичный временной промежуток
-#function toGCal (x) {
 
-#    return (x * 2.3884e-10).toFixed(5) + " Гкал";
-#}
 
 def toGCal(value):
     new_value = value * 2.3884e-10
     return f"{new_value:.{countOfPoint}f}"
 
-#function convertGCal (x) {
-#    return (x * 4230.7e-6).toFixed((5)) + " Гкал";
-#}
-
 def convertGCal(value):
     new_value = value * 4230.7e-6
     return f"{new_value:.{countOfPoint}f} Гкал"
 
-#function printGCal (x) {
-#    return x.toFixed(5) + " Гкал";
-#}
 
 def printGCal(value):
     return f"{value:.{countOfPoint}f}"
