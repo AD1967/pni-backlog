@@ -180,15 +180,15 @@
                 </div>  
                 <div class="sum_results">
                   <div v-if="results[2].val != ''">
-                    <h1><sub> {{results[2].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[3].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[4].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[5].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[6].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[7].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[8].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[9].val}}  Гкал</sub> </h1>
-                    <h1><sub> {{results[10].val}} Гкал</sub> <sub></sub> </h1> 
+                    <h1><sub> {{results[2].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[3].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[4].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[5].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[6].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[7].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[8].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[9].val.toFixed(3)}}  Гкал</sub> </h1>
+                    <h1><sub> {{results[10].val.toFixed(3)}} Гкал</sub> <sub></sub> </h1>
                   </div>
                   <br>
                   <hr v-if="results[2].val != ''">
@@ -217,12 +217,12 @@
                 
                 <div class="sum_results">
                   <div v-if="results[11].val != ''">
-                    <h1><sub>{{results[11].val}} Гкал</sub> </h1>
-                    <h1><sub>{{results[12].val}} Гкал</sub> </h1>
-                    <h1><sub>{{results[13].val}} Гкал</sub> </h1>
-                    <h1><sub>{{results[14].val}} Гкал</sub> </h1>
-                    <h1><sub>{{results[15].val}} Гкал</sub> </h1>
-                    <h1><sub>{{results[16].val}} Гкал</sub> </h1>
+                    <h1><sub>{{results[11].val.toFixed(3)}} Гкал</sub> </h1>
+                    <h1><sub>{{results[12].val.toFixed(3)}} Гкал</sub> </h1>
+                    <h1><sub>{{results[13].val.toFixed(3)}} Гкал</sub> </h1>
+                    <h1><sub>{{results[14].val.toFixed(3)}} Гкал</sub> </h1>
+                    <h1><sub>{{results[15].val.toFixed(3)}} Гкал</sub> </h1>
+                    <h1><sub>{{results[16].val.toFixed(3)}} Гкал</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
@@ -459,18 +459,6 @@
     </div>
   </div>
   <!--/Основная часть ----------------------------------------------------------------------->
-
-
-
-  <dialogbox-login v-model:show=login_reg_check>
-  </dialogbox-login> 
-  <dialogbox-reg v-model:show=login_reg_check>
-  </dialogbox-reg> 
-  <dialog-buttons v-model:show=dialog_buttons_check @result="calc_all_after_dialog" v-model:name="functions[0].input[0][2]" 
-     @update:name="this.changes(0, 'input', 0, $event.target.value)" v-model:error_show="savepat_error.show" 
-     v-model:error_text="savepat_error.text"
-     >
-  </dialog-buttons>     
 </div>
 </template>
 
@@ -872,14 +860,9 @@ export default{
   },
     calc_all(){
         console.log(this.functions[1].radio_elem)
-    if(this.build_changes.size > 0){
-      this.dialog_buttons_check = true
-    }
-    else{
-      this.check_true_all()
-      this.calc_all_server()
-      this.check_true_all()
-    }
+        this.check_true_all()
+        this.calc_all_server()
+        this.check_true_all()
     },
   calc_all_after_dialog(val_pair){
     let val = val_pair[0]
