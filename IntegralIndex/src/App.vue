@@ -459,18 +459,6 @@
     </div>
   </div>
   <!--/Основная часть ----------------------------------------------------------------------->
-
-
-
-  <dialogbox-login v-model:show=login_reg_check>
-  </dialogbox-login> 
-  <dialogbox-reg v-model:show=login_reg_check>
-  </dialogbox-reg> 
-  <dialog-buttons v-model:show=dialog_buttons_check @result="calc_all_after_dialog" v-model:name="functions[0].input[0][2]" 
-     @update:name="this.changes(0, 'input', 0, $event.target.value)" v-model:error_show="savepat_error.show" 
-     v-model:error_text="savepat_error.text"
-     >
-  </dialog-buttons>     
 </div>
 </template>
 
@@ -872,14 +860,9 @@ export default{
   },
     calc_all(){
         console.log(this.functions[1].radio_elem)
-    if(this.build_changes.size > 0){
-      this.dialog_buttons_check = true
-    }
-    else{
-      this.check_true_all()
-      this.calc_all_server()
-      this.check_true_all()
-    }
+        this.check_true_all()
+        this.calc_all_server()
+        this.check_true_all()
     },
   calc_all_after_dialog(val_pair){
     let val = val_pair[0]
