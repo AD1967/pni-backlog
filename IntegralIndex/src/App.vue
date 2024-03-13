@@ -149,7 +149,24 @@
       <!-- Основное рабочее пространство  ------------------ ----------------------------------->
       <div :style="{'width': 100+'%'}">
         <div class="solution" :style="{'padding-left': menu_check+'%'}">
-          <input id="name_of_scheme" type="text" :value="functions[0].input[0][2]" @input="changes(0, 'input', 0, $event.target.value)">
+          
+            <!--- Блок выбра шаблона и года--------------------------------->
+            <div class="block_pat-years">
+            <select id="name_of_scheme" @click="import_from_server()" v-model="load_pat.select.picked">
+              <option style="font-size: 20px" v-for="(build) in load_pat.select.variants" :key=build >
+                {{build}}
+              </option>
+            </select>     
+            <select id="years-selector">
+              <option style="font-size: 20px"> 2014-15 - самая тёплая зима</option>
+              <option style="font-size: 20px"> 2018-19</option>
+              <option style="font-size: 20px"> 2019-20</option>
+              <option style="font-size: 20px"> 2020-21 - самая холодная зима»</option>
+              <option style="font-size: 20px"> 2021-22</option>
+            </select>        
+          </div>
+          <!--- Блок выбра шаблона и года--------------------------------->
+
           <!-- Блок с расчетом суммарных притоков и потерь -->
           <div class="sum_block">
             <div id="sum_minus">
@@ -231,46 +248,6 @@
           <!-- Пространство кнопок загрузки шаблонов ------------------------------------------->
           <div class="btn_div_global">
             <div class="btn_patterns" >
-              <!-- Кнопка загрузки шаблона -->
-              <div class="btn_loadpat">
-                <button class="btn_pat" @click="check_loadpat = !check_loadpat">
-                  <div style="margin: 2%;"> Загрузить шаблон </div>
-                </button>
-                
-                <div class="show_pat" v-if="check_loadpat">
-                  <div class="content"> 
-                    <b>Выберите шаблон</b>
-                    <select id="big_select" v-model="load_pat.select.picked">
-                      <option style="" v-for="(build) in load_pat.select.variants" :key=build >
-                        {{build}}
-                      </option>
-                    </select>
-                    <div v-if="loadpat_error.show">
-                      <div v-if="loadpat_error.text == ''">
-                        <b style="color:red">
-                          Ошибка загрузки шаблона
-                        </b>
-                      </div>
-                      <div v-if="loadpat_error.text != ''">
-                        <b style="color:red">
-                          {{loadpat_error.text}}
-                        </b>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="pat_buttons">
-                    <button class="pat_btn" @click="import_from_server()">
-                      <div style="margin: 2%;"> ОК </div>
-                    </button>
-                    <button class="pat_btn" @click="check_loadpat = !check_loadpat">
-                      <div style="margin: 2%;"> Отмена </div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <!-- /Кнопка загрузки шаблона -->
-  
-  
             <button class="btn_calc" @click="calc_all()">
               <div style="margin: 2%;"> Расчёт </div>
             </button>
@@ -768,14 +745,10 @@
         })
         return name;
       },
-      check_true_all(){
-        if (this.sections[1].check !== "true")
+      set_check_all(flag){
           this.sections.forEach(function(item){
           if (item.name !=='general')
-                item.check = "true";}) 
-        else 
-          this.sections.forEach(function(item){
-            item.check = false;})
+                item.check = flag;}) 
        } ,
       cacl_result(id){
           let self = this
@@ -798,9 +771,9 @@
     },
       calc_all(){
           console.log(this.functions[1].radio_elem)
-        this.check_true_all()
+        this.set_check_all("true")
         this.calc_all_server()
-        this.check_true_all()
+        this.set_check_all("false")
       },
     calc_all_after_dialog(val_pair){
       let val = val_pair[0]
@@ -1053,6 +1026,10 @@
     overflow-y: scroll;
     z-index: 100;
   }
+  .block_pat-years{
+    display: flex;
+    justify-content: start;
+  }
   /*-- Вкладки в левой части экрана ------------------------------------------- */
   .left_panel{
     position: fixed;
@@ -1114,12 +1091,6 @@
     flex-direction: column;
     justify-content: center;
     width: 31%;
-  }
-  .btn_savepat{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 31%; 
   }
   .btn_calc{
     display: flex;
@@ -1373,17 +1344,23 @@
     border-radius: 4px; 
     transform:scale(1.2);
   }
-  #name_of_scheme
+  #name_of_scheme, #years-selector
   {
     font-size: 24px;
     margin: 2%;
     margin-left: 8%;
-    margin-right: 8%;
     margin-bottom: 0%;
     border: 2px solid #435d6b;
     box-shadow: 0 0 10px #1e3a49;
     border-radius: 4px;
     padding-left: 1%;
+    width: 50%;
+  }
+  #years-selector
+  {
+    margin-left: 0%;
+    margin-right: 8%;
+    width: 50%;
   }
     /* /Отрисовка основных блоков расчета */
   /* /Основное рабочее пространство--------------------------------------------*/
