@@ -274,50 +274,6 @@
             <button class="btn_calc" @click="calc_all()">
               <div style="margin: 2%;"> Расчёт </div>
             </button>
-  
-              <!-- Кнопка сохранения шаблона -->
-              <div class="btn_savepat">
-                <button class="btn_pat" @click="check_savepat = !check_savepat; savepat_error.show = false">
-                  <div style="margin: 2%;"> Сохранить шаблон </div>
-                </button> 
-                <div class="show_pat" v-if="check_savepat">
-                  <div class="content"> 
-                    <b>Название шаблона</b>
-                    
-                    <input class="inp_pat" type="text" v-model="functions[0].input[0][2]">
-                    <br>
-                    <div>
-                      <input type="radio" value="Загружать полностью" v-model="savepat.radio.picked">
-                      <label>Сохранять полностью</label>
-                    </div>
-                    <div>
-                      <input type="radio" value="Сохранять только из выбранных расчётов" v-model="savepat.radio.picked">
-                      <label>Сохранять только из выбранных расчётов</label>
-                    </div>
-                    <br>
-                    <div v-if="savepat_error.show">
-                      <div v-if="savepat_error.text == ''">
-                        <b style="color:red"> Ошибка сохранения шаблона </b>
-                      </div>
-                      <div v-if="savepat_error.text != ''">
-                        <b style="color:red">
-                          {{savepat_error.text}}
-                        </b>
-                      </div>
-                    </div>
-                  
-                  </div>
-                  <div class="pat_buttons">
-                    <button class="pat_btn" @click="export_to_server()">  
-                      <div style="margin: 2%;">ОК</div>
-                    </button>
-                    <button class="pat_btn" @click="check_savepat = !check_savepat">
-                    <div style="margin: 2%;"> Отмена </div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <!-- /Кнопка сохранения шаблона -->
             </div>
           </div>
           <!-- /Пространство кнопок загрузки шаблонов ------------------------------------------->
@@ -446,11 +402,6 @@
     </dialogbox-login> 
     <dialogbox-reg v-model:show=login_reg_check>
     </dialogbox-reg> 
-    <dialog-buttons v-model:show=dialog_buttons_check @result="calc_all_after_dialog" v-model:name="functions[0].input[0][2]" 
-       @update:name="this.changes(0, 'input', 0, $event.target.value)" v-model:error_show="savepat_error.show" 
-       v-model:error_text="savepat_error.text"
-       >
-    </dialog-buttons>     
   </div>
   </template>
   <script>
@@ -459,9 +410,8 @@
   export default{
     data(){
       return {
-        dialog_buttons_check: false,
         login_reg_check:[false,false],
-        menu_check: '20',
+        menu_check: '0',
         settings_check: '0',
         check_savepat: false,
         check_loadpat: false,
@@ -848,14 +798,9 @@
     },
       calc_all(){
           console.log(this.functions[1].radio_elem)
-      if(this.build_changes.size > 0){
-        this.dialog_buttons_check = true
-      }
-      else{
         this.check_true_all()
         this.calc_all_server()
         this.check_true_all()
-      }
       },
     calc_all_after_dialog(val_pair){
       let val = val_pair[0]
