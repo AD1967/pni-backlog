@@ -16,7 +16,7 @@
           <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20" style=" position: relative; left: 180px;" />
           <div style="display:flex; position: relative; left: 240px"> 
             <label for="id_settings" class="header_menu"  style="width:28px; height: 28px;">
-              <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; left:20%;"/> 
+              <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; left:25%;"/> 
             </label>
           </div>
         </div>
@@ -245,15 +245,58 @@
           <!-- Конец блока c расчетом суммарных притоков и потерь ------------------------------------------------------------->
           
           
-          <!-- Пространство кнопок загрузки шаблонов ------------------------------------------->
-          <div class="btn_div_global">
-            <div class="btn_patterns" >
-            <button class="btn_calc" @click="calc_all()">
-              <div style="margin: 2%;"> Расчёт </div>
-            </button>
+          <!-- Пространство кнопок расчетов  ------------------------------------------------------>
+          <div class="buttons_for_calc">
+
+            <div class="math_calc_block">
+              <button class="btn_calc" @click="calc_all()">
+                <div> Расчёт по формулам </div>
+              </button>
+              <input class="output_field" type="text" readonly>  
+              <button class="btn_calc">
+                <div> Скачать</div>
+              </button>
             </div>
-          </div>
-          <!-- /Пространство кнопок загрузки шаблонов ------------------------------------------->
+
+            <div class="math_calc_block">
+              <button class="btn_calc">
+                <div> Расчёт по ИНС </div>
+              </button>
+              <input class="output_field" type="text" readonly>  
+              <button class="btn_calc">
+                <div> Скачать</div>
+              </button>
+            </div>
+
+            <div class="TC-and-CPT_block">
+              <div class="buttons_TC-CPT">
+                  <button class="btn_calc_TC">
+                    <div> Расчёт по ТЭЦ </div>
+                  </button>
+                  <button class="btn_calc_TC">
+                  <div> Расчёт по ЦПТ </div>
+                </button>  
+              </div>    
+              
+              <div class="outputs_TC-and_CPT">   
+                  <input class="output_field_TC" type="text" readonly>  
+                  <input class="output_field_TC" type="text" readonly>    
+                  <input class="output_field_TC" type="text" readonly>  
+              </div> 
+
+              <div class="buttons_TC-CPT">
+                  <button class="btn_calc_TC">
+                    <div> Скачать</div>
+                  </button>
+                  <button class="btn_calc_TC">
+                  <div> Скачать </div>
+                </button>  
+              </div>    
+            </div>
+          </div>              
+          
+          <!-- /Пространство кнопок расчетов--------- ------------------------------------------->
+          
           <!-- Отрисовка основных блоков расчета ------------------------------------------------>
           <div v-for="section in sections" :key=section>
             <div v-show="section.check==='true'">
@@ -1065,123 +1108,78 @@
     transition: background-color 300 ms;
   }
   /*-- /Вкладки в левой части экрана ------------------------------------------- */
+
+
+/*--Кнопки расчетов--------------------------------------------------- ----------*/
+.buttons_for_calc{
+  display:flex;
+  justify-content: space-between;
+  color: #e5e5dc;
+  font-size: 22px;
+  margin-left:  8%;
+  margin-right: 8%;
+}
+.btn_calc, .btn_calc_TC{
+    width: 100%; 
+    background-color: #26495c; 
+    border: 2px solid #234455;
+    border-radius: 10px; 
+    box-shadow: 0 0 10px #1e3a49;
+    color: #e5e5dc;
+    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+    font-size: 20px;
+    min-height: 35px;
+  }
+  .btn_calc_TC{
+    width: 32%;
+  }
+  .btn_calc:hover, .btn_calc_TC:hover{
+    background-color: #26495c; 
+    border: 2px solid #234455;
+    border-radius: 10px; 
+    box-shadow: 0 0 5px #1e3a49 inset;
+    color: #e5e5dc;
+  }
+
+  .math_calc_block{
+    width:24%;
+  }
+  .TC-and-CPT_block{
+    width: 48%;
+    display: block;
+  }
+  .buttons_TC-CPT, .outputs_TC-and_CPT{
+    display:flex;
+    justify-content: space-between;
+  }
+.outputs_TC-and_CPT{
+  display: flex;
+  justify-content: space-between;
+}
+
+  .output_field, .output_field_TC{
+    width: 100%;
+    border: 3px solid #e28a16;
+    box-shadow: 0 0 10px #cf7b0c;
+    font-size: 26px; 
+    margin-top:20px;
+    margin-bottom:20px;
+  }
+  .output_field_TC{
+    width: 32%;
+  }
   /* Основное рабочее пространство ---------------------------------------------*/
   .solution{ 
     display: flex;
     flex-direction: column;
     width: 100%;
   }
-    /* Пространство кнопок загрузки шаблонов и расчета */
-  .btn_div_global{
-    display: flex;
-    justify-content: space-between;
-    margin: 2%;
-    margin-left:  8%;
-    margin-right: 8%;
-    align-items: start;
-  }
-  .btn_patterns{
-    display: flex;
-    align-items:start; 
-    justify-content: space-between;
-    width: 100%;
-  }
-  .btn_loadpat{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 31%;
-  }
-  .btn_calc{
-    display: flex;
-    justify-content: center;
-    width: 31%; 
-    background-color: #26495c; 
-    border: 2px solid #234455;
-    border-radius: 10px; 
-    box-shadow: 0 0 10px #1e3a49;
-    color: #e5e5dc;
-    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-    margin-right: 2%;
-    margin-left: 2%;
-  }
-  .btn_calc:hover{
-    display: flex;
-    justify-content: center;
-    background-color: #26495c; 
-    border: 2px solid #234455;
-    border-radius: 10px; 
-    box-shadow: 0 0 5px #1e3a49 inset;
-    color: #e5e5dc;
-  }
-  .btn_pat{    
-    width: 100%; 
-    background-color: #e28a16; 
-    border: 2px solid #d47e0c;
-    border-radius: 10px; 
-    box-shadow: 0 0 10px #b96e0b;
-    color: #e5e5dc;
-    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-  }
-  .btn_pat:hover{
-    width: 100%; 
-    background-color: #e28a16; 
-    border: 2px solid #d47e0c;
-    border-radius: 10px; 
-    box-shadow: 0 0 5px #b96e0b inset;
-    color: #e5e5dc;
-  }
-  .show_pat{
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: center;
-    background: #e5e5dc;
-    border: 2px solid #e28a16;
-    position: relative;
-    border-radius: 4px; 
-    padding: 2%;
-    margin: 1%;
-  }
   .content{
     display: flex;
     flex-direction: column;
     margin: 1%;
   }
-  .pat_buttons{
-    display: flex;
-    justify-content: space-between;
-  }
-  .pat_btn{
-    display: flex;
-    justify-content: center;
-    width: 30%; 
-    background-color: #26495c; 
-    border: 2px solid #234455;
-    border-radius: 10px; 
-    box-shadow: 0 0 10px #1e3a49;
-    color: #e5e5dc;
-    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-  }
-  .pat_btn:hover{
-    display: flex;
-    justify-content: center;
-    width: 30%; 
-    background-color: #26495c; 
-    border: 2px solid #234455;
-    border-radius: 10px; 
-    box-shadow: 0 0 5px #1e3a49 inset;
-    color: #e5e5dc;
-  }
-  .inp_pat{
-    background-color: #e5e5dc; 
-    border: 2px solid #435d6b;
-    border-radius: 4px; 
-    padding-left: 1%;
-    padding-right: 1%;
-    margin: 0.25%;
-  }
-    /* /Пространство кнопок загрузки шаблонов и расчета */
+  
     /* Отрисовка основных блоков расчета */
   
   .mega_block_sections{
