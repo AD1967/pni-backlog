@@ -4,23 +4,27 @@
     <div class="header"> 
       <div style="display: flex;">
         <input class="header_cb_transparent" type="checkbox" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
-        <label for="id_menu" class="header_menu">
+        <label   for="id_menu" class="header_menu">
           <label for="id_menu" class="strip"></label>
           <label for="id_menu" class="strip"></label>
           <label for="id_menu" class="strip"></label>
         </label>
       </div>
+      
+      
       <div class="header_text">
         <div class="header_title">Интегральный индекс</div>
-        <div style="display: flex; position: relative; left: 100px;">
-          <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20" style=" position: relative; left: 180px;" />
-          <div style="display:flex; position: relative; left: 240px"> 
-            <label for="id_settings" class="header_menu"  style="width:28px; height: 28px;">
-              <img for="id_settings" src="@/settings.jpg" style="width:28px; position: relative; left:25%;"/> 
+        
+        <div class="header_text header_exit">
+          <div class="settings_button_block">
+            <label for="id_settings" class="header_menu" >
+                <img class="img_settings" for="id_settings" src="@/settings.jpg" /> 
             </label>
-          </div>
+            <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20"/>
+            
+          </div>  
+            <div class="exit_label" @click="logout()">Выход</div>  
         </div>
-        <div class="exit_label" @click="logout()">Выход</div>
       </div>
     </div>
     <!--/Заголовок сайта------------------------------------------------------------------------>
@@ -248,51 +252,55 @@
           <!-- Пространство кнопок расчетов  ------------------------------------------------------>
           <div class="buttons_for_calc">
 
+            <!-- Формульный расчет по СП -->
             <div class="math_calc_block">
-              <button class="btn_calc" @click="calc_all()">
-                <div> Расчёт по формулам </div>
-              </button>
-              <input class="output_field" type="text" readonly>  
-              <button class="btn_calc">
-                <div> Скачать</div>
-              </button>
+              <div class="calc_download_block">            
+                <button class="btn_calc" @click="calc_all()">
+                  <div> Формульный расчет по СП 50.13330.2012</div>
+                </button>
+                
+                <button class="btn_calc btn_download">
+                  <img class="img_download" src="@/download.png"> 
+                </button>
+              </div>
+              <input class="output_field" type="text" readonly>         
             </div>
 
+            
+            <!-- Расчет искусственной нейронной сетью -->
             <div class="math_calc_block">
-              <button class="btn_calc">
-                <div> Расчёт по ИНС </div>
-              </button>
-              <input class="output_field" type="text" readonly>  
-              <button class="btn_calc">
-                <div> Скачать</div>
-              </button>
+              <div class="calc_download_block">            
+                <button class="btn_calc">
+                  <div> Расчет искусственной нейронной сетью </div>
+                </button>         
+                <button class="btn_calc btn_download">
+                  <img class="img_download" src="@/download.png"> 
+                </button>
+              </div>
+              <input class="output_field" type="text" readonly>         
+            </div>
+            
+            <!-- Отпуск тепловой энергии ТЭЦ -->
+            <div class="calc_TC_CPT_block">
+              <button class="btn_calc btn_TC">
+                <div> Отпуск тепловой энергии ТЭЦ </div>
+              </button>         
+              <input class="output_field" type="text" readonly>         
             </div>
 
-            <div class="TC-and-CPT_block">
-              <div class="buttons_TC-CPT">
-                  <button class="btn_calc_TC">
-                    <div> Расчёт по ТЭЦ </div>
-                  </button>
-                  <button class="btn_calc_TC">
-                  <div> Расчёт по ЦПТ </div>
-                </button>  
-              </div>    
-              
-              <div class="outputs_TC-and_CPT">   
-                  <input class="output_field_TC" type="text" readonly>  
-                  <input class="output_field_TC" type="text" readonly>    
-                  <input class="output_field_TC" type="text" readonly>  
-              </div> 
-
-              <div class="buttons_TC-CPT">
-                  <button class="btn_calc_TC">
-                    <div> Скачать</div>
-                  </button>
-                  <button class="btn_calc_TC">
-                  <div> Скачать </div>
-                </button>  
-              </div>    
+            <!-- Потребление тепловой энергии от ЦПТ  -->
+            <div class="calc_TC_CPT_block">                
+                <button class="btn_calc btn_TC">
+                  <div> Потребление тепловой энергии от ЦПТ </div>
+                </button>         
+              <input class="output_field" type="text" readonly>                
             </div>
+            <!-- Разница ТС и ЦПТ  -->
+            <div class="calc_TC_CPT_block" style="width:12%">                       
+              <input class="output_field" style="margin-top: 36%; margin-bottom:2px;" type="text" readonly>
+              <div class="comment_text">(разница ТЭЦ и ЦПТ)</div>                
+            </div>
+
           </div>              
           
           <!-- /Пространство кнопок расчетов--------- ------------------------------------------->
@@ -936,7 +944,7 @@
     padding: 0;
     box-sizing: border-box; 
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
   }
   /* Глобальные --------------------------------------------------------------- */
   select{
@@ -987,6 +995,7 @@
     user-select: none; 
     font-size: 150%;
     height: 100%;
+    float: right;
   }
   .settings_title
   {
@@ -1031,13 +1040,29 @@
   .header_text{
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding-left: 20px;
     padding-right: 20px;
-    width: 90%;
+    width: 100%;
+  }
+  .settings_button_block{
+    float: right;
+  }
+  .header_exit{
+    width: 15%;
+    margin-right:8%;
   }
   .header_title{
     font-size: 36px;
+    width:100%;
+  }
+  .settings.button_block{
+    display:flex;
+    padding:0;
+    float: left;
+  }
+  .img_settings{
+    height: 35px;
+    margin-top:15%;
   }
   .header_cb_transparent{
     opacity: 0;
@@ -1119,45 +1144,48 @@
   margin-left:  8%;
   margin-right: 8%;
 }
-.btn_calc, .btn_calc_TC{
-    width: 100%; 
+.math_calc_block{
+    width:23%;
+  }
+  .calc_TC_CPT_block{
+    width:16%;
+  }
+
+.btn_calc{
+    width: 76%; 
     background-color: #26495c; 
     border: 2px solid #234455;
     border-radius: 10px; 
     box-shadow: 0 0 10px #1e3a49;
     color: #e5e5dc;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-    font-size: 20px;
+    font-size: 22px;
     min-height: 35px;
   }
-  .btn_calc_TC{
-    width: 32%;
+  .btn_TC{
+    width: 100%;
   }
-  .btn_calc:hover, .btn_calc_TC:hover{
+  .btn_download{
+    width:20%;
+    margin-left: 4%;
+    padding-top:2%;
+  }
+  .img_download{
+    width: 30px;
+
+    }
+  .btn_calc:hover{
     background-color: #26495c; 
     border: 2px solid #234455;
     border-radius: 10px; 
     box-shadow: 0 0 5px #1e3a49 inset;
     color: #e5e5dc;
   }
-
-  .math_calc_block{
-    width:24%;
-  }
-  .TC-and-CPT_block{
-    width: 48%;
-    display: block;
-  }
-  .buttons_TC-CPT, .outputs_TC-and_CPT{
-    display:flex;
-    justify-content: space-between;
-  }
-.outputs_TC-and_CPT{
+  .calc_download_block{
   display: flex;
   justify-content: space-between;
-}
-
-  .output_field, .output_field_TC{
+  }
+  .output_field {
     width: 100%;
     border: 3px solid #e28a16;
     box-shadow: 0 0 10px #cf7b0c;
@@ -1165,9 +1193,13 @@
     margin-top:20px;
     margin-bottom:20px;
   }
-  .output_field_TC{
-    width: 32%;
+  .comment_text{
+    font-size:16px;
+    color:#cf7b0c;
+    text-align: center;
+    margin-top:2%;
   }
+ 
   /* Основное рабочее пространство ---------------------------------------------*/
   .solution{ 
     display: flex;
@@ -1242,7 +1274,7 @@
     padding: 10px;
   }
   .block_title{
-    font-size: 16px;
+    font-size: 24px;
     color:#1e3a49;
   }
   .field_inp, .field_inp_name, .field_select_readonly{
@@ -1292,6 +1324,7 @@
     color: #234455;
     vertical-align: text-bottom ;
     display: inline;
+    font-size: 26px;
   }
   .sum_titles{
     display: flexbox;
