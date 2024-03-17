@@ -9,12 +9,9 @@
           <label for="id_menu" class="strip"></label>
           <label for="id_menu" class="strip"></label>
         </label>
-      </div>
-      
-      
+      </div>   
       <div class="header_text">
-        <div class="header_title">Интегральный индекс</div>
-        
+        <div class="header_title">Интегральный индекс</div>     
         <div class="header_text header_exit">
           <div class="settings_button_block">
             <label for="id_settings" class="header_menu" >
@@ -256,7 +253,7 @@
             <div class="math_calc_block">
               <div class="calc_download_block">            
                 <button class="btn_calc" @click="calc_all()">
-                  <div> Формульный расчет по СП 50.13330.2012</div>
+                  <div class=btn_calc_text> Формульный расчет по СП 50.13330.2012</div>
                 </button>
                 
                 <button class="btn_calc btn_download">
@@ -271,7 +268,7 @@
             <div class="math_calc_block">
               <div class="calc_download_block">            
                 <button class="btn_calc">
-                  <div> Расчет искусственной нейронной сетью </div>
+                  <div class=btn_calc_text> Расчет искусственной нейронной сетью </div>
                 </button>         
                 <button class="btn_calc btn_download">
                   <img class="img_download" src="@/download.png"> 
@@ -283,7 +280,7 @@
             <!-- Отпуск тепловой энергии ТЭЦ -->
             <div class="calc_TC_CPT_block">
               <button class="btn_calc btn_TC">
-                <div> Отпуск тепловой энергии ТЭЦ </div>
+                <div class=btn_calc_text> Отпуск тепловой энергии ТЭЦ </div>
               </button>         
               <input class="output_field" type="text" readonly>         
             </div>
@@ -291,13 +288,13 @@
             <!-- Потребление тепловой энергии от ЦПТ  -->
             <div class="calc_TC_CPT_block">                
                 <button class="btn_calc btn_TC">
-                  <div> Потребление тепловой энергии от ЦПТ </div>
+                  <div class=btn_calc_text> Потребление тепловой энергии от ЦПТ </div>
                 </button>         
               <input class="output_field" type="text" readonly>                
             </div>
             <!-- Разница ТС и ЦПТ  -->
             <div class="calc_TC_CPT_block" style="width:12%">                       
-              <input class="output_field" style="margin-top: 36%; margin-bottom:2px;" type="text" readonly>
+              <input class="output_field" style="margin-top: 39%; margin-bottom:2px;" type="text" readonly>
               <div class="comment_text">(разница ТЭЦ и ЦПТ)</div>                
             </div>
 
@@ -1046,10 +1043,11 @@
   }
   .settings_button_block{
     float: right;
+    margin-right: 4%;
   }
   .header_exit{
     width: 15%;
-    margin-right:8%;
+    margin-right:7%;
   }
   .header_title{
     font-size: 36px;
@@ -1140,7 +1138,6 @@
   display:flex;
   justify-content: space-between;
   color: #e5e5dc;
-  font-size: 22px;
   margin-left:  8%;
   margin-right: 8%;
 }
@@ -1159,11 +1156,12 @@
     box-shadow: 0 0 10px #1e3a49;
     color: #e5e5dc;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-    font-size: 22px;
-    min-height: 35px;
   }
   .btn_TC{
     width: 100%;
+  }
+  .btn_calc_text{
+    font-size: 14px;
   }
   .btn_download{
     width:20%;
@@ -1194,7 +1192,7 @@
     margin-bottom:20px;
   }
   .comment_text{
-    font-size:16px;
+    font-size:14px;
     color:#cf7b0c;
     text-align: center;
     margin-top:2%;
