@@ -130,10 +130,20 @@ let calc_dec_result_map = {
     "heat_gains_pipelines":     function(result){return result}
 }
 
+let yearsMap = {
+    "Тестовая дата - 01.09.2022": [new Date('2022-09-01'), new Date('2022-09-01')],
+    "2014-15 - самая тёплая зима": [new Date('2014-09-01'), new Date('2015-05-31')],
+    "2018-19": [new Date('2018-09-01'), new Date('2019-05-31')],
+    "2019-20": [new Date('2019-09-01'), new Date('2020-05-31')],
+    "2020-21 - самая холодная зима": [new Date('2020-09-01'), new Date('2021-05-31')],
+    "2021-22": [new Date('2021-09-01'), new Date('2022-05-31')],
+    "2022-23": [new Date('2022-09-01'), new Date('2023-05-31')]
+}
 let id_mappers = {};
 id_mappers.input_mapper = input_mapper
 id_mappers.calc_map = calc_map
 id_mappers.calc_result_map = calc_result_map
 id_mappers.calc_dec_result_map = calc_dec_result_map
+id_mappers.yearsMap = yearsMap
 
 export default id_mappers

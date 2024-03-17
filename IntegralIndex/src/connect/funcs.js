@@ -132,9 +132,10 @@ function exportf(self, full, to_server, f){
 
 
 
-function calc(id, self){       
+function calc(id, self, selectedYear){       
     console.log("calc")
     console.log(self)
+    console.log(selectedYear)
     let export_build_r = export_funcs.export_build(self, false);
     if(export_build_r.error){
         export_error_alert(self,export_build_r.text)
@@ -144,9 +145,9 @@ function calc(id, self){
     else {
         export_error_alert(self,null)
         console.log("to_server")
-            const startDate = new Date('2022-09-01');
-            const endDate = new Date('2022-09-01');
-
+            const startDate = id_mappers.yearsMap[selectedYear][0];
+            const endDate = id_mappers.yearsMap[selectedYear][1];
+            console.log(startDate, endDate);
             let currentDate = new Date(startDate);
 
             let fatal_fail = false;
