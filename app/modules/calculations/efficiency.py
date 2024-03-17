@@ -8,6 +8,80 @@ from ..db.model import *
 countOfPoint = 3 #Количество выводимых знаков после запятой
 dt = 1 # Единичный временной промежуток
 
+tec = {
+    8: [75, 44],
+    7: [75, 44],
+    6: [75, 44],
+    5: [75, 44],
+    4: [75, 44],
+    3: [76, 44],
+    2: [79, 44],
+    1: [82, 45],
+    0: [85, 46],
+    -1: [87, 47],
+    -2: [90, 48],
+    -3: [93, 49],
+    -4: [95, 50],
+    -5: [98, 51],
+    -6: [101, 52],
+    -7: [103, 53],
+    -8: [106, 54],
+    -9: [109, 55],
+    -10: [111, 56],
+    -11: [114, 57],
+    -12: [117, 58],
+    -13: [119, 59],
+    -14: [122, 60],
+    -15: [124, 61],
+    -16: [127, 62],
+    -17: [130, 63],
+    -18: [130, 62],
+    -19: [130, 61],
+    -20: [130, 60],
+    -21: [130, 59],
+    -22: [130, 58],
+    -23: [130, 57],
+    -24: [130, 56],
+    -25: [130, 55],
+    -26: [130, 54]
+}
+ctp = {
+    8: [75, 33.94],
+    7: [75, 34.90],
+    6: [75, 35.87],
+    5: [75, 36.83],
+    4: [75, 37.80],
+    3: [75, 38.76],
+    2: [75, 39.73],
+    1: [77, 40.09],
+    0: [81, 41.65],
+    -1: [84, 43.58],
+    -2: [86, 44.55],
+    -3: [89, 45.51],
+    -4: [92, 46.48],
+    -5: [95, 47.44],
+    -6: [97, 48.41],
+    -7: [100, 49.37],
+    -8: [103, 50.34],
+    -9: [106, 51.30],
+    -10: [109, 52.57],
+    -11: [111, 53.23],
+    -12: [114, 54.19],
+    -13: [117, 55.18],
+    -14: [120, 56.12],
+    -15: [122, 57.09],
+    -16: [125, 58.05],
+    -17: [128, 59.98],
+    -18: [128, 60.65],
+    -19: [128, 61.91],
+    -20: [128, 62.65],
+    -21: [128, 63.84],
+    -22: [128, 64.81],
+    -23: [128, 65.77],
+    -24: [128, 66.73],
+    -25: [128, 66.78]
+}
+
 
 def toGCal(value):
     new_value = value * 2.3884e-10
@@ -45,6 +119,57 @@ def update_cur_info(data):
     global cur_info
     cur_info = data
     return ""
+
+def calc_tec():
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    t = 0
+    while (st <= fn):
+        global test_date
+        test_date = st
+        weather = get_weather_by_time(st)
+        t += weather.T
+        st += timedelta(seconds=1800)
+
+    t = int(t/48)
+    print(" t tec = ", t)
+
+    if t in tec:
+        t1, t2 = tec[t]
+    else:
+        t1, t2 = 0, 0
+
+    res = 0.0643 * 4190 * (t1 - t2)
+    return res
+
+
+def calc_ctp():
+    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    res = 0.
+    t = 0
+    while (st <= fn):
+        global test_date
+        test_date = st
+        weather = get_weather_by_time(st)
+        t += weather.T
+        st += timedelta(seconds=1800)
+
+    t = int(t/48)
+    print(" t ctp = ", t)
+
+    if t in ctp:
+        t1, t2 = ctp[t]
+    else:
+        t1, t2 = 0, 0
+
+    res = 0.0643 * 4190 * (t1 - t2)
+    return res
+
+
 def Q_walls(build_id):
     heat = 20
     dezh = 12
@@ -299,7 +424,7 @@ def Q_wnd_(build_id):
         k = 1.68
     elif tBuild > 1:
         k = 1 + 0.0169 * tBuild
-    return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
+    res = (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
         k * 8.5984e-7 * dt / window_type.R
 
 ########################################################################################################################################################################
