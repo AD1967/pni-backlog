@@ -162,11 +162,13 @@
               </option>
             </select>     
             <select id="years-selector">
+              <option style="font-size: 20px"> Тестовая дата - 01.09.2022</option>
               <option style="font-size: 20px"> 2014-15 - самая тёплая зима</option>
               <option style="font-size: 20px"> 2018-19</option>
               <option style="font-size: 20px"> 2019-20</option>
-              <option style="font-size: 20px"> 2020-21 - самая холодная зима»</option>
+              <option style="font-size: 20px"> 2020-21 - самая холодная зима</option>
               <option style="font-size: 20px"> 2021-22</option>
+              <option style="font-size: 20px"> 2022-23</option>
             </select>        
           </div>
           <!--- Блок выбра шаблона и года--------------------------------->
@@ -806,7 +808,8 @@
           console.log(self)
         this.results.forEach(function(item){
           if(item.id == id){
-              let calc_res = func.calc(id, self)
+              let year = document.getElementById('years-selector');
+              let calc_res = func.calc(id, self, year.value)
               console.log(calc_res)
               item.val = calc_res[0]
               return false
