@@ -258,7 +258,7 @@
                   <div class=btn_calc_text> Формульный расчет по СП 50.13330.2012</div>
                 </button>
                 
-                <button class="btn_calc btn_download">
+                <button class="btn_calc btn_download" @click="download_excel()">
                   <img class="img_download" src="@/download.png"> 
                 </button>
               </div>
@@ -845,6 +845,10 @@
           console.log("calc_all_after_dialog:logic_error")
           break;
       }
+    },
+    download_excel(){
+      let downl_res = func.download_excel()
+      console.log(downl_res)        
     },
       validate_input(val, type){
         if(type == 'str'){

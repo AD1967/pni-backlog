@@ -222,10 +222,24 @@ function check_token_before_render(data){
     return flag
 }
 
-function calc_dec(id, self, res){       
-    // ,self)
-    
-        return id_mappers.calc_dec_result_map[id](res)
+
+
+function download_excel(){
+    let result = requests.default_sget_request("/download", self)
+
+    if(result['fail']){
+        if(result['error'] == 'connect'){
+            alert("get_from_server: fail connect")
+        }
+        else{
+            alert("get_from_server: error: " + result['error'])
+        }
+        throw "";
+    }
+    else {
+        console.log(result)
+    }
+    return result
 }
 
 let funcs = {};
@@ -233,7 +247,8 @@ funcs.start = start
 funcs.calc = calc
 funcs.export = exportf
 funcs.load = load
+funcs.download_excel = download_excel
 funcs.import = import_from_server
 funcs.check_token_before_render = check_token_before_render
-funcs.calc_dec = calc_dec
 export default funcs
+
