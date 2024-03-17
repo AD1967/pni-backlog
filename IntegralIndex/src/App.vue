@@ -247,7 +247,6 @@
           </div>
           <!-- Конец блока c расчетом суммарных притоков и потерь ------------------------------------------------------------->
           
-          
           <!-- Пространство кнопок расчетов  ------------------------------------------------------>
           <div class="buttons_for_calc">
 
@@ -256,11 +255,10 @@
               <div class="calc_download_block">            
                 <button class="btn_calc" @click="calc_all()">
                   <div class=btn_calc_text> Формульный расчет по СП 50.13330.2012</div>
-                </button>
-                
-                <button class="btn_calc btn_download" @click="download_excel()">
-                  <img class="img_download" src="@/download.png"> 
-                </button>
+                </button> 
+                  <a @click="download_excel()" class="btn_calc btn_download" href="#" :download=url_to_download_math> 
+                    <img class="img_download" src="@/download.png"> 
+                  </a>           
               </div>
               <input class="output_field" type="text" readonly>         
             </div>
@@ -272,9 +270,9 @@
                 <button class="btn_calc">
                   <div class=btn_calc_text> Расчет искусственной нейронной сетью </div>
                 </button>         
-                <button class="btn_calc btn_download">
-                  <img class="img_download" src="@/download.png"> 
-                </button>
+                <a @click="download_excel()" class="btn_calc btn_download" href="#" :download=url_to_download_math> 
+                    <img class="img_download" src="@/download.png"> 
+                </a> 
               </div>
               <input class="output_field" type="text" readonly>         
             </div>
@@ -437,6 +435,7 @@
   export default{
     data(){
       return {
+        url_to_download_math : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Parabola3.svg/200px-Parabola3.svg.png",
         login_reg_check:[false,false],
         menu_check: '0',
         settings_check: '0',
@@ -1177,7 +1176,7 @@
   }
   .img_download{
     width: 30px;
-
+    margin-left:23%;
     }
   .btn_calc:hover{
     background-color: #26495c; 
