@@ -191,15 +191,15 @@
                   </div>  
                   <div class="sum_results">
                     <div v-if="results[2].val != ''">
-                      <h1><sub> {{results[2].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[3].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[4].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[5].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[6].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[7].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[8].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[9].val}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[10].val}} Гкал</sub> <sub></sub> </h1> 
+                      <h1><sub> {{results[2].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[3].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[4].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[5].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[6].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[7].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[8].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[9].val.toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{results[10].val.toFixed(3)}} Гкал</sub> <sub></sub> </h1> 
                     </div>
                     <br>
                     <hr v-if="results[2].val != ''">
@@ -227,12 +227,12 @@
                   
                   <div class="sum_results">
                     <div v-if="results[11].val != ''">
-                      <h1><sub>{{results[11].val}} Гкал</sub> </h1>
-                      <h1><sub>{{results[12].val}} Гкал</sub> </h1>
-                      <h1><sub>{{results[13].val}} Гкал</sub> </h1>
-                      <h1><sub>{{results[14].val}} Гкал</sub> </h1>
-                      <h1><sub>{{results[15].val}} Гкал</sub> </h1>
-                      <h1><sub>{{results[16].val}} Гкал</sub> </h1>
+                      <h1><sub>{{results[11].val.toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{results[12].val.toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{results[13].val.toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{results[14].val.toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{results[15].val.toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{results[16].val.toFixed(3)}} Гкал</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
