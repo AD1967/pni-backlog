@@ -1,8 +1,8 @@
 from .. import main
-from flask import request, jsonify
+from flask import request, jsonify, send_file
 #from flask_login import login_required
 from ...calculations.index import calc_index
-from ...calculations.efficiency import calc_tec, calc_ctp, calc_eff, calc_eff_wnd, calc_eff_wnd_inf, calc_eff_doors, calc_eff_doors_inf, \
+from ...calculations.efficiency import excel, calc_tec, calc_ctp, calc_eff, calc_eff_wnd, calc_eff_wnd_inf, calc_eff_doors, calc_eff_doors_inf, \
 calc_eff_constructs, calc_eff_roof, calc_eff_hws_pipes, calc_eff_heat_pipes, calc_eff_people, calc_eff_hws_cranes, \
 calc_eff_hws_showers, calc_eff_electro, calc_eff_vent, calc_eff_floor, printGCal, convertGCal
 from .responses import default_json_response
@@ -242,3 +242,11 @@ def api_calc_eff_floor():
     
     #data = calc_eff_floor(request.json)
     return default_json_response(not data is None, "error" if data is None else data)
+
+
+@main.route("/download", methods=["GET"])
+@token_auth.login_required
+def api_download():
+    res_excel = 'results.xlsx'
+    excel.to_excel(res_excel, index=False)
+    return send_file(res_excel, as_attachment=True)
