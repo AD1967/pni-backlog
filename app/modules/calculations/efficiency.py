@@ -446,7 +446,7 @@ def Q_wnd_(build_id):
         k = 1.68
     elif tBuild > 1:
         k = 1 + 0.0169 * tBuild
-    res = (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
+    return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
         k * 8.5984e-7 * dt / window_type.R
     # results[1] = res
     # results[10] += res
