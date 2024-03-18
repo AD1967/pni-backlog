@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, time, date
 import math
+import os
 import pandas as pd
 from ..db.common_gets import *
 from ..db.model import *
@@ -9,18 +10,23 @@ from ..db.model import *
 countOfPoint = 3 #Количество выводимых знаков после запятой
 dt = 1 # Единичный временной промежуток
 
-excel_template = pd.read_excel('app/modules/db/results_template.xlsx')
-excel = excel_template.copy()
-
-column_names = ['тепловые потери через окна', 'инфильтрация через окна', 'тепловые потери через входную группу',
-                'инфильтрация через входную группу', 'тепловые потери через ограждающие конструкции',
-                'тепловые потери через кровлю', 'тепловые потери через пол', 'тепловые потери, связанные с вентиляцией',
-                'доп затраты теплоты', 'сумма потерь', 'теплопритоки от людей', 'затраты тепловой энергии на ГВС для рукомойников',
-                'затраты тепловой энергии на ГВС для душевых', 'теплопритоки от систем электроосвещения и силового электроснабжения',
-                'теплопритоки от неизолированных трубопроводов ГВС', 'теплопритоки от неизолированных трубопроводов отопления', 'сумма притоков']
-df = pd.DataFrame(columns=column_names)
-
+name_excel = 'results.xlsx'
+df = []
 results = [0]*18
+
+
+def new_df():
+    global df
+    df = pd.DataFrame()
+    column_names = ['дата', 'тепловые потери через окна', 'инфильтрация через окна', 'тепловые потери через входную группу',
+                    'инфильтрация через входную группу', 'тепловые потери через ограждающие конструкции',
+                    'тепловые потери через кровлю', 'тепловые потери через пол', 'тепловые потери, связанные с вентиляцией',
+                    'доп затраты теплоты', 'сумма потерь', 'теплопритоки от людей', 'затраты тепловой энергии на ГВС для рукомойников',
+                    'затраты тепловой энергии на ГВС для душевых', 'теплопритоки от систем электроосвещения и силового электроснабжения',
+                    'теплопритоки от неизолированных трубопроводов ГВС', 'теплопритоки от неизолированных трубопроводов отопления', 'сумма притоков']
+    df = pd.concat([df, pd.Series(column_names)], axis=1, ignore_index=True)
+
+new_df()
 
 tec = {
     8: [75, 44],
@@ -369,8 +375,8 @@ def calc_eff(build_id):
     q_table = Q_table(build_id)
     q_doors = Q_doors(build_id)
     q_all = q_walls + q_floors + q_shkaf + q_shkafchik + q_divan + q_table + q_doors
-    results[9] = q_all
-    results[10] += q_all
+    results[9] = toGCal(q_all)
+    results[10] += toGCal(q_all)
     #result = [q_all, q_walls, q_floors, q_doors, q_shkaf, q_divan, q_table, q_shkafchik]
     # Если надо вернуть в ГКал. Не забыть изменить в calc_index.js:
     result = [toGCal(q_all), toGCal(q_walls), toGCal(q_floors), toGCal(q_doors), toGCal(q_shkaf), toGCal(q_divan), \
@@ -442,8 +448,8 @@ def Q_wnd_(build_id):
         k = 1 + 0.0169 * tBuild
     res = (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
         k * 8.5984e-7 * dt / window_type.R
-    results[1] = res
-    results[10] += res
+    # results[1] = res
+    # results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -466,8 +472,8 @@ def Q_wnd_inf(build_id):
     window_type = get_one_from_table(Window, int(cur_info['id_window_inf']))
     res =  1.005 * dt * 2.388458966275e-7 * (int(cur_info['temp_inside']) - weather.T) * int(cur_info['count_windows_inf']) * \
         (2 * int(cur_info['length_wnd_inf']) + 2 * int(cur_info['height_wnd_inf'])) * window_type.q * window_type.a
-    results[2] = res
-    results[10] += res
+    # results[2] = res
+    # results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -515,9 +521,10 @@ def calc_eff_wnd(build_id):
     while(st <= fn):
         global test_date
         test_date = st
-        results[0] = st
         res += Q_wnd_(build_id)
         st += timedelta(seconds = 1800)
+    results[1] = res
+    results[10] += res
     return res
 
 def calc_eff_wnd_inf(build_id):
@@ -531,6 +538,8 @@ def calc_eff_wnd_inf(build_id):
         test_date = st
         res += Q_wnd_inf(build_id)
         st += timedelta(seconds = 1800)
+    results[2] = res
+    results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -581,8 +590,8 @@ def Q_doors_(build_id):
     res = (float(cur_info['temp_inside']) - weather.T) * (1.1 + door_type.beta * float(cur_info['height']) * float(cur_info['floors'])) * \
         float(cur_info['q_doors_count_doors']) * float(cur_info['length_door']) * float(cur_info['height_door']) * k * 8.5984e-7 * dt  / door_type.R
 
-    results[3] = res
-    results[10] += res
+    # results[3] = res
+    # results[10] += res
     return res
 ########################################################################################################################################################################
 
@@ -606,8 +615,8 @@ def Q_doors_inf(build_id):
     res = 1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors_inf']) * \
         (2 * float(cur_info['length_door_inf']) + 2 * float(cur_info['height_door_inf'])) * door_type.q * door_type.a
 
-    results[4] = res
-    results[10] += res
+    # results[4] = res
+    # results[10] += res
     return res
 ########################################################################################################################################################################
 
@@ -655,6 +664,8 @@ def calc_eff_doors(build_id):
         test_date = st
         res += Q_doors_(build_id)
         st += timedelta(seconds = 1800)
+    results[3] = res
+    results[10] += res
     return res
 
 def calc_eff_doors_inf(build_id):
@@ -668,6 +679,8 @@ def calc_eff_doors_inf(build_id):
         test_date = st
         res += Q_doors_inf(build_id)
         st += timedelta(seconds = 1800)
+    results[4] = res
+    results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -721,8 +734,8 @@ def Q_constructs_(build_id):
          float(cur_info['count_windows_c']) * float(cur_info['length_wnd_c']) * float(cur_info['height_wnd_c']) - \
          float(cur_info['count_doors_c']) * float(cur_info['length_door_c']) * float(cur_info['height_door_c'])) * \
          k * 8.5984e-7  * dt/  energoeff.R
-    results[5] = res
-    results[10] += res
+    # results[5] = res
+    # results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -755,9 +768,8 @@ def Q_roof_(build_id):
     energoeff = get_one_from_table(Energoeff, int(cur_info['roof_energoeff']))
     res = float(cur_info['len_a']) * float(cur_info['len_b']) * (float(cur_info['temp_inside']) - weather.T) * \
         8.5984e-7 * dt / energoeff.R
-    results[6] = res
-    results[10] += res
-
+    # results[6] = res
+    # results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -806,6 +818,8 @@ def calc_eff_constructs(build_id):
         test_date = st
         res += Q_constructs_(build_id)
         st += timedelta(seconds = 1800)
+    results[5] = res
+    results[10] += res
     return res
 
 def calc_eff_roof(build_id):
@@ -819,6 +833,8 @@ def calc_eff_roof(build_id):
         test_date = st
         res += Q_roof_(build_id)
         st += timedelta(seconds = 1800)
+    results[6] = res
+    results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -849,8 +865,8 @@ def Q_hws_pipes(build_id):
 
     res = k * 3.14 * 0.028 * l * 0.3 * (60 - float(cur_info['temp_inside'])) * \
          8.5984e-7 * dt
-    results[15] = res
-    results[17] += res
+    #results[15] = res
+    #results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -883,8 +899,8 @@ def Q_heat_pipes(build_id):
     # См. файл с диска
     res = k * 3.14 * 0.028 * l * 0.3 * (90 - float(cur_info['temp_inside'])) * \
          8.5984e-7 * dt
-    results[16] = res
-    results[17] += res
+    #results[16] = res
+    #results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -933,6 +949,8 @@ def calc_eff_hws_pipes(build_id):
         test_date = st
         res += Q_hws_pipes(build_id)
         st += timedelta(seconds = 1800)
+    results[15] = res
+    results[17] += res
     return res
 
 def calc_eff_heat_pipes(build_id):
@@ -942,25 +960,28 @@ def calc_eff_heat_pipes(build_id):
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
 
+    #new_df()
+    global df
+    global results
+
+    results[0] = st.date()
+
     while(st <= fn):
         global test_date
         test_date = st
         res += Q_heat_pipes(build_id)
         st += timedelta(seconds = 1800)
 
-        #global excel
-        #excel = pd.concat([excel, pd.Series(results)], ignore_index=True)
-        #excel.append(pd.Series(results), ignore_index=True)
-        #excel.to_excel('results_excel.xlsx', index=False)
+    results[16] = res
+    results[17] += res
+    df = pd.concat([df, pd.Series(results)], axis=1, ignore_index=True)
 
-        global df
-        df.append(pd.Series(results), ignore_index=True)\
-        #df = pd.concat([df, pd.Series(results)], ignore_index=True)
-        #df.to_excel('results_.xlsx', index=False)
+    if os.path.exists(name_excel):
+        os.remove(name_excel)
+    df.to_excel(name_excel, index=False)
 
-        results = [0]*18
-
-    df.to_excel('results.xlsx', index=False)
+    results[10] = 0
+    results[17] = 0
     return res
 
 ########################################################################################################################################################################
@@ -983,8 +1004,8 @@ def Q_people(build_id):
     res = (n_men * (220 - 5 * float(cur_info['temp_inside'])) + \
             0.85 * n_women * (220 - 5 * float(cur_info['temp_inside'])) + 0.75 * n_children * k_children * (220 - 5 * float(cur_info['temp_inside']))) * \
             8.5984e-7 * dt
-    results[11] = res
-    results[17] += res
+    #results[11] = res
+    #results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1017,6 +1038,8 @@ def calc_eff_people(build_id):
         test_date = st
         res += Q_people(build_id)
         st += timedelta(seconds = 1800)
+    results[11] = res
+    results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1036,8 +1059,8 @@ def Q_hws_cranes(build_id):
     n_women = k_women * int(cur_info['womens_w'])
     res = 0.00009 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
         (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
-    results[12] = res
-    results[17] += res
+    # results[12] = res
+    # results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1070,6 +1093,8 @@ def calc_eff_hws_cranes(build_id):
         test_date = st
         res += Q_hws_cranes(build_id)
         st += timedelta(seconds = 1800)
+    results[12] = res
+    results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1088,8 +1113,8 @@ def Q_hws_showers(build_id):
     n_women = k_women * int(cur_info['womens_s'])
     res =  0.00018 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
         500 * (60 - 15) / 84600 * 8.5984e-7 * dt
-    results[13] = res
-    results[17] += res
+    # results[13] = res
+    # results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1122,6 +1147,8 @@ def calc_eff_hws_showers(build_id):
         test_date = st
         res += Q_hws_showers(build_id)
         st += timedelta(seconds = 1800)
+    results[13] = res
+    results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1141,8 +1168,8 @@ def Q_electro(build_id):
         #build = q_electro.build
         res = 0.95 * float(cur_info['len_a']) * float(cur_info['len_b'])* float(cur_info['floors']) * 8.5984e-7 * dt
     res = 0.95 * float(cur_info['elec_consumption_by_period']) * 8.5984e-7 * dt
-    results[14] = res
-    results[17] += res
+    # results[14] = res
+    # results[17] += res
     return res
 ########################################################################################################################################################################
 
@@ -1174,6 +1201,8 @@ def calc_eff_electro(build_id):
         test_date = st
         res += Q_electro(build_id)
         st += timedelta(seconds = 1800)
+    results[14] = res
+    results[17] += res
     return res
 
 ########################################################################################################################################################################
@@ -1221,8 +1250,8 @@ def Q_vent(build_id):
     p_air = (P_sv * 0.029 + P_vp * 0.018)/(8.314 * (t_out + 273.15))
     #######################################
     res = 0.28 * 1005 * 8.5984e-7 * p_air * A * float(cur_info['floors']) * h * n * (t_in - t_out) * dt
-    results[8] = res
-    results[10] += res
+    # results[8] = res
+    # results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -1255,6 +1284,8 @@ def calc_eff_vent(build_id):
         test_date = st
         res += Q_vent(build_id)
         st += timedelta(seconds = 1800)
+    results[8] = res
+    results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -1367,8 +1398,8 @@ def Q_floor_(build_id):
             f3 = f3_floor + f3_walls 
             f4 = 0
     res = (0.476 * f1 + 0.233 * f2 + 0.116 * f3 + 0.07 * f4) * (t_in - t_out) * 8.5984e-7 * dt
-    results[7] = res
-    results[10] += res
+    # results[7] = res
+    # results[10] += res
     return res
 
 ########################################################################################################################################################################
@@ -1401,6 +1432,8 @@ def calc_eff_floor(build_id):
         test_date = st
         res += Q_floor_(build_id)
         st += timedelta(seconds = 1800)
+    results[7] = res
+    results[10] += res
     return res
 
 ########################################################################################################################################################################
