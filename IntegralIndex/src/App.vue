@@ -256,7 +256,7 @@
                 <button class="btn_calc" @click="calc_all()">
                   <div class=btn_calc_text> Формульный расчет по СП 50.13330.2012</div>
                 </button> 
-                  <a @click="download_excel()" class="btn_calc btn_download" href="#" :download=url_to_download_math> 
+                  <a @click="download_excel()" class="btn_calc btn_download" href="#"> 
                     <img class="img_download" src="@/download.png"> 
                   </a>           
               </div>
@@ -294,7 +294,7 @@
             </div>
             <!-- Разница ТС и ЦПТ  -->
             <div class="calc_TC_CPT_block" style="width:12%">                       
-              <input class="output_field" style="margin-top: 39%; margin-bottom:2px;" type="text" readonly>
+              <input class="output_field" style="margin-top: 66px; margin-bottom:2px;" type="text" readonly>
               <div class="comment_text">(разница ТЭЦ и ЦПТ)</div>                
             </div>
 
@@ -435,7 +435,7 @@
   export default{
     data(){
       return {
-        url_to_download_math : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Parabola3.svg/200px-Parabola3.svg.png",
+        url_to_download_math : "",
         login_reg_check:[false,false],
         menu_check: '0',
         settings_check: '0',
@@ -1151,7 +1151,7 @@
     width:23%;
   }
   .calc_TC_CPT_block{
-    width:16%;
+    width:18%;
   }
 
 .btn_calc{
@@ -1167,7 +1167,7 @@
     width: 100%;
   }
   .btn_calc_text{
-    font-size: 14px;
+    font-size: 18px;
   }
   .btn_download{
     width:20%;
