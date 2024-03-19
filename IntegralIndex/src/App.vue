@@ -293,9 +293,9 @@
               <input class="output_field" type="text" readonly>                
             </div>
             <!-- Разница ТС и ЦПТ  -->
-            <div class="calc_TC_CPT_block" style="width:12%">                       
-              <input class="output_field" style="margin-top: 66px; margin-bottom:2px;" type="text" readonly>
-              <div class="comment_text">(разница ТЭЦ и ЦПТ)</div>                
+            <div class="calc_TC_CPT_block" style="width:12%">     
+              <div class="comment_text">Разница ТЭЦ и ЦПТ</div>                       
+              <input class="output_field"  type="text" readonly>                 
             </div>
 
           </div>              
@@ -402,17 +402,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                  
-                  </div>
-                  <div v-for="result in results" v-bind:key=result>
-                    <div v-if="result.id===section.name" >
-                      <div class="btn_div">
-                        <button v-show="section.name!=='general'" class="btn_calc" v-on:click="cacl_result(result.id)">
-                          <div style="margin: 2%;"> Расчёт </div>
-                        </button>
-                      </div>
-                    </div>
+                    </div>               
                   </div>
                 </div>   
               </div>
@@ -941,7 +931,8 @@
     },
   }
   </script>
-  <style>
+ 
+ <style>
   *{
     margin: 0;
     padding: 0;
@@ -1167,7 +1158,7 @@
     width: 100%;
   }
   .btn_calc_text{
-    font-size: 18px;
+    font-size: 14px;
   }
   .btn_download{
     width:20%;
@@ -1193,7 +1184,7 @@
     width: 100%;
     border: 3px solid #e28a16;
     box-shadow: 0 0 10px #cf7b0c;
-    font-size: 26px; 
+    font-size: 24px; 
     margin-top:20px;
     margin-bottom:20px;
   }
