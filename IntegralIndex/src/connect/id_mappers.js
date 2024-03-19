@@ -69,6 +69,8 @@ let calc_map = {
     "heat_gains_electriclighting":  "/calc_efficiency_electro",
     "heat_gains_GVS":               "/calc_efficiency_hws_pipes",
     "heat_gains_pipelines":         "/calc_efficiency_heat_pipes",
+    "tec":                          "/calc_tec",
+    "cpt":                          "/calc_cpt" 
 }
 
 let calc_result_map = {
@@ -127,17 +129,19 @@ let calc_dec_result_map = {
     "heat_gains_showers":       function(result){return result},
     "heat_gains_electriclighting": function(result){return result},
     "heat_gains_GVS":           function(result){return result},
-    "heat_gains_pipelines":     function(result){return result}
+    "heat_gains_pipelines":     function(result){return result},
+    "tec":                      function(result){return result},
+    "cpt":                      function(result){return result}
 }
 
 let yearsMap = {
-    "Тестовая дата - 01.09.2022": [new Date('2022-09-01'), new Date('2022-09-01')],
-    "2014-15 - самая тёплая зима": [new Date('2014-09-01'), new Date('2015-05-31')],
-    "2018-19": [new Date('2018-09-01'), new Date('2019-05-31')],
-    "2019-20": [new Date('2019-09-01'), new Date('2020-05-31')],
-    "2020-21 - самая холодная зима": [new Date('2020-09-01'), new Date('2021-05-31')],
-    "2021-22": [new Date('2021-09-01'), new Date('2022-05-31')],
-    "2022-23": [new Date('2022-09-01'), new Date('2023-05-31')]
+    "Тестовая дата - 01.09.2022": [new Date('2022-09-01 00:00:00'), new Date('2022-09-01 23:59:59')],
+    "2014-15 - самая тёплая зима": [new Date('2014-09-01 00:00:00'), new Date('2015-05-31 23:59:59')],
+    "2018-19": [new Date('2018-09-01 00:00:00'), new Date('2019-05-31 23:59:59')],
+    "2019-20": [new Date('2019-09-01 00:00:00'), new Date('2020-05-31 23:59:59')],
+    "2020-21 - самая холодная зима": [new Date('2020-09-01 00:00:00'), new Date('2021-05-31 23:59:59')],
+    "2021-22": [new Date('2021-09-01 00:00:00'), new Date('2022-05-31 23:59:59')],
+    "2022-23": [new Date('2022-09-01 00:00:00'), new Date('2023-05-31 23:59:59')]
 }
 let id_mappers = {};
 id_mappers.input_mapper = input_mapper

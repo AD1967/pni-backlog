@@ -120,7 +120,7 @@ def update_cur_info(data):
     cur_info = data
     return ""
 
-def calc_tec():
+def calc_tec(build_id):
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -145,7 +145,7 @@ def calc_tec():
     return res
 
 
-def calc_ctp():
+def calc_cpt(build_id):
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
