@@ -277,27 +277,29 @@
               <input class="output_field" type="text" readonly>         
             </div>
             
-            <!-- Отпуск тепловой энергии ТЭЦ -->
-            <div class="calc_TC_CPT_block">
-              <button class="btn_calc btn_TC" @click="calc_tec()">
-                <div class=btn_calc_text> Отпуск тепловой энергии ТЭЦ </div>
-              </button>         
-              <input class="output_field" type="text" readonly>         
-            </div>
+            <div style="display:block; width: 40%;">
+              <div style=" width: 100%; display: flex; justify-content: space-between;"> 
+                  <!-- Отпуск тепловой энергии ТЭЦ -->
+                  <div class="calc_TC_CPT_block">
+                    <button class="btn_calc btn_TC" @click="calc_tec()">
+                      <div class=btn_calc_text> Отпуск тепловой энергии ТЭЦ </div>
+                    </button>         
+                    <input v-if="results[17].val != ''" class="output_field" type="text" :value="results[17].val.toString() + ' Гкал'" readonly>         
+                  </div>
 
-            <!-- Потребление тепловой энергии от ЦПТ  -->
-            <div class="calc_TC_CPT_block">                
-                <button class="btn_calc btn_TC" @click="calc_cpt()">
-                  <div class=btn_calc_text> Потребление тепловой энергии от ЦПТ </div>
-                </button>         
-              <input class="output_field" type="text" readonly>                
+                  <!-- Потребление тепловой энергии от ЦПТ  -->
+                  <div class="calc_TC_CPT_block">                
+                      <button class="btn_calc btn_TC" @click="calc_cpt()">
+                        <div class=btn_calc_text> Потребление тепловой энергии от ЦПТ </div>
+                      </button>   
+                      <input v-if="results[18].val != ''" class="output_field" type="text" :value="results[18].val.toString() + ' Гкал'" readonly>                
+                  </div>
+              </div>
+              <div v-if="(results[17].val != '' && results[18].val != '')">
+                <p class="comment_text">Разница ТЭЦ и ЦПТ</p>
+                <input  class="output_field" style="margin-top: 10px;" type="text" :value="((results[18].val-results[17].val).toFixed(3)).toString() + ' Гкал'" readonly>
+              </div>
             </div>
-            <!-- Разница ТС и ЦПТ  -->
-            <div class="calc_TC_CPT_block" style="width:12%">                       
-              <input class="output_field" style="margin-top: 66px; margin-bottom:2px;" type="text" readonly>
-              <div class="comment_text">(разница ТЭЦ и ЦПТ)</div>                
-            </div>
-
           </div>              
           
           <!-- /Пространство кнопок расчетов--------- ------------------------------------------->
@@ -492,8 +494,8 @@
           {id: 'heat_gains_electriclighting', val: ''},
           {id: 'heat_gains_GVS', val: ''},
           {id: 'heat_gains_pipelines', val: ''},
-          {id: 'tec', val: ''},
-          {id: 'cpt', val: ''} 
+          {id: 'tec', val: ''}, //17
+          {id: 'cpt', val: ''} //18
         ],
         functions:
         [    
@@ -1057,6 +1059,7 @@
   .header_exit{
     width: 15%;
     margin-right:7%;
+    justify-content: end;
   }
   .header_title{
     font-size: 36px;
@@ -1154,7 +1157,7 @@
     width:23%;
   }
   .calc_TC_CPT_block{
-    width:18%;
+    width:48%;
   }
 
 .btn_calc{
@@ -1165,6 +1168,8 @@
     box-shadow: 0 0 10px #1e3a49;
     color: #e5e5dc;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+    min-height: 40px;
+    max-height: 40px;
   }
   .btn_TC{
     width: 100%;
@@ -1196,12 +1201,14 @@
     width: 100%;
     border: 3px solid #e28a16;
     box-shadow: 0 0 10px #cf7b0c;
-    font-size: 24px; 
+    font-size: 18px; 
     margin-top:20px;
-    margin-bottom:20px;
+    margin-bottom:0px;
+    text-align: right;
+    padding-right: 4px;
   }
   .comment_text{
-    font-size:14px;
+    font-size:18px;
     color:#cf7b0c;
     text-align: center;
     margin-top:2%;
@@ -1297,7 +1304,7 @@
     width: 75%;
   }
   .field_select_readonly{
-    width: 280%;
+    width: 100%;
   }
   .sum_block{
     background-color: #e5e5dc; 
