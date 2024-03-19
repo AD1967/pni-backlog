@@ -279,7 +279,7 @@
             
             <!-- Отпуск тепловой энергии ТЭЦ -->
             <div class="calc_TC_CPT_block">
-              <button class="btn_calc btn_TC">
+              <button class="btn_calc btn_TC" @click="calc_tec()">
                 <div class=btn_calc_text> Отпуск тепловой энергии ТЭЦ </div>
               </button>         
               <input class="output_field" type="text" readonly>         
@@ -287,7 +287,7 @@
 
             <!-- Потребление тепловой энергии от ЦПТ  -->
             <div class="calc_TC_CPT_block">                
-                <button class="btn_calc btn_TC">
+                <button class="btn_calc btn_TC" @click="calc_cpt()">
                   <div class=btn_calc_text> Потребление тепловой энергии от ЦПТ </div>
                 </button>         
               <input class="output_field" type="text" readonly>                
@@ -408,7 +408,7 @@
                   <div v-for="result in results" v-bind:key=result>
                     <div v-if="result.id===section.name" >
                       <div class="btn_div">
-                        <button v-show="section.name!=='general'" class="btn_calc" v-on:click="cacl_result(result.id)">
+                        <button v-show="section.name!=='general'" class="btn_calc" v-on:click="calc_result(result.id)">
                           <div style="margin: 2%;"> Расчёт </div>
                         </button>
                       </div>
@@ -502,6 +502,8 @@
           {id: 'heat_gains_electriclighting', val: ''},
           {id: 'heat_gains_GVS', val: ''},
           {id: 'heat_gains_pipelines', val: ''},
+          {id: 'tec', val: ''},
+          {id: 'cpt', val: ''} 
         ],
         functions:
         [    
@@ -799,7 +801,7 @@
           if (item.name !=='general')
                 item.check = flag;}) 
        } ,
-      cacl_result(id){
+      calc_result(id){
           let self = this
           console.log(self)
         this.results.forEach(function(item){
@@ -816,7 +818,7 @@
     calc_all_server(){
       let self = this
       this.sections.forEach(function(item){
-          self.cacl_result(item.name, self)
+          self.calc_result(item.name, self)
       })
     },
       calc_all(){
@@ -824,6 +826,17 @@
         this.set_check_all("true")
         this.calc_all_server()
         this.set_check_all("false")
+      },
+
+      calc_tec(){
+        let self = this
+        console.log("AAAAA")
+        self.calc_result("tec", self)
+      },
+      calc_cpt(){
+        let self = this
+        console.log("AAAAA")
+        self.calc_result("cpt", self)
       },
     calc_all_after_dialog(val_pair){
       let val = val_pair[0]
