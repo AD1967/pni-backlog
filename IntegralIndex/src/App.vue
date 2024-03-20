@@ -191,20 +191,20 @@
                   </div>  
                   <div class="sum_results">
                     <div v-if="results[2].val != ''">
-                      <h1><sub> {{results[2].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[3].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[4].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[5].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[6].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[7].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[8].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[9].val.toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{results[10].val.toFixed(3)}} Гкал</sub> <sub></sub> </h1> 
+                      <h1><sub> {{parseFloat(results[2].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[3].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[4].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[5].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[6].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[7].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[8].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[9].val).toFixed(3)}}  Гкал</sub> </h1>
+                      <h1><sub> {{parseFloat(results[10].val).toFixed(3)}} Гкал</sub> <sub></sub> </h1> 
                     </div>
                     <br>
                     <hr v-if="results[2].val != ''">
                     <h1 v-if="results[2].val != ''" class ="red_sum"> <sub>
-                      {{(results[2].val + results[3].val+ results[4].val + results[5].val + results[6].val + results[7].val + results[8].val + results[9].val + results[10].val).toFixed(3)}} Гкал
+                      {{(parseFloat(results[2].val) + parseFloat(results[3].val)+ parseFloat(results[4].val) + parseFloat(results[5].val) + parseFloat(results[6].val) + parseFloat(results[7].val) + parseFloat(results[8].val) + parseFloat(results[9].val) + parseFloat(results[10].val)).toFixed(3)}} Гкал
                     </sub></h1>
                   </div>              
               </div>            
@@ -227,12 +227,12 @@
                   
                   <div class="sum_results">
                     <div v-if="results[11].val != ''">
-                      <h1><sub>{{results[11].val.toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{results[12].val.toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{results[13].val.toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{results[14].val.toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{results[15].val.toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{results[16].val.toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{parseFloat(results[11].val).toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{parseFloat(results[12].val).toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{parseFloat(results[13].val).toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{parseFloat(results[14].val).toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{parseFloat(results[15].val).toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{parseFloat(results[16].val).toFixed(3)}} Гкал</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
@@ -240,7 +240,7 @@
                     <br>
                     <hr v-if="results[11].val != ''">
                     <h1 v-if="results[11].val != ''" class ="red_sum"> <sub>
-                      {{(results[11].val + results[12].val + results[13].val + results[14].val + results[15].val + results[16].val).toFixed(3)}} Гкал</sub>
+                      {{(parseFloat(results[11].val) + parseFloat(results[12].val) + parseFloat(results[13].val) + parseFloat(results[14].val) + parseFloat(results[15].val) + parseFloat(results[16].val)).toFixed(3)}} Гкал</sub>
                     </h1>
                   </div>                            
               </div> 
@@ -260,7 +260,9 @@
                     <img class="img_download" src="@/download.png"> 
                   </a>           
               </div>
-              <input class="output_field" type="text" readonly>         
+              <input v-if="results[16].val != ''"  class="output_field" type="text" 
+              :value="((parseFloat(results[2].val) + parseFloat(results[3].val)+ parseFloat(results[4].val) + parseFloat(results[5].val) + parseFloat(results[6].val) + parseFloat(results[7].val) + parseFloat(results[8].val) + parseFloat(results[9].val) + parseFloat(results[10].val)) - (parseFloat(results[11].val) + parseFloat(results[12].val) + parseFloat(results[13].val) + parseFloat(results[14].val) + parseFloat(results[15].val) + parseFloat(results[16].val))).toFixed(3).toString() + ' Гкал'" 
+              readonly>         
             </div>
 
             
@@ -274,7 +276,7 @@
                     <img class="img_download" src="@/download.png"> 
                 </a> 
               </div>
-              <input class="output_field" type="text" readonly>         
+              <input v-if="0 == 1" class="output_field" type="text" readonly>         
             </div>
             
             <div style="display:block; width: 40%;">
@@ -818,6 +820,8 @@
         this.set_check_all("true")
         this.calc_all_server()
         this.set_check_all("false")
+        console.log("Итог")
+        console.log(parseFloat(this.results[2].val))
       },
 
       calc_tec(){
