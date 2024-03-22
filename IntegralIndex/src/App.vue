@@ -147,15 +147,17 @@
         </div> 
       </div>
       <!-- /Меню настроек--------------------------------------------------------------->
+      
       <!-- Основное рабочее пространство  ------------------ ----------------------------------->
       <div :style="{'width': 100+'%'}">
         <div class="solution" :style="{'padding-left': menu_check+'%'}">
           
+            <div class="choise_years_text_title"> Выбор отопительного сезона</div>
             <!--- Блок выбра шаблона и года--------------------------------->
             <div class="block_pat-years">
-            <select id="name_of_scheme" @click="import_from_server()" v-model="load_pat.select.picked">
-              <option style="font-size: 20px" v-for="(build) in load_pat.select.variants" :key=build >
-                {{build}}
+            <select @change="import_from_server()" id="name_of_scheme"  v-model="load_pat.select.picked">
+              <option  style="font-size: 20px" v-for="(build) in load_pat.select.variants" :key=build >
+                {{build}} 
               </option>
             </select>     
             <select id="years-selector">
@@ -175,72 +177,71 @@
             <div id="sum_minus">
                   <div class="block_title"> Теплопотери</div><br> 
                   <div class="sum_titles">
-                    <h1> Q<sub>окон</sub> </h1>
-                    <h1> Q<sub>рез.окон </sub> </h1>
-                    <h1> Q<sub>двери </sub> </h1>
-                    <h1> Q<sub>рез.двери</sub></h1>
-                    <h1> Q<sub>стен</sub> </h1>
-                    <h1> Q<sub>стен.инф.</sub> </h1>
-                    <h1> Q<sub>пол</sub> </h1>
-                    <h1> Q<sub>вент</sub> </h1>
-                    <h1> Q<sub>доп</sub></h1>
+                    <h1> трансмиссионные через окна <sub> </sub> </h1>
+                    <h1> инфильтрационные через окна  <sub> </sub></h1>
+                    <h1> трансмиссионные через входную группу<sub> </sub></h1>
+                    <h1> инфильтрационные через входную группу<sub> </sub></h1>
+                    <h1> теплопроводность через стены<sub> </sub></h1>
+                    <h1> теплопроводность через кровлю<sub> </sub></h1>
+                    <h1> теплопроводность через пол<sub> </sub></h1>
+                    <h1> через систему вытяжной вентиляции <sub> </sub> </h1>
+                    <h1> прогрев здания перед рабочим днем <sub> </sub></h1>
                     <br>
                     <hr>
-                    <h1 class="red_sum"> &Sum;<sub>потерь</sub></h1> 
+                    <h1 class="sum_text"> &Sum;<sub>теплопотерь</sub></h1> 
                     
                   </div>  
                   <div class="sum_results">
                     <div v-if="results[2].val != ''">
-                      <h1><sub> {{parseFloat(results[2].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[3].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[4].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[5].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[6].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[7].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[8].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[9].val).toFixed(3)}}  Гкал</sub> </h1>
-                      <h1><sub> {{parseFloat(results[10].val).toFixed(3)}} Гкал</sub> <sub></sub> </h1> 
+                      <h1><sub> {{printVal(results[2].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[3].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[4].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[5].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[6].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[7].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[8].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[9].val)}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[10].val)}} </sub> <sub></sub> </h1> 
                     </div>
                     <br>
-                    <hr v-if="results[2].val != ''">
-                    <h1 v-if="results[2].val != ''" class ="red_sum"> <sub>
-                      {{(parseFloat(results[2].val) + parseFloat(results[3].val)+ parseFloat(results[4].val) + parseFloat(results[5].val) + parseFloat(results[6].val) + parseFloat(results[7].val) + parseFloat(results[8].val) + parseFloat(results[9].val) + parseFloat(results[10].val)).toFixed(3)}} Гкал
-                    </sub></h1>
+                    <hr v-if="dop_results[0].val != -1">
+                    <h1 v-if="dop_results[0].val != -1" class ="sum_text"> <sub>
+                      {{printVal(dop_results[0].val)}} </sub></h1>
                   </div>              
               </div>            
               <div id="sum_plus">
                   <div class="block_title"> Теплопритоки</div><br> 
                   <div class="sum_titles">
-                    <h1> Q<sub>персонал</sub></h1>
-                    <h1> Q<sub>рук </sub></h1>
-                    <h1> Q<sub>душ </sub></h1>
-                    <h1> Q<sub>ЭЭ.отоп.пер.</sub></h1>
-                    <h1> Q<sub>труб</sub></h1>
-                    <h1> Q<sub>труб.отопл.</sub></h1>
+                    <h1> от людей <sub> </sub></h1>
+                    <h1> от ГВС рукомойников <sub> </sub></h1>
+                    <h1> от ГВС душевых <sub> </sub></h1>
+                    <h1> от электрооборудования <sub> </sub></h1>
+                    <h1> от неизолированных трубопроводов ГВС<sub> </sub></h1>
+                    <h1> от неизолированных трубопроводов отопления<sub> </sub></h1>
                     <h1> <sub sub style="color: #e5e5dc">.</sub> </h1>
                     <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
                     <h1> <sub sub style="color: #e5e5dc">.</sub> </h1> 
                     <br>
                     <hr>
-                    <h1 class="red_sum"> &Sum;<sub>притоков</sub></h1>  
+                    <h1 class="sum_text"> &Sum;<sub>теплопритоков</sub></h1>  
                   </div>
                   
                   <div class="sum_results">
                     <div v-if="results[11].val != ''">
-                      <h1><sub>{{parseFloat(results[11].val).toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{parseFloat(results[12].val).toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{parseFloat(results[13].val).toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{parseFloat(results[14].val).toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{parseFloat(results[15].val).toFixed(3)}} Гкал</sub> </h1>
-                      <h1><sub>{{parseFloat(results[16].val).toFixed(3)}} Гкал</sub> </h1>
+                      <h1><sub>{{printVal(results[11].val)}} </sub> </h1>
+                      <h1><sub>{{printVal(results[12].val)}} </sub> </h1>
+                      <h1><sub>{{printVal(results[13].val)}} </sub> </h1>
+                      <h1><sub>{{printVal(results[14].val)}} </sub> </h1>
+                      <h1><sub>{{printVal(results[15].val)}} </sub> </h1>
+                      <h1><sub>{{printVal(results[16].val)}} </sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     </div>
                     <br>
                     <hr v-if="results[11].val != ''">
-                    <h1 v-if="results[11].val != ''" class ="red_sum"> <sub>
-                      {{(parseFloat(results[11].val) + parseFloat(results[12].val) + parseFloat(results[13].val) + parseFloat(results[14].val) + parseFloat(results[15].val) + parseFloat(results[16].val)).toFixed(3)}} Гкал</sub>
+                    <h1 v-if="results[11].val != ''" class ="sum_text"> <sub>
+                      {{printVal(dop_results[1].val)}} </sub>
                     </h1>
                   </div>                            
               </div> 
@@ -260,8 +261,8 @@
                     <img class="img_download" src="@/download.png"> 
                   </a>           
               </div>
-              <input v-if="results[16].val != ''"  class="output_field" type="text" 
-              :value="((parseFloat(results[2].val) + parseFloat(results[3].val)+ parseFloat(results[4].val) + parseFloat(results[5].val) + parseFloat(results[6].val) + parseFloat(results[7].val) + parseFloat(results[8].val) + parseFloat(results[9].val) + parseFloat(results[10].val)) - (parseFloat(results[11].val) + parseFloat(results[12].val) + parseFloat(results[13].val) + parseFloat(results[14].val) + parseFloat(results[15].val) + parseFloat(results[16].val))).toFixed(3).toString() + ' Гкал'" 
+              <input v-if="dop_results[2].val != -1"  class="output_field" type="text" 
+              :value="printVal(dop_results[2].val)"
               readonly>         
             </div>
 
@@ -279,14 +280,14 @@
               <input v-if="0 == 1" class="output_field" type="text" readonly>         
             </div>
             
-            <div style="display:block; width: 40%;">
+            <div style="display:block; width: 45%;">
               <div style=" width: 100%; display: flex; justify-content: space-between;"> 
                   <!-- Отпуск тепловой энергии ТЭЦ -->
                   <div class="calc_TC_CPT_block">
                     <button class="btn_calc btn_TC" @click="calc_tec()">
                       <div class=btn_calc_text> Отпуск тепловой энергии ТЭЦ </div>
                     </button>         
-                    <input v-if="results[17].val != ''" class="output_field" type="text" :value="results[17].val.toString() + ' Гкал'" readonly>         
+                    <input v-if="results[17].val != ''" class="output_field" type="text" :value="printVal(results[17].val)" readonly>         
                   </div>
 
                   <!-- Потребление тепловой энергии от ЦПТ  -->
@@ -294,12 +295,12 @@
                       <button class="btn_calc btn_TC" @click="calc_cpt()">
                         <div class=btn_calc_text> Потребление тепловой энергии от ЦПТ </div>
                       </button>   
-                      <input v-if="results[18].val != ''" class="output_field" type="text" :value="results[18].val.toString() + ' Гкал'" readonly>                
+                      <input v-if="results[18].val != ''" class="output_field" type="text" :value="printVal(results[18].val)" readonly>                
                   </div>
               </div>
-              <div v-if="(results[17].val != '' && results[18].val != '')">
+              <div v-if="(dop_results[3].val != -1)">
                 <p class="comment_text">Разница ТЭЦ и ЦПТ</p>
-                <input  class="output_field" style="margin-top: 10px;" type="text" :value="((results[18].val-results[17].val).toFixed(3)).toString() + ' Гкал'" readonly>
+                <input  class="output_field" style="margin-top: 10px;" type="text" :value="printVal(dop_results[3].val)" readonly>
               </div>
             </div>
           </div>              
@@ -479,25 +480,31 @@
           {  section:'Теплопритоки', name: 'heat_gains_pipelines', title: 'Определение теплопритока от неизолированных трубопроводов отопления', check: 'false', main_block_width: '69'},
         ],
         results: [
-          {id: 'general', val: ''},
-          {id: 'reliability', val: ''},
-          {id: 'heat_los_win', val: ''},
-          {id: 'inf_win', val: ''},
-          {id: 'heat_los_inpgr', val: ''},
-          {id: 'inf_inpgr', val: ''},
-          {id: 'heat_los_heatcond_benv', val: ''},
-          {id: 'heat_los_heatcond_roof', val: ''},
-          {id: 'heat_los_floor', val: ''},
-          {id: 'heat_los_vent', val: ''},
-          {id: 'add_heatcosts', val: ''},
-          {id: 'heat_gains_people', val: ''},
-          {id: 'heat_gains_washstands', val: ''},
-          {id: 'heat_gains_showers', val: ''},
-          {id: 'heat_gains_electriclighting', val: ''},
-          {id: 'heat_gains_GVS', val: ''},
-          {id: 'heat_gains_pipelines', val: ''},
-          {id: 'tec', val: ''}, //17
-          {id: 'cpt', val: ''} //18
+          {id: 'general',                     val: ''}, //0
+          {id: 'reliability',                 val: ''}, //1
+          {id: 'heat_los_win',                val: ''}, //2
+          {id: 'inf_win',                     val: ''}, //3
+          {id: 'heat_los_inpgr',              val: ''}, //4
+          {id: 'inf_inpgr',                   val: ''}, //5
+          {id: 'heat_los_heatcond_benv',      val: ''}, //6
+          {id: 'heat_los_heatcond_roof',      val: ''}, //7
+          {id: 'heat_los_floor',              val: ''}, //8
+          {id: 'heat_los_vent',               val: ''}, //9
+          {id: 'add_heatcosts',               val: ''}, //10
+          {id: 'heat_gains_people',           val: ''}, //11
+          {id: 'heat_gains_washstands',       val: ''}, //12
+          {id: 'heat_gains_showers',          val: ''}, //13
+          {id: 'heat_gains_electriclighting', val: ''}, //14
+          {id: 'heat_gains_GVS',              val: ''}, //15
+          {id: 'heat_gains_pipelines',        val: ''}, //16
+          {id: 'tec',                         val: ''}, //17
+          {id: 'cpt',                         val: ''}  //18
+        ],
+        dop_results:[
+          {id: 'sum_pritok',                  val: -1}, //0
+          {id: 'sum_poter',                   val: -1}, //1
+          {id: 'razn_poter_pritok',           val: -1}, //2
+          {id: 'razn_tec_cpt',                val: -1}  //3
         ],
         functions:
         [    
@@ -769,6 +776,23 @@
         }
       },
     methods:{
+    numberWithSpaces(x) {
+      var parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      return parts.join(".");
+    },
+    printVal(val){
+      return this.numberWithSpaces(parseFloat(val).toFixed(3)) + ' Гкал';
+    },
+    calc_dop_results(){
+      if (this.results[2].val != ''){
+        this.dop_results[0].val = parseFloat(this.results[2].val)  + parseFloat(this.results[3].val)  + parseFloat(this.results[4].val)  + parseFloat(this.results[5].val)  + parseFloat(this.results[6].val)  + parseFloat(this.results[7].val) + parseFloat(this.results[8].val) + parseFloat(this.results[9].val) + parseFloat(this.results[10].val);
+        this.dop_results[1].val = parseFloat(this.results[11].val) + parseFloat(this.results[12].val) + parseFloat(this.results[13].val) + parseFloat(this.results[14].val) + parseFloat(this.results[15].val) + parseFloat(this.results[16].val);
+        this.dop_results[2].val = this.dop_results[0].val - this.dop_results[1].val;
+      }
+      if (this.results[18].val != '' && this.results[17].val != '')
+        this.dop_results[3].val = parseFloat(this.results[18].val) - parseFloat(this.results[17].val);
+      },
       logout(){
         localStorage.setItem("token", null)
         login_funcs.logout()
@@ -820,19 +844,18 @@
         this.set_check_all("true")
         this.calc_all_server()
         this.set_check_all("false")
-        console.log("Итог")
-        console.log(parseFloat(this.results[2].val))
+        this.calc_dop_results();
       },
 
       calc_tec(){
         let self = this
-        console.log("AAAAA")
         self.calc_result("tec", self)
+        this.calc_dop_results()
       },
       calc_cpt(){
         let self = this
-        console.log("AAAAA")
         self.calc_result("cpt", self)
+        this.calc_dop_results()
       },
     calc_all_after_dialog(val_pair){
       let val = val_pair[0]
@@ -926,6 +949,12 @@
       },
       import_from_server(){
         func.import(this)
+        this.clear_dop_results();
+      },
+      clear_dop_results(){
+        this.dop_results.forEach(function(item){
+          item.val = -1;
+        })  
       }
     },
     beforeCreate(){
@@ -1002,12 +1031,13 @@
     z-index: 20;
   }
   .exit_label{
+    font-size:36px;
     display: flex;
     align-items: center;
     user-select: none; 
-    font-size: 150%;
     height: 100%;
     float: right;
+    margin-left: 5px;
   }
   .settings_title
   {
@@ -1158,12 +1188,11 @@
   margin-right: 8%;
 }
 .math_calc_block{
-    width:23%;
+    width:26%;
   }
   .calc_TC_CPT_block{
     width:48%;
   }
-
 .btn_calc{
     width: 76%; 
     background-color: #26495c; 
@@ -1172,14 +1201,14 @@
     box-shadow: 0 0 10px #1e3a49;
     color: #e5e5dc;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-    min-height: 40px;
-    max-height: 40px;
+    min-height: 50px;
+    max-height: 50px;
   }
   .btn_TC{
     width: 100%;
   }
   .btn_calc_text{
-    font-size: 14px;
+    font-size: 18px;
   }
   .btn_download{
     width:20%;
@@ -1338,7 +1367,17 @@
   position: relative;
   justify-content: space-between;
   }
-  .red_sum{
+  .choise_years_text_title{
+    color: #234455;
+    text-align:left;
+    font-size: 24px;
+    margin-bottom:1%;
+    margin-left:51%;
+    margin-right:8%;
+    margin-top:1%;
+    width:50%;
+  }
+  .sum_text{
     color: #234455;
     vertical-align: text-bottom ;
     display: inline;
@@ -1347,12 +1386,12 @@
   .sum_titles{
     display: flexbox;
     float: left;
-    width: 30%;
+    width: 68%;
   }
   .sum_results{
     display: flexbox;
     float: right;
-    width: 68%;
+    width: 30%;
     margin-right: 2%;
     text-align: right;
   }
@@ -1396,7 +1435,8 @@
   #name_of_scheme, #years-selector
   {
     font-size: 24px;
-    margin: 2%;
+    margin-right: 2%;
+    margin-top: 0;
     margin-left: 8%;
     margin-bottom: 0%;
     border: 2px solid #435d6b;
