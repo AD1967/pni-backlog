@@ -160,7 +160,7 @@
                 {{build}} 
               </option>
             </select>     
-            <select id="years-selector">
+            <select @change="import_from_server()" id="years-selector">
               <option style="font-size: 20px"> Тестовая дата - 01.09.2022</option>
               <option style="font-size: 20px"> 2014-15 - самая тёплая зима</option>
               <option style="font-size: 20px"> 2018-19</option>
@@ -193,20 +193,20 @@
                   </div>  
                   <div class="sum_results">
                     <div v-if="results[2].val != ''">
-                      <h1><sub> {{printVal(results[2].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[3].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[4].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[5].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[6].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[7].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[8].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[9].val)}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[10].val)}} </sub> <sub></sub> </h1> 
+                      <h1><sub> {{printVal(results[2].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[3].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[4].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[5].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[6].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[7].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[8].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub> {{printVal(results[9].val, 'Гкал')}}  </sub> </h1>
+                      <h1><sub>{{printVal(results[10].val, 'Гкал')}} </sub> <sub></sub> </h1> 
                     </div>
                     <br>
                     <hr v-if="dop_results[0].val != -1">
                     <h1 v-if="dop_results[0].val != -1" class ="sum_text"> <sub>
-                      {{printVal(dop_results[0].val)}} </sub></h1>
+                      {{printVal(dop_results[0].val, 'Гкал')}} </sub></h1>
                   </div>              
               </div>            
               <div id="sum_plus">
@@ -228,12 +228,12 @@
                   
                   <div class="sum_results">
                     <div v-if="results[11].val != ''">
-                      <h1><sub>{{printVal(results[11].val)}} </sub> </h1>
-                      <h1><sub>{{printVal(results[12].val)}} </sub> </h1>
-                      <h1><sub>{{printVal(results[13].val)}} </sub> </h1>
-                      <h1><sub>{{printVal(results[14].val)}} </sub> </h1>
-                      <h1><sub>{{printVal(results[15].val)}} </sub> </h1>
-                      <h1><sub>{{printVal(results[16].val)}} </sub> </h1>
+                      <h1><sub>{{printVal(results[11].val, 'Гкал')}} </sub> </h1>
+                      <h1><sub>{{printVal(results[12].val, 'Гкал')}} </sub> </h1>
+                      <h1><sub>{{printVal(results[13].val, 'Гкал')}} </sub> </h1>
+                      <h1><sub>{{printVal(results[14].val, 'Гкал')}} </sub> </h1>
+                      <h1><sub>{{printVal(results[15].val, 'Гкал')}} </sub> </h1>
+                      <h1><sub>{{printVal(results[16].val, 'Гкал')}} </sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                       <h1><sub style="color: #e5e5dc;">.</sub> </h1>
@@ -241,7 +241,7 @@
                     <br>
                     <hr v-if="results[11].val != ''">
                     <h1 v-if="results[11].val != ''" class ="sum_text"> <sub>
-                      {{printVal(dop_results[1].val)}} </sub>
+                      {{printVal(dop_results[1].val, 'Гкал')}} </sub>
                     </h1>
                   </div>                            
               </div> 
@@ -261,12 +261,16 @@
                     <img class="img_download" src="@/download.png"> 
                   </a>           
               </div>
-              <input v-if="dop_results[2].val != -1"  class="output_field" type="text" 
-              :value="printVal(dop_results[2].val)"
-              readonly>         
+              <div v-if="dop_results[2].val != -1">
+                <p class="comment_text" style="width:150%">Разница теплопотерь и теплопритоков</p> 
+                <input class="output_field" type="text" 
+                :value="printVal(dop_results[2].val, 'Гкал')" readonly>
+                <p class="comment_text">Экологический ущерб </p> 
+                <input class="output_field" style="margin-top: 10px;" type="text" :value="printVal(dop_results[4].val, 'т.у.т')" readonly>
+                <input class="output_field" style="margin-top: 10px;" type="text" :value="printVal(dop_results[5].val, 'кг CO2/год')" readonly>
+              </div>         
             </div>
-
-            
+          
             <!-- Расчет искусственной нейронной сетью -->
             <div class="math_calc_block">
               <div class="calc_download_block">            
@@ -280,14 +284,14 @@
               <input v-if="0 == 1" class="output_field" type="text" readonly>         
             </div>
             
-            <div style="display:block; width: 45%;">
+            <div style="display:block; width: 50%;">
               <div style=" width: 100%; display: flex; justify-content: space-between;"> 
                   <!-- Отпуск тепловой энергии ТЭЦ -->
                   <div class="calc_TC_CPT_block">
                     <button class="btn_calc btn_TC" @click="calc_tec()">
                       <div class=btn_calc_text> Отпуск тепловой энергии ТЭЦ </div>
                     </button>         
-                    <input v-if="results[17].val != ''" class="output_field" type="text" :value="printVal(results[17].val)" readonly>         
+                    <input v-if="results[17].val != ''" class="output_field" type="text" :value="printVal(results[17].val, 'Гкал')" readonly>         
                   </div>
 
                   <!-- Потребление тепловой энергии от ЦПТ  -->
@@ -295,15 +299,18 @@
                       <button class="btn_calc btn_TC" @click="calc_cpt()">
                         <div class=btn_calc_text> Потребление тепловой энергии от ЦПТ </div>
                       </button>   
-                      <input v-if="results[18].val != ''" class="output_field" type="text" :value="printVal(results[18].val)" readonly>                
+                      <input v-if="results[18].val != ''" class="output_field" type="text" :value="printVal(results[18].val, 'Гкал')" readonly>                
+                      <div v-if="(dop_results[3].val != -1)">
+                        <p class="comment_text" style="text-align:right">Разница ТЭЦ и ЦПТ</p>
+                        <input  class="output_field" style="margin-bottom: 2px; margin-top: 10px;" type="text" :value="printVal(dop_results[3].val, 'Гкал')" readonly>
+                        <p class="comment_text" style="text-align:right">Экологический ущерб </p> 
+                        <input class="output_field" style="margin-top: 10px;" type="text" :value="printVal(dop_results[6].val, 'т.у.т')" readonly>
+                        <input class="output_field" style="margin-top: 10px;" type="text" :value="printVal(dop_results[7].val, 'кг СО2/год')" readonly> 
+                      </div> 
                   </div>
               </div>
-              <div v-if="(dop_results[3].val != -1)">
-                <p class="comment_text">Разница ТЭЦ и ЦПТ</p>
-                <input  class="output_field" style="margin-top: 10px;" type="text" :value="printVal(dop_results[3].val)" readonly>
-              </div>
             </div>
-          </div>              
+          </div>         
           
           <!-- /Пространство кнопок расчетов--------- ------------------------------------------->
           
@@ -504,7 +511,11 @@
           {id: 'sum_pritok',                  val: -1}, //0
           {id: 'sum_poter',                   val: -1}, //1
           {id: 'razn_poter_pritok',           val: -1}, //2
-          {id: 'razn_tec_cpt',                val: -1}  //3
+          {id: 'razn_tec_cpt',                val: -1}, //3
+          {id: 'eclg_sp_tut',                 val: -1}, //4
+          {id: 'eclg_sp_co2',                 val: -1}, //5
+          {id: 'eclg_tc_cpt_tut',             val: -1}, //6
+          {id: 'eclg_tc_cpt_co2',             val: -1}, //7
         ],
         functions:
         [    
@@ -781,17 +792,22 @@
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
       return parts.join(".");
     },
-    printVal(val){
-      return this.numberWithSpaces(parseFloat(val).toFixed(3)) + ' Гкал';
+    printVal(val, ue){
+      return this.numberWithSpaces(parseFloat(val).toFixed(3)) + ' ' +  ue;
     },
     calc_dop_results(){
       if (this.results[2].val != ''){
         this.dop_results[0].val = parseFloat(this.results[2].val)  + parseFloat(this.results[3].val)  + parseFloat(this.results[4].val)  + parseFloat(this.results[5].val)  + parseFloat(this.results[6].val)  + parseFloat(this.results[7].val) + parseFloat(this.results[8].val) + parseFloat(this.results[9].val) + parseFloat(this.results[10].val);
         this.dop_results[1].val = parseFloat(this.results[11].val) + parseFloat(this.results[12].val) + parseFloat(this.results[13].val) + parseFloat(this.results[14].val) + parseFloat(this.results[15].val) + parseFloat(this.results[16].val);
         this.dop_results[2].val = this.dop_results[0].val - this.dop_results[1].val;
+        this.dop_results[4].val = this.dop_results[2].val * 0.1486;
+        this.dop_results[5].val = this.dop_results[2].val * 276.28;
       }
-      if (this.results[18].val != '' && this.results[17].val != '')
+      if (this.results[18].val != '' && this.results[17].val != ''){
         this.dop_results[3].val = parseFloat(this.results[18].val) - parseFloat(this.results[17].val);
+        this.dop_results[6].val = this.dop_results[3].val * 0.1486;
+        this.dop_results[7].val = this.dop_results[3].val * 276.28;
+      }     
       },
       logout(){
         localStorage.setItem("token", null)
@@ -1188,7 +1204,7 @@
   margin-right: 8%;
 }
 .math_calc_block{
-    width:26%;
+    width:22%;
   }
   .calc_TC_CPT_block{
     width:48%;
@@ -1236,15 +1252,30 @@
     box-shadow: 0 0 10px #cf7b0c;
     font-size: 18px; 
     margin-top:20px;
-    margin-bottom:0px;
+    margin-bottom:5px;
     text-align: right;
     padding-right: 4px;
   }
   .comment_text{
     font-size:18px;
     color:#cf7b0c;
-    text-align: center;
+    text-align: left;
     margin-top:2%;
+  }
+
+  .ecology_block{
+    display: flex;
+    margin-right:8%;
+    margin-left: 8%;
+    margin-top: 1%;
+  }
+  
+  .ecology_SP{
+    width:26%;
+  }
+  .ecology_TC_CPT{
+    width:22%; 
+    margin-left:29%; 
   }
  
   /* Основное рабочее пространство ---------------------------------------------*/
