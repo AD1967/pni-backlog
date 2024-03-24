@@ -112,15 +112,28 @@
         <input class="settings_param_input" type="date" :value="functions[7].date[0][1]"   @input="changes(7, 'date', 0, $event.target.value)">
         <h1 class="settings_param_name">Класс энергетической эффективности </h1>
         <h1 class="settings_param_name">ограждающих конструкций </h1>
+        
         <div v-for="(sel, indexsel) in functions[9].select" :key=sel>  
-          <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
             <select :value="sel[3]" @change="changes(9, 'select', indexsel, $event.target.value)">
             <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
                 {{selbody}}
             </option> 
             </select>
-          </div>
         </div>
+
+        <!-- <select>
+          <option readonly> A++ (очень высокий) </option> 
+          <option readonly> A+  (очень высокий) </option> 
+          <option readonly> A   (очень высокий) </option> 
+          <option readonly> B+  (высокий)       </option> 
+          <option readonly> B   (высокий)       </option> 
+          <option readonly> C+  (нормальный)    </option>
+          <option readonly> С   (нормальный)    </option>  
+          <option readonly> С-  (нормальный)    </option> 
+          <option readonly> D   (пониженный)    </option> 
+          <option readonly> E   (низкий)       </option> 
+        </select> -->
+
         <!-- Мебель и жильцы--------------------------------------------->
         <h1 class="settings_param_name">Число шкафов</h1>
         <input class="settings_param_input" type="text" :value="functions[13].input[1][2]" @input="changes(13, 'input', 1, $event.target.value)">
@@ -1033,6 +1046,9 @@
   margin: 0;
   padding: 0;
   }
+  td{
+    width: auto;
+  }
   /* /Глобальные --------------------------------------------------------------- */
   /*--Заголовок---------------------------------------------------------------- */
   .header{
@@ -1368,7 +1384,7 @@
     width: 75%;
   }
   .field_select_readonly{
-    width: 100%;
+    width: 750px;
   }
   .sum_block{
     background-color: #e5e5dc; 
