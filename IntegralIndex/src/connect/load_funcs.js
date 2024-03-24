@@ -116,7 +116,7 @@ function load_build(self, id_build, result_func){
             requests.async_json_promise_get("/data/elements/pump?" + $.param({name: '',id_pump:''})),
             requests.async_json_promise_get("/data/elements/window?" + $.param({name: '',id_window:''})),
             requests.async_json_promise_get("/data/elements/doors?" + $.param({name: '',id_door:''})),
-            requests.async_json_promise_get("/data/elements/energoeff?" + $.param({name: '',id_energoeff:''})),
+            requests.async_json_promise_get("/data/elements/energoeff?" + $.param({name: '',id_energoeff:''})), ///!!!!!!!!!!!!!!!тут
             requests.async_json_promise_get("/data/elements/period?" + $.param({name: '',id_period:''})),
             requests.async_json_promise_get("/data/elements/material?" + $.param({name: '',id_material:''}))
         ).done(function (
@@ -189,7 +189,6 @@ function load_build(self, id_build, result_func){
                         }
                         )
                     }
-
                     set_input(self, "reliability:2", 0, build.ascents_hws)
                     set_input(self, "reliability:2", 1, build.descents_hws)
                     set_input(self, "reliability:2", 2, build.count_crane)

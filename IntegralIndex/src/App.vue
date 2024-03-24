@@ -3,7 +3,7 @@
     <!-- Заголовок сайта ------------------------------------------------------------------------>
     <div class="header"> 
       <div style="display: flex;">
-        <input class="header_cb_transparent" type="checkbox" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
+        <input class="header_cb_transparent" type="checkbox" @click="left_panel_show()" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
         <label   for="id_menu" class="header_menu">
           <label for="id_menu" class="strip"></label>
           <label for="id_menu" class="strip"></label>
@@ -288,7 +288,7 @@
             <div class="math_calc_block">
               <div class="calc_download_block">            
                 <button class="btn_calc">
-                  <div class=btn_calc_text> Расчет искусственной нейронной сетью </div>
+                  <div class=btn_calc_text id="neuro_calc_id"> Расчет искусственной нейронной сетью </div>
                 </button>         
                 <a @click="download_excel()" class="btn_calc btn_download" href="#" :download=url_to_download_math> 
                     <img class="img_download" src="@/download.png"> 
@@ -630,13 +630,21 @@
             c_box:null,
             date: [['Дата установки дверей','2011-11-12', [7, 0,'' ]], ['Дата постройки','2011-12-15', [0, 0,'' ]]]
           },
+
+        //   <div v-for="(sel, indexsel) in functions[9].select" :key=sel>  
+        //     <select :value="sel[3]" @change="changes(9, 'select', indexsel, $event.target.value)">
+        //     <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
+        //         {{selbody}}
+        //     </option> 
+        //     </select>
+        // </div>
           // 9
           {
             id: 'heat_los_heatcond_benv',
             title:'Характеристика класса энергетической эффективности', 
             input:[['Температура внутреннего воздуха','°C',  '', 'int', false, [0, 6, '']],['Расчётная температура наружного воздуха','°C',  '', 'int', false, [0, 7, '']], ['Длина здания','м', '', 'uint', false, [0, 2, '']],['Ширина здания','м', '', 'uint', false, [0, 3, '']], ['Этажность', '', '', 'uint', false, [0, 1, '']],['Высота стен','м', '', 'uint', false, [0, 5, '']], ['Число окон','ед.',  '', 'uint', false, [5, 0, '']], ['Длина типового окна','',  '', 'uint', false, [5, 1, '']],['Высота типового окна','',  '', 'uint', false, [5, 2, '']], ['Число дверей','ед.',  '', 'uint', false, [7, 0, '']], ['Длина типовой входной двери','',  '', 'uint', false, [7, 1, '']], ['Высота типовой входной двери','',  '', 'uint', false, [7, 2, '']]],
             r_btn:null, 
-            select:[['Класс энергетической эффективности ограждающих конструкций',['A++ (очень высокий)','A+ (очень высокий)','A (очень высокий)','B+ (высокий)','B (высокий)','C+ (нормальный)','C (нормальный)','C- (нормальный)','D (пониженный)','E (низкий)']]],
+            select:[['Класс энергетической эффективности ограждающих конструкций',['A++ (очень высокий)+++++++++++','A+ (очень высокий)','A (очень высокий)','B+ (высокий)','B (высокий)','C+ (нормальный)','C (нормальный)','C- (нормальный)','D (пониженный)','E (низкий)']]],
             c_box:null,
             date:[['Дата постройки','2011-12-15', [0, 0,'' ]]],
           },
@@ -646,7 +654,7 @@
             title:'Характеристика класса энергетической эффективности', 
             input:[['Температура внутреннего воздуха','°C',  '', 'int', false, [0, 6, '']],['Расчётная температура наружного воздуха','°C',  '', 'int', false, [0, 7, '']], ['Длина здания','м', '', 'uint', false, [0, 2, '']],['Ширина здания','м', '', 'uint', false, [0, 3, '']]],
             r_btn:null, 
-            select:[['Класс энергетической эффективности кровли',['A++ (очень высокий)','A+ (очень высокий)','A (очень высокий)','B+ (высокий)','B (высокий)','C+ (нормальный)','C (нормальный)','C- (нормальный)','D (пониженный)','E (низкий)']]],
+            select:[['Класс энергетической эффективности кровли',['A++ (очень высокий)','A++ (очень высокий)','A (очень высокий)','B+ (высокий)','B (высокий)','C+ (нормальный)','C (нормальный)','C- (нормальный)','D (пониженный)','E (низкий)']]],
             c_box:null,
             date:null,
           },
@@ -827,6 +835,13 @@
         login_funcs.logout()
         window.location.href = "/"
       },
+      left_panel_show(){
+        let elem = document.getElementById('neuro_calc_id');
+        if (getComputedStyle(elem).fontSize == '18px')
+          elem.style = 'font-size: 16px'
+        else
+           elem.style = 'font-size: 18px'
+      },
       Change_check_loadpat(name){
         this.sections.forEach(function(item){
           if(item.name === name){
@@ -942,6 +957,7 @@
               }
           }
           else if(type == "select"){
+            console.log(this.functions[func_ind].select[dataid][3])
               if(this.functions[func_ind].select[dataid][3] !== new_val){
                   this.functions[func_ind].select[dataid][3] = new_val
                   result = true
