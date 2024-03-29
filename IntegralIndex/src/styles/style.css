@@ -1,11 +1,263 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; 
-    font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
-  }
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
   /* Глобальные --------------------------------------------------------------- */
+
+  *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+  font-family: 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-weight: 450;
+  font-size: var(--basic-text-size);
+}
+
+
+.flex-wrap{
+  display: flex;
+}
+  /* /Глобальные --------------------------------------------------------------- */
+
+
+
+  /*--Заголовок---------------------------------------------------------------- */
+.header{
+  position: fixed;
+  display: flex;
+  width: 100%;
+  height: 60px;
+  background: var(--header-color);
+  color:  var(--white-text-color);
+  z-index: 20;
+}
+
+.header-cb-transparent{
+  opacity: 0;
+  display: flex;
+}
+
+.header-strips{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+}
+
+.strip{
+  width: 35px;
+  height: 5px;
+  background-color: var(--white-text-color);
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.header-text{
+  display: flex;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
+}
+
+.header-title{
+  font-size: var(--header-big-text);
+  padding-top: 10px;
+}
+
+.header-exit{
+  display: flex;
+  width: 15%;
+  margin-right:8%;
+  justify-content: end;
+}
+.settings-button-block{
+  float: right;
+  margin-right: 4%;
+}
+
+.img-settings{
+  height: 40px;
+  margin-top:15%;
+}
+
+.exit-label{
+  display: flex;
+  align-items: center;
+  user-select: none; 
+  height: 100%;
+  float: right;
+  margin-left: 5px;
+  font-size: var(--header-big-text);
+}
+
+/*--/Заголовок--------------------------------------------------------------- */
+
+/* Основная часть-------------------------------------------------------------*/
+.body{
+  margin-top: 60px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  overflow-x:hidden;
+}
+
+body::-webkit-scrollbar {
+  width: 14px;               /* ширина всей полосы прокрутки */
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--header-color);  /* цвет зоны отслеживания */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--white-text-color);    /* цвет бегунка */
+  border-radius: 20px;     
+  border: 3px solid var(--header-color);
+}
+
+/*-- Вкладки в левой части экрана ------------------------------------------- */
+.left-panel{
+  position: fixed;
+  background: var(--left-panel-color);
+  top: 60px;
+  bottom: 0px;
+  width: 22%;
+  overflow-y: scroll;
+  min-width: 170px;
+  z-index: 20;
+}
+
+.left-panel::-webkit-scrollbar {
+  width: 14px;               /* ширина всей полосы прокрутки */
+}
+.left-panel::-webkit-scrollbar-track {
+  background: var(--header-color);        /* цвет зоны отслеживания */
+}
+.left-panel::-webkit-scrollbar-thumb {
+  background-color: var(--white-text-color);    /* цвет бегунка */
+  border-radius: 20px;      
+  border: 3px solid var(--header-color);  
+}
+
+.glob-section-title{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 2%;
+  color: var(--white-text-color);
+  font-size: var(--left-panel-header-text-size);
+}
+
+.sub-section-title{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 38px;
+  margin: 2%;
+  padding-bottom: 2%;
+  padding-left: 2%;
+  color: var(--black-text-color);
+  border-bottom: 2px dotted var(--black-text-color);
+  user-select: none;
+}
+
+.sub-section-title:hover{
+  background-color: var(--left-panel-hover-color);
+  cursor: pointer;
+  transition: background-color 300 ms;
+}
+
+ /* CHECKBOX STYLE C */
+ .checkbox.style-c {
+  display: inline-block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.checkbox.style-c input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.checkbox.style-c input:checked ~ .checkbox__checkmark {
+  background-color: #f7cb15;
+}
+.checkbox.style-c input:checked ~ .checkbox__checkmark:after {
+  opacity: 1;
+}
+.checkbox.style-c:hover input ~ .checkbox__checkmark {
+  background-color: var(--white-text-color);
+}
+.checkbox.style-c:hover input:checked ~ .checkbox__checkmark {
+  background-color: #f7cb15;
+}
+.checkbox.style-c .checkbox__checkmark {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: var(--white-text-color);
+  transition: background-color 0.25s ease;
+  border-radius: 4px;
+}
+.checkbox.style-c .checkbox__checkmark:after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.checkbox.style-c .checkbox__body {
+  color: #333;
+  line-height: 1.4;
+  font-size: 16px;
+}
+/* /CHECKBOX STYLE C  */
+/*-- /Вкладки в левой части экрана ------------------------------------------- */
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* /Основная часть------------------------------------------------------------*/
+
+
   select{
     background-color: #e5e5dc; 
     border: 2px solid #435d6b;
@@ -25,12 +277,7 @@
     user-select: inherit;
     width: 100%;
   }
-  .app{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  }
+
   br{
   margin: 0;
   padding: 0;
@@ -38,28 +285,8 @@
   td{
     width: auto;
   }
-  /* /Глобальные --------------------------------------------------------------- */
-  /*--Заголовок---------------------------------------------------------------- */
-  .header{
-    position: fixed;
-    display: flex;
-    flex-direction: row;
-    margin: auto;
-    width: 100%;
-    height: 50px;
-    background: #26495c;
-    color: #e5e5dc;
-    z-index: 20;
-  }
-  .exit_label{
-    font-size:36px;
-    display: flex;
-    align-items: center;
-    user-select: none; 
-    height: 100%;
-    float: right;
-    margin-left: 5px;
-  }
+  
+
   .settings_title
   {
     margin-top: 10px;
@@ -93,60 +320,16 @@
     margin: 0.3%;
     margin-left: 2%;
   }
-  .header_menu{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-  }
-  .header_text{
-    display: flex;
-    justify-content: space-between;
-    padding-left: 20px;
-    padding-right: 20px;
-    width: 100%;
-  }
-  .settings_button_block{
-    float: right;
-    margin-right: 4%;
-  }
-  .header_exit{
-    width: 15%;
-    margin-right:7%;
-    justify-content: end;
-  }
-  .header_title{
-    font-size: 36px;
-    width:100%;
-  }
-  .settings.button_block{
-    display:flex;
-    padding:0;
-    float: left;
-  }
-  .img_settings{
-    height: 35px;
-    margin-top:15%;
-  }
-  .header_cb_transparent{
-    opacity: 0;
-  }
-  .strip{
-    width: 35px;
-    height: 5px;
-    background-color: #e5e5dc;
-    margin-top: 3px;
-    margin-bottom: 3px;
-  }
-  /*--/Заголовок--------------------------------------------------------------- */
-  .body{
-    margin-top: 50px;
-    width: 100%;
-    height: 80%;
-    display: flex;
-    flex-direction: row;
-  }
+
+
+
+
+
+
+
+
+
+
   .right_panel
   {
     position: fixed;
@@ -163,41 +346,7 @@
     display: flex;
     justify-content: start;
   }
-  /*-- Вкладки в левой части экрана ------------------------------------------- */
-  .left_panel{
-    position: fixed;
-    background: #e28a16;
-    top: 50px;
-    bottom: 0px;
-    width: 20%;
-    overflow-y: scroll;
-    min-width: 170px;
-    z-index: 20;
-  }
-  .glob_section_title{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 1%;
-    color: #e5e5dc;
-    font-size: 16px;
-  }
-  .sub_section_title{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    min-height: 38px;
-    margin: 2%;
-    color: #0b161d;
-    border-bottom: 2px dotted rgb(0, 0, 0);
-    user-select: none;
-  }
-  .sub_section_title:hover{
-    background-color: #e0886563;
-    cursor: pointer;
-    transition: background-color 300 ms;
-  }
-  /*-- /Вкладки в левой части экрана ------------------------------------------- */
+
 
 
 /*--Кнопки расчетов--------------------------------------------------- ----------*/

@@ -7,6 +7,7 @@ import func from '@/connect/funcs'
         login_reg_check:[false,false],
         menu_check: '0',
         settings_check: '0',
+        set_all_flag: false,
         check_savepat: false,
         check_loadpat: false,
         choise_NM: false,
@@ -412,10 +413,15 @@ import func from '@/connect/funcs'
         })
         return name;
       },
-      set_check_all(flag){
+      set_all_check_left_panel(flag){
           this.sections.forEach(function(item){
           if (item.name !=='general')
-                item.check = flag;}) 
+                item.check = flag })
+      }         
+       ,
+       set_all_checkbox(){  
+          this.set_all_flag = !this.set_all_flag;  
+          this.set_all_check_left_panel(this.set_all_flag.toString()); 
        } ,
       calc_result(id){
           let self = this
@@ -439,9 +445,9 @@ import func from '@/connect/funcs'
     },
       calc_all(){
           console.log(this.functions[1].radio_elem)
-        this.set_check_all("true")
+        this.set_all_check_left_panel("true")
         this.calc_all_server()
-        this.set_check_all("false")
+        this.set_all_check_left_panel("false")
         this.calc_dop_results();
       },
       calc_neuro(){

@@ -1,0 +1,16 @@
+:root {
+  /* цвета--------------------------------- */
+    --white-text-color: #e5e5dc;
+    --black-text-color: black;
+    --header-color: #282828;
+    --old-header-color: #26495c;
+
+
+    --left-panel-color:#e28a16;
+    --left-panel-hover-color:#e0886563;
+
+  /* шрифты */
+  --header-big-text: 36px;
+  --basic-text-size: 18px;
+  --left-panel-header-text-size: 20px;
+  }

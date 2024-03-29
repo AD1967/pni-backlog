@@ -1,45 +1,62 @@
 <template>
-  <div class="app">
+  <div class="flex-wrap">
     <!-- Заголовок сайта ------------------------------------------------------------------------>
     <div class="header"> 
-      <div style="display: flex;">
-        <input class="header_cb_transparent" type="checkbox" @click="left_panel_show()" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
-        <label   for="id_menu" class="header_menu">
+      <div class="flex-wrap">
+        <input   class="header-cb-transparent" type="checkbox" @click="left_panel_show()" id="id_menu" v-model="menu_check" true-value="0" false-value="20"/>
+        <label   for="id_menu" class="header-strips">
           <label for="id_menu" class="strip"></label>
           <label for="id_menu" class="strip"></label>
           <label for="id_menu" class="strip"></label>
         </label>
-      </div>   
-      <div class="header_text">
-        <div class="header_title">Интегральный индекс</div>     
-        <div class="header_text header_exit">
-          <div class="settings_button_block">
-            <label for="id_settings" class="header_menu" >
-                <img class="img_settings" for="id_settings" src="@/settings.jpg" /> 
+      </div>       
+      <div class="header-text">
+        <div class="header-title">Интегральный индекс</div>     
+        <div class="header-exit">
+          <div class="settings-button-block">
+            <label for="id_settings" class="header-strips" >
+                <img class="img-settings" for="id_settings" src="@/settings.jpg" /> 
             </label>
-            <input class="header_cb_transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20"/>
-            
+            <input class="header-cb-transparent" type="checkbox" id="id_settings" v-model="settings_check" true-value="0" false-value="20"/> 
           </div>  
-            <div class="exit_label" @click="logout()">Выход</div>  
+          <div class="exit-label" @click="logout()">Выход</div>  
         </div>
       </div>
     </div>
     <!--/Заголовок сайта------------------------------------------------------------------------>
+    
+    
+    
+
+
+
+
     <!-- Основная часть ------------------------------------------------------------------------>
+    
     <div class="body">  
       <!-- Выпадающее меню слева---------------------------------------------------------------->
       <div v-show="menu_check==='20'">
-        <div class="left_panel">
+        <div class="left-panel">
+          <h5 class="sub-section-title">  
+            <label class="checkbox style-c">
+              <input type="checkbox" @change="set_all_checkbox()" />
+              <div class="checkbox__checkmark"></div>
+              <div class="checkbox__body">Выбрать все</div>
+            </label>
+          </h5>
           <div v-for="bgsec_name in big_sections_name" :key=bgsec_name>
             <div >
-              <h4  class="glob_section_title">
+              <h4  class="glob-section-title">
                 {{bgsec_name.name}}
               </h4>
               <div v-for="sec in sections" :key=sec>
                 <div v-if="sec.section===bgsec_name.name">
-                  <h5 class="sub_section_title">      
+                  <h5 class="sub-section-title">  
+                    <label :for=sec.name class="checkbox style-c">
                       <input type="checkbox" :id=sec.name v-model="sec.check" true-value="true" false-value="false"/>
-                      <label :for=sec.name> {{sec.title}} </label>           
+                      <div class="checkbox__checkmark"></div>
+                      <div class="checkbox__body">{{sec.title}}</div>
+                    </label>
                   </h5>                
                 </div>
               </div>
@@ -47,6 +64,8 @@
           </div>
         </div> 
       </div>
+
+      
       <!-- /Выпадающее меню слева--------------------------------------------------------------->
       <!-- Меню настроек---------------------------------------------------------------->
       <div v-show="settings_check==='20'">
@@ -334,6 +353,9 @@
               </div>
             </div>
           </div>         
+
+
+    
           
           <!-- /Пространство кнопок расчетов--------- ------------------------------------------->
           
@@ -454,6 +476,8 @@
     </dialogbox-reg> 
   </div>
   </template>
+
+
+
   <script src='@/scripts.js'>
-  
   </script>
