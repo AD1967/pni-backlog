@@ -391,7 +391,7 @@ import func from '@/connect/funcs'
         window.location.href = "/"
       },
       left_panel_show(){
-        let elem = document.getElementById('neuro_calc_id');
+        let elem = document.getElementById('neuro_calc_id')
         if (getComputedStyle(elem).fontSize == '18px')
           elem.style = 'font-size: 16px'
         else

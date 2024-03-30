@@ -2,15 +2,20 @@
   /* цвета--------------------------------- */
     --white-text-color: #e5e5dc;
     --black-text-color: black;
+
     --header-color: #282828;
     --old-header-color: #26495c;
 
 
-    --left-panel-color:#e28a16;
-    --left-panel-hover-color:#e0886563;
+     --left-panel-color:#db9336; 
+     --left-panel-hover-color:#e0886563;
+
+     --red-shadow-color: #d83200;
+     --global-fon:#e7e5e5;
+     --fon: #fff8eb;
 
   /* шрифты */
-  --header-big-text: 36px;
+  --header-text-big-size: 36px;
   --basic-text-size: 18px;
-  --left-panel-header-text-size: 20px;
+  --header-text-size: 24px;
   }
