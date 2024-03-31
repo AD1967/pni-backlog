@@ -12,13 +12,17 @@
 }
 
 html{
-   /* background: linear-gradient(90.9deg, rgb(255, 187, 187) -8.8%, rgb(255, 220, 177) 12.4%, rgb(255, 249, 177) 35.6%) */
   background: var(--global-fon);
 } 
 
 
-.flex-wrap{
+.app{
   display: flex;
+}
+
+.flex-between{
+  display:flex;
+  justify-content: space-between;
 }
   /* /Глобальные --------------------------------------------------------------- */
 
@@ -70,7 +74,7 @@ html{
 
 .header-exit{
   display: flex;
-  width: 15%;
+  width: 25%;
   margin-right:8%;
   justify-content: end;
 }
@@ -216,6 +220,7 @@ html{
 .right-panel
 {
   position: fixed;
+  border-left: solid 6px var(--header-color);
   background: var(--left-panel-color);
   top: 60px;
   bottom: 0px;
@@ -257,7 +262,7 @@ html{
 }
 
 .settings-param-input{
-  background-color: var(--white-text-color);
+  background-color: var(--global-fon);
   border-radius: 4px; 
   padding-left: 3%;
   padding-right: 1%;
@@ -293,16 +298,12 @@ body::-webkit-scrollbar-thumb {
   border: 3px solid var(--header-color);
 }
 
-
-
-/* /Основная часть--------------------------------------------------------------*/
-
 .solution{ 
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-
+/* селекторы в начале страницы ----------------------------------*/
 .choise-years-text-title{
   color: var(--header-color);
   text-align:left;
@@ -326,7 +327,7 @@ body::-webkit-scrollbar-thumb {
   margin-top: 0;
   margin-left: 8%;
   margin-bottom: 0%;
-  border: 4px solid var(--left-panel-color);
+  border: 2px solid var(--left-panel-color);
   box-shadow: 0 0 10px var(--red-shadow-color);
   border-radius: 4px;
   padding-left: 1%;
@@ -346,6 +347,7 @@ body::-webkit-scrollbar-thumb {
   width: 50%;
 }
 
+/* суммарные теплопотери и теплопритоки------------------ */
 .sum-block{
   background-color: var(--global-fon); 
   margin: 2%;
@@ -353,7 +355,7 @@ body::-webkit-scrollbar-thumb {
   margin-right: 8%;
   padding: 10px;
   border-radius: 10px;
-  border: 4px solid var(--left-panel-color);
+  border: 2px solid var(--left-panel-color);
   box-shadow: 0 0 10px var(--red-shadow-color);
 }
 
@@ -387,12 +389,12 @@ justify-content: space-between;
   display: inline;
   font-size: 26px;
 }
-.sum_titles{
+.sum-titles{
   display: flexbox;
   float: left;
   width: 68%;
 }
-.sum_results{
+.sum-results{
   display: flexbox;
   float: right;
   width: 30%;
@@ -401,277 +403,209 @@ justify-content: space-between;
 }
 
 
+/* пространство кнопок------------------- */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  #big_select{
-    width:100%;
-  }
-  label{
-    margin-left: 2%;
-    cursor: inherit;
-    user-select: inherit;
-    width: 100%;
-  }
-
-  br{
-  margin: 0;
-  padding: 0;
-  }
-  td{
-    width: auto;
-  }
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-/*--Кнопки расчетов--------------------------------------------------- ----------*/
-.buttons_for_calc{
+.buttons-for-calc{
   display:flex;
   justify-content: space-between;
-  color: #e5e5dc;
-  margin-left:  8%;
-  margin-right: 8%;
+  color: var(--white-text-color);
+  margin-left: 8%;
+  margin-right: 7%;
+  width: 85%;
 }
-.math_calc_block{
-    width:22%;
-  }
-  .calc_TC_CPT_block{
-    width:48%;
-  }
-.btn_calc{
-    width: 76%; 
-    background-color: var(--header-color); 
-    border: 4px solid rgb(48, 43, 43);
-    border-radius: 10px; 
-    box-shadow: 0 0 10px grey;
-    color: var(--white-text-color);
-    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-    min-height: 50px;
-    max-height: 50px;
-  }
-  .btn_calc:hover{
-    background-color: var(--left-panel-color); 
-    border: 4px solid var(--left-panel-hover-color);
-    border-radius: 10px; 
-    box-shadow: 0 0 10px var(--red-shadow-color) inset;
-    color: #e5e5dc;
-    min-height: 50px;
-    max-height: 50px;
-  }
 
+.math-calc-block{
+  width:24%;
+  margin-right: 1%;
+}
 
+.btn-calc{
+  width: 76%; 
+  background-color: var(--header-color); 
+  border: 4px solid rgb(48, 43, 43);
+  border-radius: 10px; 
+  box-shadow: 0 0 10px grey;
+  color: var(--white-text-color);
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  min-height: 50px;
+  max-height: 50px;
+}
+.btn-calc:hover, .btn-save-cur:hover{
+  background-color: var(--left-panel-color); 
+  border: 4px solid var(--left-panel-hover-color);
+  border-radius: 10px; 
+  box-shadow: 0 0 10px var(--red-shadow-color) inset;
+  color: #e5e5dc;
+  min-height: 50px;
+  max-height: 50px;
+}
 
-  .btn_TC{
-    width: 100%;
-  }
-  .btn_calc_text{
-    font-size: 18px;
-  }
-  .btn_download{
-    width:20%;
-    margin-left: 4%;
-    padding-top:2%;
-    min-width: 71px;
-  }
-  .img_download{
-    width: 36px;
-    margin-left:20%;
-    }
+.btn-calc-text{
+  font-size: var(--basic-text-size);
+}
 
-  .calc_download_block{
-  display: flex;
-  justify-content: space-between;
-  }
-  .output_field {
-    width: 100%;
-    border: 3px solid #e28a16;
-    box-shadow: 0 0 10px #cf7b0c;
-    font-size: 18px; 
-    margin-top:20px;
-    margin-bottom:5px;
-    text-align: right;
-    padding-right: 4px;
-  }
-  .comment_text{
-    font-size:18px;
-    color:#cf7b0c;
-    text-align: left;
-    margin-top:2%;
-  }
+.btn-download{
+  margin-left: 4%;
+  padding-top:2%;
+  min-width: 71px;
+  max-width: 71px;
+}
 
-  .ecology_block{
-    display: flex;
-    margin-right:8%;
-    margin-left: 8%;
-    margin-top: 1%;
-  }
-  
-  .ecology_SP{
-    width:26%;
-  }
-  .ecology_TC_CPT{
-    width:22%; 
-    margin-left:29%; 
-  }
- 
-  /* Основное рабочее пространство ---------------------------------------------*/
+.img-download{
+  width: 36px;
+  margin-left:20%;
+ }
 
+ .output-field {
+  width: 100%;
+  border: 3px solid var(--left-panel-color);
+  box-shadow: 0 0 10px var(--red-shadow-color);
+  font-size: var(--basic-text-size); 
+  margin-top:20px;
+  margin-bottom:5px;
+  text-align: right;
+  padding-right: 4px;
+}
 
+.comment-text{
+  font-size: 16px;
+  color: var(--header-color);
+  text-align: right;
+  margin-top:1%;
+}
 
-  .content{
-    display: flex;
-    flex-direction: column;
-    margin: 1%;
-  }
-  
-    /* Отрисовка основных блоков расчета */
-  
-  .mega_block_sections{
+.btn-TC{
+  width: 100%;
+}
+
+.razn-TC-CTP-block{
+  margin-right: 8%;
+  margin-left: 72%;
+  margin-bottom: 0;
+  text-align: right;
+  width: 20%;
+}
+
+.ecology-block{
+  border: dashed var(--header-color);
+  margin-right: 7%;
+  margin-left: 7%;
+  margin-top: 1%;
+  padding-right:0;
+  padding-left:2%;
+  padding-top:1%;
+  padding-bottom:1%;
+}
+
+.save-cur-calc-block{
+  width: 100%;
+  margin-right:6%;
+  margin-top: 1%;
+}
+
+.btn-save-cur{
+  width: 100%; 
+  color: var(--header-color);
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  min-height: 50px;
+  background-color: var(--left-panel-color); 
+  border: 4px solid var(--left-panel-hover-color);
+  border-radius: 10px; 
+}
+
+/* Отрисовка вспомогательных информатиыных блоков */
+.mega-block-sections{
   display: flex; 
   flex-direction: column;
   margin: 1%;
   margin-left: 6%;
   margin-right: 6%;
   }
-  .mega_block_title{
-    font-size: 20px;
+
+  .mega-block-title{
+    font-size: var(--header-text-size);
     margin-left: 2%;
   }
-  .mega_block_borders{
+
+  .mega-block-borders{
     display: flex; 
     flex-direction: column;
     justify-content: right;
-    border: 2px solid #e28a16;
+    border: 2px solid var(--left-panel-color);
     border-radius: 10px; 
-    box-shadow: 0 0 10px #cf7b0c;
-    background-color: #f9d2a2; 
+    box-shadow: 0 0 10px var(--red-shadow-color);
+    background-color: var(--global-fon); 
     margin: 1% 1% 0%;
   }
-  .mega_block{
+
+  .mega-block{
     display: flex;
     flex-direction: row;
-    background-color: #f9d2a2; 
-    border: 6px solid #f9d2a2; 
-    border-top: #e28a16; 
-    border-right: #e28a16; 
+    background-color: var(--global-fon); 
+    border: 6px solid var(--global-fon); 
+    border-top:       var(--left-panel-color); 
+    border-right:     var(--left-panel-color); 
     border-radius: 10px; 
   }
-  .main_block{
+
+  .main-block{
     margin: 1% 2% 0%;
     position: relative;
     display: block;
   }
-  .rel_block{
+  .rel-block{
     flex-direction: column;
     margin: 1% 2% 0%;
     position: relative;
     display: flex;
   }
   .block{
-    background-color: #e5e5dc; 
-    border: 2px solid #e28a16;
+    background-color: var(--white-text-color); 
+    border: 2px solid var(--left-panel-color);
     border-radius: 10px; 
-    box-shadow: 0 0 10px #cf7b0c;
-    width: 100%;
-    margin-bottom: 1%;
-    padding: 10px;
-  }
-  .gen_block{
-    background-color: #e5e5dc; 
-    border: 2px solid #e28a16;
-    border-radius: 10px; 
-    box-shadow: 0 0 10px #cf7b0c;
+    box-shadow: 0 0 10px var(--red-shadow-color);
     width: 100%;
     margin-bottom: 1%;
     padding: 10px;
   }
 
-  .field_inp, .field_inp_name, .field_select_readonly{
-    background-color: #e5e5dc; 
-    border: 2px solid #435d6b;
+  .field-inp, .field-inp-select, #big-select{
+    background-color: var(--white-text-color); 
+    border: 2px solid var(--header-color);
     border-radius: 4px; 
     padding-left: 1%;
     padding-right: 1%;
     margin: 0.55%;
     width: 15%;
   }
-  .field_inp_name{
-    width: 75%;
+
+  .field-inp-select{
+    width: 100%;
+    min-width: 750px;
   }
-  .field_select_readonly{
-    width: 750px;
+
+  #big-select{
+    width:100%;
   }
-  
-  .res_block{
+
+  .res-block{
     width: 29%;
     margin: 1% 1% 0%;
   }
-  .block_r{
-    background-color: #e5e5dc; 
-    border: 2px solid #26495c;
+  
+  
+  .block-r{
+    background-color: var(--white-text-color); 
+    border: 2px solid var(--header-color);
     border-radius: 10px; 
-    box-shadow: 0 0 10px #1e3a49;
+    box-shadow: 0 0 10px black;
     width: 100%;
     height: 99%;
     margin-bottom: 1%;
     padding: 20px 40px;
   }
-  .btn_div{
-    display: flex;
-    align-items: center;
-    justify-content: right;
-    margin: 1%;
-    background-color: #f9d2a2;
-  }
-
-  input[type="checkbox"]{
-    background-color: #e5e5dc; 
-    border: 2px solid #435d6b;
-    border-radius: 4px; 
-    transform:scale(1.2);
-  }
+  
 
 
-    /* /Отрисовка основных блоков расчета */
-  /* /Основное рабочее пространство--------------------------------------------*/
+
+
