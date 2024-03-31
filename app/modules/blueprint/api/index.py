@@ -242,11 +242,3 @@ def api_calc_eff_floor():
     
     #data = calc_eff_floor(request.json)
     return default_json_response(not data is None, "error" if data is None else data)
-
-
-@main.route("/download", methods=["GET"])
-@token_auth.login_required
-def api_download():
-    res_excel = 'results.xlsx'
-    # excel.to_excel(res_excel, index=False)
-    return send_file(res_excel, as_attachment=True)
