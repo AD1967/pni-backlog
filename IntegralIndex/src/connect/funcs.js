@@ -129,15 +129,18 @@ function exportf(self, full, to_server, f){
     }
 }
 
-
+// function get_progress(prog){
+    
+//     let elem  = document.getElementById('progress')
+//     elem.innerHTML = ("Производится расчет. Готовность " + prog + "%").toString();
+//     return prog+1
+// }
 
 
 function calc(id, self, selectedYear){       
     console.log("calc")
-    console.log(self)
-    console.log(selectedYear)
     let export_build_r = export_funcs.export_build(self, false);
-    if(export_build_r.error){
+    if (export_build_r.error){
         export_error_alert(self,export_build_r.text)
         //return "ошибка вычислений, проверьте наличие данных и их корректность"
         return "error calc"
@@ -145,57 +148,64 @@ function calc(id, self, selectedYear){
     else {
         export_error_alert(self,null)
         console.log("to_server")
-            const startDate = id_mappers.yearsMap[selectedYear][0];
-            const endDate = id_mappers.yearsMap[selectedYear][1];
-            console.log(startDate, endDate);
-            let currentDate = new Date(startDate);
+        const startDate = id_mappers.yearsMap[selectedYear][0];
+        const endDate = id_mappers.yearsMap[selectedYear][1];
+        let currentDate = new Date(startDate);
 
-            let fatal_fail = false;
-            let sum_res = 0.0
-            while(currentDate <= endDate){
-                let year = currentDate.getFullYear();
-                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
-                let day = String(currentDate.getDate()).padStart(2, '0');
-                let formattedDate = `${year}-${month}-${day}`;
+        let fatal_fail = false
+        let sum_res = 0.0
+        let prog = 0;
+        
+        while(currentDate <= endDate){  
+            let year = currentDate.getFullYear();
+            let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            let day = String(currentDate.getDate()).padStart(2, '0');
+            let formattedDate = `${year}-${month}-${day}`;
+           
 
-                //console.log(formattedDate)
+            let elem  = document.getElementById('progress')
+            elem.innerHTML = ("Производится расчет. Готовность " + prog + "%").toString();
+            prog += 1
 
-                export_build_r.result["cur_date"] = formattedDate
-                let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)       // ,self)
-                if(result.fail){
-                    if(result.error == 'connect'){
-                        export_error_alert(self,"Ошибка подключения к серверу")
-                        fatal_fail = true
-                        break;
+
+            export_build_r.result["cur_date"] = formattedDate
+            let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)       // ,self)
+            if(result.fail){
+                if(result.error == 'connect'){
+                    export_error_alert(self,"Ошибка подключения к серверу")
+                    fatal_fail = true
+                    break;
+                }
+                else{
+                    export_error_alert(self,"Ошибка выполнения операции")
+                    fatal_fail = true
+                    break;
+                }
+            }else{
+                let id_build = localStorage.getItem("this_build_id");
+                let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
+                if(result['fail']){
+                    if(result['error'] == 'connect'){
+                        return ["ошибка подключения к серверу", "ошибка подключения к серверу"]
                     }
                     else{
-                        export_error_alert(self,"Ошибка выполнения операции")
-                        fatal_fail = true
-                        break;
-                    }
-                }else{
-                    let id_build = localStorage.getItem("this_build_id");
-                    let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
-                    if(result['fail']){
-                        if(result['error'] == 'connect'){
-                            return ["ошибка подключения к серверу", "ошибка подключения к серверу"]
-                        }
-                        else{
-                            //return "ошибка вычислений, проверьте наличие данных и их корректность"
-                            return ["error calc", "error calc"]
-                        }
-                    }
-                    else {
-                        sum_res += parseFloat(result["result"])
-                        currentDate.setDate(currentDate.getDate() + 1);
+                        //return "ошибка вычислений, проверьте наличие данных и их корректность"
+                        return ["error calc", "error calc"]
                     }
                 }
+                else {
+                    sum_res += parseFloat(result["result"])
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
             }
-            if(!fatal_fail){
-                return [id_mappers.calc_dec_result_map[id](sum_res), sum_res];
-            }
+        }
+        if(!fatal_fail){
+            return [id_mappers.calc_dec_result_map[id](sum_res), sum_res];
+        }
     }    
 }
+
+
 
 //
 function check_token_before_render(data){

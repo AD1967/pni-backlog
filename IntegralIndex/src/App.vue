@@ -160,7 +160,7 @@
         <input class="settings-param-input" type="text" :value="functions[16].input[3][2]" @input="changes(16, 'input', 3, $event.target.value)">
         <h1 class="settings-param-name">Количество помещений с раковинами </h1>
         <h1 class="settings-param-name">на этаже</h1>
-        <input class="settings-param-input" type="text" :value="functions[20].input[5][2]" @input="changes(16, 'input', 5, $event.target.value)">
+        <input class="settings-param-input" type="text" :value="functions[20].input[5][2]" @input="changes(20, 'input', 5, $event.target.value)">
         <h1 class="settings-param-name">Высота подвала, м</h1>
         <input class="settings-param-input" type="text" :value="functions[11].input[0][2]" @input="changes(11, 'input', 0, $event.target.value)">
         </div> 
