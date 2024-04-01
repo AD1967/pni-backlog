@@ -5,8 +5,6 @@ import '@/styles/color.css';
 import '@/styles/style.css';
 
 
-
-
 const app = createApp(App);
 
 components.forEach(component => { 

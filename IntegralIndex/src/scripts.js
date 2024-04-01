@@ -185,14 +185,6 @@ import func from '@/connect/funcs'
             c_box:null,
             date: [['Дата установки дверей','2011-11-12', [7, 0,'' ]], ['Дата постройки','2011-12-15', [0, 0,'' ]]]
           },
-
-        //   <div v-for="(sel, indexsel) in functions[9].select" :key=sel>  
-        //     <select :value="sel[3]" @change="changes(9, 'select', indexsel, $event.target.value)">
-        //     <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
-        //         {{selbody}}
-        //     </option> 
-        //     </select>
-        // </div>
           // 9
           {
             id: 'heat_los_heatcond_benv',
@@ -390,6 +382,11 @@ import func from '@/connect/funcs'
         login_funcs.logout()
         window.location.href = "/"
       },
+      
+      async save_current_calc(){
+        
+      },
+      
       left_panel_show(){
         let elem = document.getElementById('neuro_calc_id')
         if (getComputedStyle(elem).fontSize == '18px')

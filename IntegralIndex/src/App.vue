@@ -15,7 +15,7 @@
         <div class="header-exit">
           <div class="save-cur-calc-block">  
             <button class="btn-save-cur">
-                  <div class=btn-calc-text> Сохранить текущий расчет</div>
+                  <div class=btn-calc-text @click="save_current_calc()"> Сохранить текущий расчет</div>
             </button> 
           </div> 
           <div class="settings-button-block">
@@ -113,7 +113,7 @@
         <!--------------- Двери ------------------------------>
         <h1 class="settings-param-name">Число дверей </h1>
         <input class="settings-param-input" type="text" :value="functions[7].input[0][2]" @input="changes(7, 'input', 0, $event.target.value)">
-        <h1 class="settings-param-name">Длина типовой двери, м</h1>
+        <h1 class="settings-param-name">Длина типовой входной двери, м</h1>
         <input class="settings-param-input" type="text" :value="functions[7].input[1][2]" @input="changes(7, 'input', 1, $event.target.value)">
         <h1 class="settings-param-name">Высота типовой входной двери, м</h1>
         <input class="settings-param-input" type="text" :value="functions[7].input[2][2]" @input="changes(7, 'input', 2, $event.target.value)">
@@ -499,3 +499,6 @@
 
   <script src='@/scripts.js'>
   </script>
+
+
+  

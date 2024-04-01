@@ -11,9 +11,12 @@
     "@vuelidate/core": "^2.0.0-alpha.42",
     "@vuelidate/validators": "^2.0.0-alpha.30",
     "core-js": "^3.8.3",
+    "exceljs": "^4.4.0",
     "jquery": "^3.6.0",
     "vue": "^3.2.13",
-    "vuelidate": "^0.7.7"
+    "vuelidate": "^0.7.7",
+    "xlsx-populate": "^1.21.0",
+    "xlsx-populate-types": "^1.21.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
