@@ -372,7 +372,7 @@ import func from '@/connect/funcs'
         this.dop_results[5].val = this.dop_results[2].val * 276.28;
       }
       if (this.results[18].val != '' && this.results[17].val != ''){
-        this.dop_results[3].val = parseFloat(this.results[17].val) - parseFloat(this.results[18].val);
+        this.dop_results[3].val = parseFloat(this.results[18].val) - parseFloat(this.results[17].val);
         this.dop_results[6].val = this.dop_results[3].val * 0.1486;
         this.dop_results[7].val = this.dop_results[3].val * 276.28;
       }     
@@ -422,6 +422,7 @@ import func from '@/connect/funcs'
        } ,
       calc_result(id){
           let self = this
+          console.log(self)
         this.results.forEach(function(item){
           if(item.id == id){
               let year = document.getElementById('years-selector');
