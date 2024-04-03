@@ -70,7 +70,7 @@ let calc_map = {
     "heat_gains_GVS":               "/calc_efficiency_hws_pipes",
     "heat_gains_pipelines":         "/calc_efficiency_heat_pipes",
     "tec":                          "/calc_tec",
-    "cpt":                          "/calc_cpt" 
+    "cpt":                          "/calc_ctp"
 }
 
 let calc_result_map = {

@@ -237,12 +237,67 @@ function download_excel(){
     return result
 }
 
+function save_cur(results, dop_results){
+//    let export_build_r = export_funcs.export_build(self, false);
+//    if (export_build_r.error){
+//        export_error_alert(self,export_build_r.text)
+//        return "error calc"
+//    }
+//    else {
+//        let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)
+//        if(result.fail){
+//            if(result.error == 'connect'){
+//                export_error_alert(self,"Ошибка подключения к серверу")
+//                // fatal_fail = true
+//            }
+//            else{
+//                export_error_alert(self,"Ошибка выполнения операции")
+//                // fatal_fail = true
+//            }
+//        }
+//        else {
+            // save
+            const fetch = require('node-fetch');
+
+            let url = 'http://127.0.0.1:5000/save_cur'
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': " Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify({ results, dop_results })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                } else {
+                    throw new Error('Failed to download Excel file');
+                }
+            })
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'current_results.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        //}
+    //}
+}
+
 let funcs = {};
 funcs.start = start
 funcs.calc = calc
 funcs.export = exportf
 funcs.load = load
 funcs.download_excel = download_excel
+funcs.save_cur = save_cur
 funcs.import = import_from_server
 funcs.check_token_before_render = check_token_before_render
 export default funcs

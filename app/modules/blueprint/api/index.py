@@ -2,7 +2,7 @@ from .. import main
 from flask import request, jsonify, send_file
 #from flask_login import login_required
 from ...calculations.index import calc_index
-from ...calculations.efficiency import calc_tec, calc_cpt, calc_eff, calc_eff_wnd, calc_eff_wnd_inf, calc_eff_doors, calc_eff_doors_inf, \
+from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, calc_eff_wnd, calc_eff_wnd_inf, calc_eff_doors, calc_eff_doors_inf, \
 calc_eff_constructs, calc_eff_roof, calc_eff_hws_pipes, calc_eff_heat_pipes, calc_eff_people, calc_eff_hws_cranes, \
 calc_eff_hws_showers, calc_eff_electro, calc_eff_vent, calc_eff_floor, printGCal, convertGCal
 from .responses import default_json_response
@@ -11,6 +11,7 @@ from .responses import default_json_response
 from app.modules.blueprint.all_routes_settings import token_auth
 
 
+# Расчёт ТЭЦ
 @main.route("/calc_tec", methods=["POST"])
 @token_auth.login_required
 def api_calc_tec():
@@ -23,17 +24,34 @@ def api_calc_tec():
     return default_json_response(not data is None, "error" if data is None else data)
 
 
-@main.route("/calc_cpt", methods=["POST"])
+# Расчёт ЦТП
+@main.route("/calc_ctp", methods=["POST"])
 @token_auth.login_required
 def api_calc_cpt():
     print(request.json["id"])
     try:
-        data = calc_cpt(request.json["id"])
+        data = calc_ctp(request.json["id"])
     except:
         data = None
 
     return default_json_response(not data is None, "error" if data is None else data)
 
+
+# Скачивание эксель с текущими расчётами
+@main.route("/save_cur", methods=["POST"])
+@token_auth.login_required
+def api_save_cur():
+    print('Создается excel таблица..')
+    res_excel = 'cur_results.xlsx'
+    results = request.json.get('results')
+    dop_results = request.json.get('dop_results')
+    res = [item['val'] for item in results]
+    dop = [item['val'] for item in dop_results]
+    data = res[2:17] + dop[:3] + dop[4:6] + res[17:] + dop[3:4] + dop[6:]
+    save(data)
+
+    print('Данные успешно сохранены в файл ', res_excel)
+    return send_file(res_excel, as_attachment=True, download_name='current_results.xlsx')
 
 # вычисление индекса
 @main.route("/calc_index", methods=["POST"])

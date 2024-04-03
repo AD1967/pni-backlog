@@ -382,11 +382,12 @@ import func from '@/connect/funcs'
         login_funcs.logout()
         window.location.href = "/"
       },
-      
+
       async save_current_calc(){
-        
+        this.set_all_check_left_panel("true")
+        func.save_cur(this.results, this.dop_results)
       },
-      
+
       left_panel_show(){
         let elem = document.getElementById('neuro_calc_id')
         if (getComputedStyle(elem).fontSize == '18px')

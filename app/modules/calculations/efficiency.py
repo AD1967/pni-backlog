@@ -2,8 +2,7 @@ from datetime import datetime, timedelta, time, date
 import math
 from ..db.common_gets import *
 from ..db.model import *
-
-# ДОПОЛНИТЕЛЬНЫЕ ЗАТРАТЫ НА ПРОГРЕВ
+import pandas as pd
 
 countOfPoint = 3 #Количество выводимых знаков после запятой
 dt = 1 # Единичный временной промежуток
@@ -106,7 +105,7 @@ n_children = 200
 coun_room_with_sinks = 4
 air_humidity = 0.7
 P0 = 101325
-cur_info = ""
+cur_info = {}
 
 test_date = ""
 ########################################################################################################################################################################
@@ -120,7 +119,42 @@ def update_cur_info(data):
     cur_info = data
     return ""
 
+
+# Сохранение текущих расчётов
+def save(data):
+    res_excel = 'cur_results.xlsx'
+    global cur_info
+    print(cur_info)
+    build = cur_info.copy()
+    del build["cur_date"]
+    df1 = pd.DataFrame()
+    df1 = pd.concat([df1, pd.Series(build)], axis=1, ignore_index=True)
+
+    df2 = pd.DataFrame()
+    column_results = ['Теплопотери трансмиссионные через окна', 'Теплопотери инфильтрационные через окна',
+                      'Теплопотери трансмиссионные через входную группу',
+                      'Теплопотери инфильтрационные через входную группу',
+                      'Теплопотери теплопроводность через стены', 'теплопроводность через кровлю',
+                      'теплопроводность через пол', 'через систему вытяжной вентиляции',
+                      'прогрев здания перед рабочим днем',
+                      'Теплопритоки от людей', 'Теплопритоки от ГВС рукомойников', 'Теплопритоки от ГВС душевых',
+                      'Теплопритоки от электрооборудования', 'Теплопритоки от неизолированных трубопроводов ГВС',
+                      'Теплопритоки от неизолированных трубопроводов отопления', 'Сумма теплопотерь',
+                      'Сумма теплопритоков',
+                      'Разница теплопотерь и теплопритоков', 'Эк. ущерб СП т.у.т ', 'Эк. ущерб СП CO2',
+                      'Расчет ТЭЦ', 'Расчет ЦТП', 'Разница ТЭЦ и ЦТП', 'Эк. ущерб ТЭЦ/ЦТП т.у.т ',
+                      'Эк. ущерб ТЭЦ/ЦТП CO2'
+                      ]
+    df2 = pd.concat([df2, pd.Series(column_results), pd.Series(data)], axis=1, ignore_index=True)
+
+    with pd.ExcelWriter('app/' + res_excel) as writer:
+        df1.to_excel(writer, sheet_name='Build')
+        df2.to_excel(writer, sheet_name='Results', index=False)
+
+
+# Расчёт ТЭЦ
 def calc_tec(build_id):
+    print(cur_info)
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -144,8 +178,9 @@ def calc_tec(build_id):
     res = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10**(-7) * 24
     return res
 
-
-def calc_cpt(build_id):
+# Расчёт ЦТП
+def calc_ctp(build_id):
+    print(cur_info)
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -170,6 +205,7 @@ def calc_cpt(build_id):
     return res
 
 
+# ДОПОЛНИТЕЛЬНЫЕ ЗАТРАТЫ НА ПРОГРЕВ
 def Q_walls(build_id):
     heat = 20
     dezh = 12
