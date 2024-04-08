@@ -77,54 +77,7 @@ function export_error_alert(self, error = null){
     }
 }
 
-function exportf(self, full, to_server, f){
-    let export_build_r = export_funcs.export_build(self, full)
-    if(export_build_r.error){
-        export_error_alert(self,export_build_r.text)
-    }
-    else {
-        export_error_alert(self,null)
-        if(to_server){
-            console.log("to_server")
-            let result = requests.default_sput_request("/data/build", export_build_r.result, self)       // ,self)
-            if(result.fail){
-                if(result.error == 'connect'){
-                    export_error_alert(self,"Ошибка подключения к серверу")
-                }
-                else{
-                    export_error_alert(self,"Ошибка выполнения операции")
-                }
-            }
-            else {
-                //успех
-                load_funcs.load_build(self,  result.result.id_build, function(self,result1){
-                    if(result1.fail){
-                        export_error_alert(self,"ошибка выгрузки загруженного шаблона")
-                    }
-                    else{
-                        //успех
-                        localStorage.setItem("this_build_id", result.result.id_build);
-                        self.check_savepat = false
-                        self.dialog_buttons_check = false
-                        if (f !== undefined){
-                            f(self)
-                        }
-                    }
-                })
-            }
-        }
-        else{
-            console.log("export deb")
-            console.log(export_build_r.result)
-            self.check_savepat = false
-            // let blob = new Blob([JSON.stringify(build)], {type: "text/plain"});
-            // let link = document.createElement("a");
-            // link.setAttribute("href", URL.createObjectURL(blob));
-            // link.setAttribute("download", "build.json");
-            // link.click();
-        }
-    }
-}
+
 
 
 function calc(id, self, selectedYear){       
@@ -290,7 +243,6 @@ function save_cur(results, dop_results){
 let funcs = {};
 funcs.start = start
 funcs.calc = calc
-funcs.export = exportf
 funcs.load = load
 funcs.download_excel = download_excel
 funcs.save_cur = save_cur

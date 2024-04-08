@@ -7,8 +7,6 @@ import $ from 'jquery'
 function check_error(result, name, self){       //, self)
     let checked = requests.default_asget_promise_request_check(result, self)       //, self)
     if(checked.fail){
-        console.log(name)
-        console.log("load: server error: " + result['error'])
         throw "";
     }
     return result["result"]
@@ -476,17 +474,14 @@ function load_build(self, id_build, result_func){
                 return result_func(self, { "fail": false })
             }
             catch (error) {
-                    console.log("load error")
                     return result_func(self, { "fail": true, text: "ошибка загрузки с сервера" })
             }
         })
         .fail(function() {
-            console.log("connection fail")
             return result_func(self, {"fail": true, text: "ошибка загрузки с сервера"})
         });
     } 
     catch (error) {
-        console.log("load error 2")
         return result_func(self, {"fail": true, text: "ошибка загрузки с сервера"})
     }
 }

@@ -8,8 +8,6 @@ import func from '@/connect/funcs'
         menu_check: '0',
         settings_check: '0',
         set_all_flag: false,
-        check_savepat: false,
-        check_loadpat: false,
         choise_NM: false,
         build_changes: new Set(),
         load_pat: {
@@ -36,23 +34,23 @@ import func from '@/connect/funcs'
         time : 2019,
         sections:
         [
-          {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'false', main_block_width: '50', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
-          {  section:'Надежность' ,  name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'heat_los_inpgr', title: 'Расчет тепловых потерь через входную группу', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'inf_inpgr', title: 'Расчет инфильтрации через входную группу', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'heat_los_heatcond_benv', title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'heat_los_heatcond_roof', title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'heat_los_floor', title: 'Расчет теплопотерь через пол', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'heat_los_vent', title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери',  name: 'add_heatcosts', title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров', check: 'false', main_block_width: '69'},
-          {  section:'Теплопритоки', name: 'heat_gains_people', title: 'Определение теплопритоков от людей', check: 'false', main_block_width: '69'},
-          {  section:'Теплопритоки', name: 'heat_gains_washstands', title: 'Определение затрат тепловой энергии на ГВС для рукомойников', check: 'false', main_block_width: '69'},
-          {  section:'Теплопритоки', name: 'heat_gains_showers', title: 'Определение затрат тепловой энергии на ГВС для душевых', check: 'false', main_block_width: '69'},
-          {  section:'Теплопритоки', name: 'heat_gains_electriclighting', title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', check: 'false', main_block_width: '69'},
-          {  section:'Теплопритоки', name: 'heat_gains_GVS', title: 'Определение теплопритока от неизолированных трубопроводов ГВС', check: 'false', main_block_width: '69'},
-          {  section:'Теплопритоки', name: 'heat_gains_pipelines', title: 'Определение теплопритока от неизолированных трубопроводов отопления', check: 'false', main_block_width: '69'},
+          {  section:'хар-ка здания',   name: 'general',                      title: 'Общая характеристика здания', check: 'false'},
+          {  section:'Надежность' ,     name: 'reliability',                  title: 'Надежность', check: 'false'},
+          {  section:'Теплопотери',     name: 'heat_los_win',                 title: 'Расчет тепловых потерь через окна', check: 'false'},
+          {  section:'Теплопотери',     name: 'inf_win',                      title: 'Расчет инфильтрации через окна', check: 'false'},
+          {  section:'Теплопотери',     name: 'heat_los_inpgr',               title: 'Расчет тепловых потерь через входную группу', check: 'false'},
+          {  section:'Теплопотери',     name: 'inf_inpgr',                    title: 'Расчет инфильтрации через входную группу', check: 'false'},
+          {  section:'Теплопотери',     name: 'heat_los_heatcond_benv',       title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false'},
+          {  section:'Теплопотери',     name: 'heat_los_heatcond_roof',       title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false'},
+          {  section:'Теплопотери',     name: 'heat_los_floor',               title: 'Расчет теплопотерь через пол', check: 'false'},
+          {  section:'Теплопотери',     name: 'heat_los_vent',                title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false'},
+          {  section:'Теплопотери',     name: 'add_heatcosts',                title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров'},
+          {  section:'Теплопритоки',    name: 'heat_gains_people',            title: 'Определение теплопритоков от людей', check: 'false'},
+          {  section:'Теплопритоки',    name: 'heat_gains_washstands',        title: 'Определение затрат тепловой энергии на ГВС для рукомойников', check: 'false'},
+          {  section:'Теплопритоки',    name: 'heat_gains_showers',           title: 'Определение затрат тепловой энергии на ГВС для душевых', check: 'false'},
+          {  section:'Теплопритоки',    name: 'heat_gains_electriclighting',  title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', check: 'false'},
+          {  section:'Теплопритоки',    name: 'heat_gains_GVS',               title: 'Определение теплопритока от неизолированных трубопроводов ГВС', check: 'false'},
+          {  section:'Теплопритоки',    name: 'heat_gains_pipelines',         title: 'Определение теплопритока от неизолированных трубопроводов отопления', check: 'false'},
         ],
         results: [
           {id: 'general',                     val: ''}, //0
@@ -470,22 +468,6 @@ import func from '@/connect/funcs'
         else
            elem.style = 'font-size: 18px'
       },
-      Change_check_loadpat(name){
-        this.sections.forEach(function(item){
-          if(item.name === name){
-            item.check_loadpat = !item.check_loadpat;
-          }
-        })
-        return name;
-      },
-      Change_check_savepat(name){
-        this.sections.forEach(function(item){
-          if(item.name === name){
-            item.check_savepat = !item.check_savepat;
-          }
-        })
-        return name;
-      },
       set_all_check_left_panel(flag){
           this.sections.forEach(function(item){
           if (item.name !=='general')
@@ -650,13 +632,11 @@ import func from '@/connect/funcs'
         if (res){
           // Закрываем окно входа
           this.login_reg_check[0] = false
-          //console.log(this.login_reg_check)
           func.start(this)
           func.load(this)     
         } else {
           // Переходим на страницу входа
           this.login_reg_check[0] = true
-          //console.log(this.login_reg_check)
         }  
     },
   }
