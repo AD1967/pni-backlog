@@ -61,9 +61,6 @@ function import_from_server(self){
         console.log('import picked error')
     }
     else{
-        console.log('import')
-        console.log(id_build)
-        console.log(self.load_pat.select.picked)
         load_funcs.load_build(self, id_build, load_result_func)
         localStorage.setItem("this_build_id", id_build);
     }
@@ -140,7 +137,6 @@ function calc(id, self, selectedYear){
     }
     else {
         export_error_alert(self,null)
-        console.log("to_server")
         const startDate = id_mappers.yearsMap[selectedYear][0];
         const endDate = id_mappers.yearsMap[selectedYear][1];
         let currentDate = new Date(startDate);

@@ -112,17 +112,17 @@ let calc_result_map = {
         return "Теплоприток от неизолированных трубопроводов отопления<br>Q<sub>труб. отопл.</sub> = " + result}
 }
 let calc_dec_result_map = {
-    "general":                  function(result){return result.toFixed(3)},
-    "reliability":              function(result){return result.toFixed(3)},
-    "heat_los_win":             function(result){return result.toFixed(3)},
-    "inf_win":                  function(result){return result.toFixed(3)},
-    "heat_los_inpgr":           function(result){return result.toFixed(3)},
-    "inf_inpgr":                function(result){return result.toFixed(3)},
-    "heat_los_heatcond_benv":   function(result){return result.toFixed(3)},
-    "heat_los_heatcond_roof":   function(result){return result.toFixed(3)},
-    "heat_los_floor":           function(result){return result.toFixed(3)},
-    "heat_los_vent":            function(result){return result.toFixed(3)},
-    "add_heatcosts":            function(result){return result.toFixed(3)},
+    "general":                      function(result){return result.toFixed(3)},
+    "reliability":                  function(result){return result.toFixed(3)},
+    "heat_los_win":                 function(result){return result.toFixed(3)},
+    "inf_win":                      function(result){return result.toFixed(3)},
+    "heat_los_inpgr":               function(result){return result.toFixed(3)},
+    "inf_inpgr":                    function(result){return result.toFixed(3)},
+    "heat_los_heatcond_benv":       function(result){return result.toFixed(3)},
+    "heat_los_heatcond_roof":       function(result){return result.toFixed(3)},
+    "heat_los_floor":               function(result){return result.toFixed(3)},
+    "heat_los_vent":                function(result){return result.toFixed(3)},
+    "add_heatcosts":                function(result){return result.toFixed(3)},
     
     "heat_gains_people":            function(result){return result.toFixed(3)},
     "heat_gains_washstands":        function(result){return result.toFixed(3)},

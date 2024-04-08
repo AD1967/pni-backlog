@@ -71,98 +71,111 @@
         <div class="right-panel">
         <h1 class="settings-title">Настройка параметров здания</h1> 
         
-        
         <!-------Основные настройки------------------------->
         <h1 class="settings-param-name">Этажность здания</h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[1][2]" @input="changes(0, 'input', 1, $event.target.value)" >
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.floors">
+        
         <h1 class="settings-param-name">Длина здания, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[2][2]" @input="changes(0, 'input', 2, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_build">
+
         <h1 class="settings-param-name">Ширина здания, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[3][2]" @input="changes(0, 'input', 3, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.width_build">
+
         <h1 class="settings-param-name">Длина стен на одном этаже, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[4][2]" @input="changes(0, 'input', 4, $event.target.value)">
-        <h1 class="settings-param-name">Высота стен на одном этаже, м </h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[5][2]" @input="changes(0, 'input', 5, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_wall">
+
+        <h1 class="settings-param-name">Высота стен на одном этаже, м</h1>
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_wall">
+
         <h1 class="settings-param-name">Температура внутреннего воздуха, грд C</h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[6][2]" @input="changes(0, 'input', 6, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_inside">
+
         <h1 class="settings-param-name">Температура наружного воздуха, грд C</h1>
-        <input class="settings-param-input" type="text" :value="functions[0].input[7][2]" @input="changes(0, 'input', 7, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_outside">
+
         <h1 class="settings-param-name">Дата постройки</h1>
-        <input class="settings-param-input" type="date" :value="functions[0].date[0][1]"   @input="changes(0, 'date', 0, $event.target.value)">
-        
-        <!--- Настройки окон----------------------------->  
-        <h1 class="settings-param-name">Число окон в здании</h1>
-        <input class="settings-param-input" type="text" :value="functions[5].input[0][2]" @input="changes(5, 'input', 0, $event.target.value)">
+        <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_construction">
+
+         <!--- Настройки окон----------------------------->  
+         <h1 class="settings-param-name">Число окон в здании</h1>
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_windows">
+
         <h1 class="settings-param-name">Длина типового окна, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[5].input[1][2]" @input="changes(5, 'input', 1, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_windows">
+   
         <h1 class="settings-param-name">Высота типового окна, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[5].input[2][2]" @input="changes(5, 'input', 2, $event.target.value)" >
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_windows">
+
         <h1 class="settings-param-name">Дата установки окон</h1>
-        <input class="settings-param-input" type="date" :value="functions[5].date[0][1] " @input="changes(5, 'date', 0, $event.target.value)">     
-        <h1 class="settings-param-name">Тип окон</h1>
-        <div v-for="(sel, indexsel) in functions[5].select" :key=sel>  
-          <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
-            <select class="settings-param-input" :value="sel[3]" @change="changes(5, 'select', indexsel, $event.target.value)">
-            <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
-                {{selbody}}
-            </option> 
-            </select>
-          </div>
-        </div>
-        
+        <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_windows">   
+
+        <h1 class="settings-param-name">Тип окон</h1>     
+        <select class="settings-param-input" v-model="parametrs_of_build.type_windows">
+          <option v-for="(type_item) in type_windows" :value="type_item.id" :key=type_item.id readonly>
+            {{type_item.val}}
+          </option> 
+        </select>
+          
         <!--------------- Двери ------------------------------>
         <h1 class="settings-param-name">Число дверей </h1>
-        <input class="settings-param-input" type="text" :value="functions[7].input[0][2]" @input="changes(7, 'input', 0, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_doors">
+
         <h1 class="settings-param-name">Длина типовой входной двери, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[7].input[1][2]" @input="changes(7, 'input', 1, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_doors">
+
         <h1 class="settings-param-name">Высота типовой входной двери, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[7].input[2][2]" @input="changes(7, 'input', 2, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_doors">
+
         <h1 class="settings-param-name">Тип дверей </h1>
-        <div v-for="(sel, indexsel) in functions[7].select" :key=sel>  
-          <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()">  
-            <select class="settings-param-input" :value="sel[3]" @change="changes(7, 'select', indexsel, $event.target.value)">
-            <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
-                {{selbody}}
-            </option> 
-            </select>
-          </div>
-        </div>
-        <h1 class="settings-param-name">Дата установки дверей</h1>
-        <input class="settings-param-input" type="date" :value="functions[7].date[0][1]"   @input="changes(7, 'date', 0, $event.target.value)">
-        <h1 class="settings-param-name">Класс энергетической эффективности </h1>
-        <h1 class="settings-param-name">ограждающих конструкций </h1>
+        <select class="settings-param-input" v-model="parametrs_of_build.type_doors">
+          <option v-for="(type_item) in type_doors" :value="type_item.id" :key=type_item.id readonly>
+            {{type_item.val}}
+          </option> 
+        </select>
         
-        <div v-for="(sel, indexsel) in functions[9].select" :key=sel>  
-            <select class="settings-param-input" :value="sel[3]" @change="changes(9, 'select', indexsel, $event.target.value)">
-            <option v-for="(selbody) in sel[1]" :key=selbody  readonly>
-                {{selbody}}
-            </option> 
-            </select>
-        </div>
+        <h1 class="settings-param-name">Дата установки дверей</h1>
+        <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_doors">
+
+        <h1 class="settings-param-name">Класс энергетической эффективности </h1>
+        <h1 class="settings-param-name">ограждающих конструкций </h1>   
+        <select class="settings-param-input" v-model="parametrs_of_build.class_energoeff">
+          <option v-for="(type_item) in class_energoeff" :value="type_item.id" :key=type_item.id readonly>
+            {{type_item.val}}
+          </option> 
+        </select>
 
         <!-- Мебель и жильцы--------------------------------------------->
         <h1 class="settings-param-name">Число шкафов</h1>
-        <input class="settings-param-input" type="text" :value="functions[13].input[1][2]" @input="changes(13, 'input', 1, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_closet">
+
         <h1 class="settings-param-name">Число диванов</h1>
-        <input class="settings-param-input" type="text" :value="functions[13].input[2][2]" @input="changes(13, 'input', 2, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sofa">
+
         <h1 class="settings-param-name">Число столов</h1>
-        <input class="settings-param-input" type="text" :value="functions[13].input[3][2]" @input="changes(13, 'input', 3, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_table">
+
         <h1 class="settings-param-name">Число навесных шкафчиков</h1>
-        <input class="settings-param-input" type="text" :value="functions[13].input[4][2]" @input="changes(13, 'input', 4, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_small_closet">
+
         <h1 class="settings-param-name">Максимальное число посетителей мужчин</h1>
-        <input class="settings-param-input" type="text" :value="functions[16].input[0][2]" @input="changes(16, 'input', 0, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_men">
+
         <h1 class="settings-param-name">Максимальное число посетителей женщин</h1>
-        <input class="settings-param-input" type="text" :value="functions[16].input[1][2]" @input="changes(16, 'input', 1, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_women">
+
         <h1 class="settings-param-name">Максимальное число посетителей детей</h1>
-        <input class="settings-param-input" type="text" :value="functions[16].input[2][2]" @input="changes(16, 'input', 2, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_children">
+
         <h1 class="settings-param-name">Среднее время пребывания посетителей</h1>
         <h1 class="settings-param-name">в сутки</h1>
-        <input class="settings-param-input" type="text" :value="functions[16].input[3][2]" @input="changes(16, 'input', 3, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.time_guests">
+
         <h1 class="settings-param-name">Количество помещений с раковинами </h1>
         <h1 class="settings-param-name">на этаже</h1>
-        <input class="settings-param-input" type="text" :value="functions[20].input[5][2]" @input="changes(20, 'input', 5, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sink">
+
         <h1 class="settings-param-name">Высота подвала, м</h1>
-        <input class="settings-param-input" type="text" :value="functions[11].input[0][2]" @input="changes(11, 'input', 0, $event.target.value)">
+        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_basement">
         </div> 
       </div>
       <!-- /Меню настроек--------------------------------------------------------------->
@@ -180,7 +193,7 @@
                 {{build}} 
               </option>
             </select>     
-            <select class="header-selector" @change="import_from_server()" id="years-selector">
+            <select class="header-selector" @change="clear_dop_results()" id="years-selector">
               <option> Тестовая дата - 01.09.2022</option>
               <option> 2014-15 - самая тёплая зима</option>
               <option> 2018-19</option>
@@ -251,7 +264,7 @@
             </div>
 
             <!-- Вывод суммарных теплопотерь и теплопритоков --------------------------------------->
-            <div v-if="dop_results[0].val != -1" >
+            <div v-if="dop_results[0].val != ''" >
               <h1 style="color:var(--white-text-color)">.</h1>
               <div class="flex-between">
                 <hr style="width: 45%; margin-left:4%; margin-right:2%;">
@@ -296,7 +309,7 @@
                   </a>           
               </div>
 
-              <div v-if="dop_results[2].val != -1">
+              <div v-if="dop_results[2].val != ''">
                 <input class="output-field" type="text" :value="printVal(dop_results[2].val, 'Гкал')" readonly>
                 <p class="comment-text">Разница теплопотерь и теплопритоков</p> 
               </div>         
@@ -352,21 +365,21 @@
             </div>
           </div>   
 
-          <div class="razn-TC-CTP-block" v-if="(dop_results[3].val != -1)">
+          <div class="razn-TC-CTP-block" v-if="(dop_results[3].val != '')">
               <input class="output-field" type="text" :value="printVal(dop_results[3].val, 'Гкал')" readonly>
               <p class="comment-text">Разница ТЭЦ и ЦТП</p>    
           </div>
 
           <!-- Экологический ущерб ------------------------>
-          <div class="ecology-block" v-if="(dop_results[2].val != -1) || (dop_results[3].val != -1)">
+          <div class="ecology-block" v-if="(dop_results[2].val != '') || (dop_results[3].val != '')">
             <p class="block-title">Экологический ущерб </p> 
             <div class="flex-between">
-            <div v-if="(dop_results[2].val != -1)" class="math-calc-block">
+            <div v-if="(dop_results[2].val != '')" class="math-calc-block">
               <input class="output-field" type="text" :value="printVal(dop_results[4].val, 'т.у.т')" readonly>
               <input class="output-field" type="text" :value="printVal(dop_results[5].val, 'кг CO2/год')" readonly>
             </div>
 
-            <div v-if="(dop_results[3].val != -1)" class="math-calc-block">
+            <div v-if="(dop_results[3].val != '')" class="math-calc-block">
               <input class="output-field"  type="text" :value="printVal(dop_results[6].val, 'т.у.т')" readonly>
               <input class="output-field"  type="text" :value="printVal(dop_results[7].val, 'кг СО2/год')" readonly> 
             </div>
@@ -394,16 +407,16 @@
                             <div v-for="(inp, indexinp) in func.input" :key=inp>
                               <div v-if="(inp[6]===undefined || inp[6]===null) || inp[6]()">
                                 <div v-if="inp[5]===undefined || inp[5]===null">
-                                    {{inp[0]}}  <!-- текстовый вывод названия поля -->
+                                    {{inp[0]}} 
                                     <input class="field-inp" type="text" 
                                     :value="inp[2]" @input="changes(ind, 'input', indexinp, $event.target.value)" readonly>
-                                    {{inp[1]}} <!--текстовый вывод ед.измерения-->
-                                    <div v-if="!inp[4]">  <!-- проверка заполнения -->
+                                    {{inp[1]}} 
+                                    <div v-if="!inp[4]"> 
                                     <b style="color:red" v-if="String(inp[2]).trim() === ''">Поле не заполнено.</b>
                                     <b style="color:red" v-if="String(inp[2]).trim() !== '' && (inp[3] == 'int' || inp[3] == 'uint') ">Неверный формат числа.</b>
                                     </div>
                                 </div>
-                                <div v-else>
+                                <div v-else> 
                                   {{inp[0]}}
                                   <input class="field-inp" type="text"
                                   :value="functions[inp[5][0]].input[inp[5][1]][2]" readonly>

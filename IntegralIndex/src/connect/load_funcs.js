@@ -15,7 +15,6 @@ function check_error(result, name, self){       //, self)
 }
 
 
-//функции установки значений полям 
 
 function set_input(self, id, number, val){
     self.functions[id_mappers.input_mapper[id]].input[number][4] = true
@@ -103,7 +102,6 @@ function set_select_with_name(self, id, number, lst, id_name, val_id){
 }
 
 function load_build(self, id_build, result_func){
-    console.log("load")
     try {
         $.when(
             requests.async_json_promise_get('/data/build/' + id_build),
@@ -140,8 +138,6 @@ function load_build(self, id_build, result_func){
 
                 clear_funcs(self)
 
-                console.log("builds")
-                console.log(build)
                 self.load_pat.select.variants = []
                 self.load_pat.select.ids = []
                 self.load_pat.select.picked = ''
@@ -152,7 +148,46 @@ function load_build(self, id_build, result_func){
                 self.load_pat.select.picked = build.name
 
 
-                console.log("build")
+                //settings
+                self.parametrs_of_build.floors                  = build.floors
+                self.parametrs_of_build.length_build            = build.len_a      
+                self.parametrs_of_build.width_build             = build.len_b      
+                self.parametrs_of_build.length_wall             = build.len_sum        
+                self.parametrs_of_build.height_wall             = build.height       
+                self.parametrs_of_build.temp_inside             = build.temp_inside        
+                self.parametrs_of_build.temp_outside            = build.temp_outside      
+                self.parametrs_of_build.date_construction       = build.date_build  
+                self.parametrs_of_build.count_windows           = build.count_windows      
+                self.parametrs_of_build.length_windows          = build.length_wnd    
+                self.parametrs_of_build.height_windows          = build.height_wnd    
+                self.parametrs_of_build.date_windows            = build.date_wnd       
+                self.parametrs_of_build.type_windows            = build.id_window      
+                self.parametrs_of_build.count_doors             = build.q_doors_count_doors       
+                self.parametrs_of_build.length_doors            = build.length_door       
+                self.parametrs_of_build.height_doors            = build.height_door       
+                self.parametrs_of_build.type_doors              = build.id_door         
+                self.parametrs_of_build.date_doors              = build.date_doors         
+                self.parametrs_of_build.class_energoeff         = build.constructs_energoeff    
+                self.parametrs_of_build.count_closet            = build.count_shkaf       
+                self.parametrs_of_build.count_sofa              = build.count_divan         
+                self.parametrs_of_build.count_table             = build.count_table        
+                self.parametrs_of_build.count_small_closet      = build.count_shkafchik 
+                self.parametrs_of_build.count_men               = build.mens          
+                self.parametrs_of_build.count_women             = build.womens        
+                // self.parametrs_of_build.count_children          =  build. children    
+                self.parametrs_of_build.time_guests             =  build.time_average       
+                self.parametrs_of_build.count_sink              =  build.count_crane        
+                self.parametrs_of_build.height_basement         =  build.height_floor   
+
+        
+              
+               
+                    
+
+
+
+
+
                 //general
                 set_input(self, "general", 0, build.name)
                 set_input(self, "general", 1, build.floors)
@@ -223,8 +258,7 @@ function load_build(self, id_build, result_func){
                     set_input(self, "heat_los_win", 4, build.temp_outside)
 
 
-                    set_select_with_name(self, "heat_los_win", 0, windows, "id_window", build.id_window)
-                    console.log(build.date_wnd)
+                    set_select_with_name(self, "heat_los_win", 0, windows, "id_window", build.id_window) 
                     set_date(self, "heat_los_win", 0, build.date_wnd)
                 } else {
                     set_select_variants(self, "heat_los_win", 0, windows, "id_window")

@@ -37,16 +37,16 @@ import func from '@/connect/funcs'
         sections:
         [
           {  section:'Общая характеристика здания', name: 'general', title: 'Общая характеристика здания', check: 'false', main_block_width: '50', check_savepat: false, check_loadpat: false, loadpat_error: {show: false, text: ''}, savepat_error: {show: false, text: ''}},
-          {  section:'Надежность', name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'heat_los_inpgr', title: 'Расчет тепловых потерь через входную группу', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'inf_inpgr', title: 'Расчет инфильтрации через входную группу', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'heat_los_heatcond_benv', title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'heat_los_heatcond_roof', title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'heat_los_floor', title: 'Расчет теплопотерь через пол', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'heat_los_vent', title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false', main_block_width: '69'},
-          {  section:'Теплопотери', name: 'add_heatcosts', title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров', check: 'false', main_block_width: '69'},
+          {  section:'Надежность' ,  name: 'reliability', title: 'Надежность', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'heat_los_win', title: 'Расчет тепловых потерь через окна', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'inf_win', title: 'Расчет инфильтрации через окна', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'heat_los_inpgr', title: 'Расчет тепловых потерь через входную группу', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'inf_inpgr', title: 'Расчет инфильтрации через входную группу', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'heat_los_heatcond_benv', title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'heat_los_heatcond_roof', title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'heat_los_floor', title: 'Расчет теплопотерь через пол', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'heat_los_vent', title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false', main_block_width: '69'},
+          {  section:'Теплопотери',  name: 'add_heatcosts', title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров', check: 'false', main_block_width: '69'},
           {  section:'Теплопритоки', name: 'heat_gains_people', title: 'Определение теплопритоков от людей', check: 'false', main_block_width: '69'},
           {  section:'Теплопритоки', name: 'heat_gains_washstands', title: 'Определение затрат тепловой энергии на ГВС для рукомойников', check: 'false', main_block_width: '69'},
           {  section:'Теплопритоки', name: 'heat_gains_showers', title: 'Определение затрат тепловой энергии на ГВС для душевых', check: 'false', main_block_width: '69'},
@@ -76,15 +76,85 @@ import func from '@/connect/funcs'
           {id: 'cpt',                         val: ''}  //18
         ],
         dop_results:[
-          {id: 'sum_pritok',                  val: -1}, //0
-          {id: 'sum_poter',                   val: -1}, //1
-          {id: 'razn_poter_pritok',           val: -1}, //2
-          {id: 'razn_tec_cpt',                val: -1}, //3
-          {id: 'eclg_sp_tut',                 val: -1}, //4
-          {id: 'eclg_sp_co2',                 val: -1}, //5
-          {id: 'eclg_tc_cpt_tut',             val: -1}, //6
-          {id: 'eclg_tc_cpt_co2',             val: -1}, //7
+          {id: 'sum_pritok',                  val: ''}, //0
+          {id: 'sum_poter',                   val: ''}, //1
+          {id: 'razn_poter_pritok',           val: ''}, //2
+          {id: 'razn_tec_cpt',                val: ''}, //3
+          {id: 'eclg_sp_tut',                 val: ''}, //4
+          {id: 'eclg_sp_co2',                 val: ''}, //5
+          {id: 'eclg_tc_cpt_tut',             val: ''}, //6
+          {id: 'eclg_tc_cpt_co2',             val: ''}, //7
         ],
+
+        parametrs_of_build:[
+          {floors:              ''},
+          {length_build:        ''},
+          {width_build:         ''},
+          {length_wall:         ''},
+          {height_wall:         ''},
+          {temp_inside:         ''},
+          {temp_outside:        ''},
+          {date_construction:   ''},
+          {count_windows:       ''},
+          {length_windows:      ''},
+          {height_windows:      ''},
+          {date_windows:        ''},
+          {type_windows:        ''},
+          {count_doors:         ''},
+          {length_doors:        ''},
+          {height_doors:        ''},
+          {type_doors:          ''},
+          {date_doors:          ''},
+          {class_energoeff:     ''},
+          {count_closet:        ''},
+          {count_sofa:          ''},
+          {count_table:         ''},
+          {count_small_closet:  ''},
+          {count_men:           ''},
+          {count_women:         ''},
+          {count_children:      ''},
+          {time_guests:         ''},
+          {count_sink:          ''},
+          {height_basement:     ''}
+        ],
+
+       type_windows:[
+          {id: 1, val: "Деревянные окна с двойным остеклением"},
+          {id: 2, val: "Стеклопакет 24мм (4-16-4) в корпусе ПВХ"},
+          {id: 3, val: "Стеклопакет 24мм (4-16-4) в корпусе ПВХ, низкоэмиссионное покрытие"},
+          {id: 4, val: "Стеклопакет 36мм (4-10-4-14-4) в корпусе ПВХ"},
+          {id: 5, val: "Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ"},
+          {id: 6, val: "Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ, низкоэмиссионное покрытие"},
+        ],
+
+        type_doors:[
+          {id: 1,  val: "Двери одинарные деревянные без тамбура"},
+          {id: 2,  val: "Двери одинарные деревянные с тамбуром между ними"},
+          {id: 3,  val: "Двери двойные (распашные) деревянные без тамбура"},
+          {id: 4,  val: "Двери двойные (распашные) деревянные с тамбуром между ними"},
+          {id: 5,  val: "Двери одинарные ПВХ без тамбура"},
+          {id: 6,  val: "Двери одинарные ПВХ с тамбуром между ними"},
+          {id: 7,  val: "Двери двойные (распашные) ПВХ без тамбура"},
+          {id: 8,  val: "Двери двойные (распашные) ПВХ с тамбуром между ними"},
+          {id: 9,  val: "Двери одинарные алюминиевые без тамбура"},
+          {id: 10, val: "Двери одинарные алюминиевые с тамбуром между ними"},
+          {id: 11, val: "Двери двойные (распашные) алюминиевые без тамбура"},
+          {id: 12, val: "Двери двойные (распашные) алюминиевые с тамбуром между ними"}
+        ],
+
+        class_energoeff:[
+          {id: 1,   val: "A++ (очень высокий, R = 8.8 м^2*град/В)"},
+          {id: 2,   val: "A+  (очень высокий, R = 7.5 м^2*град/В)"},
+          {id: 3,   val: "A   (очень высокий, R = 6.5 м^2*град/В)"},
+          {id: 4,   val: "B+  (высокий, R = 5.5 м^2*град/В)"},
+          {id: 5,   val: "В   (высокий, R = 4.5 м^2*град/В)"},
+          {id: 6,   val: "C+  (нормальный, R = 3.8 м^2*град/В)"},
+          {id: 7,   val: "С   (нормальный, R = 3.5 м^2*град/В)"},
+          {id: 8,   val: "С-  (нормальный, R = 3.2 м^2*град/В)"},
+          {id: 9,   val: "D   (пониженный, R = 2.8 м^2*град/В)"},
+          {id: 10,  val: "E   (низкий, R = 2.5 м^2*град/В)"}    
+        ],
+
         functions:
         [    
           // 0 общая характеристика здания  ---------------------------------------------------------------------
@@ -329,12 +399,17 @@ import func from '@/connect/funcs'
         ]
       }
     },
+
+
+
+
     watch: {
        // для системы подогрева (блок появляется если ihp = true)
         // при каждом изменении 'functions[2].input[0][2]' эта функция будет запускаться
         'functions.1.check_elem.0' (new_val) {
            this.functions[2].render = new_val
         },
+
         // для системы подогрева (к-во полей ввода зависит от числа в input'e)
         // при каждом изменении 'functions[2].input[0][2]' эта функция будет запускаться
         'functions.2.input.0.2' (new_val) {
@@ -421,13 +496,15 @@ import func from '@/connect/funcs'
           this.set_all_flag = !this.set_all_flag;  
           this.set_all_check_left_panel(this.set_all_flag.toString()); 
        } ,
+
+
+       
       calc_result(id){
-          let self = this
+        let self = this
         this.results.forEach(function(item){
           if(item.id == id){
               let year = document.getElementById('years-selector');
               let calc_res = func.calc(id, self, year.value)
-              console.log(calc_res)
               item.val = calc_res[0]
               return false
           }
@@ -437,11 +514,10 @@ import func from '@/connect/funcs'
     calc_all_server(){
       let self = this
       this.sections.forEach(function(item){
-          self.calc_result(item.name, self)
+          self.calc_result(item.name)
       })
     },
       calc_all(){
-          console.log(this.functions[1].radio_elem)
         this.set_all_check_left_panel("true")
         this.calc_all_server()
         this.set_all_check_left_panel("false")
@@ -504,6 +580,9 @@ import func from '@/connect/funcs'
       condition_render_elec_consumption_by_period(){
           return !this.functions[19].check_elem[0]
       },
+
+
+
       // отслеживание изменений
       changes(func_ind, type, dataid, new_val){
           let result = false
@@ -557,7 +636,7 @@ import func from '@/connect/funcs'
       },
       clear_dop_results(){
         this.dop_results.forEach(function(item){
-          item.val = -1;
+          item.val = '';
         })  
       }
     },
