@@ -514,29 +514,76 @@ justify-content: space-between;
 }
 
 /* Отрисовка вспомогательных информатиыных блоков */
+.mega-block-title{
+  font-size: var(--header-text-size);
+  color: var(--red-shadow-color);
+  margin-left: 8%;
+  margin-top: 2%;
+}
+.mega-block-subtitle{
+  font-size: var(--header-text-size);
+  color: var(--red-shadow-color);
+  margin-left: 1%;
+  margin-top: 2%;
+}
+
 .mega-block-sections{
   display: flex; 
-  flex-direction: column;
+  flex-direction: row;
   margin: 1%;
-  margin-left: 6%;
-  margin-right: 6%;
+  margin-left: 8%;
+  margin-right: 8%;
+  border: 2px solid var(--left-panel-color);
+  border-radius: 10px; 
+  box-shadow: 0 0 10px var(--red-shadow-color);
+  background-color: var(--global-fon);
   }
 
-  .mega-block-title{
-    font-size: var(--header-text-size);
-    margin-left: 2%;
-  }
+.parametrs-info-block-borders{
+  background-color: var(--white-text-color); 
+  border: 2px solid var(--left-panel-color);
+  border-radius: 10px; 
+  box-shadow: 0 0 10px var(--red-shadow-color);
+  padding:10px;
+  width:80%;
+  margin: 2%;
+}
 
-  .mega-block-borders{
-    display: flex; 
-    flex-direction: column;
-    justify-content: right;
-    border: 2px solid var(--left-panel-color);
-    border-radius: 10px; 
-    box-shadow: 0 0 10px var(--red-shadow-color);
-    background-color: var(--global-fon); 
-    margin: 1% 1% 0%;
-  }
+.parametrs-info-block{
+  display:flex;
+  flex-direction: row;
+}
+
+.info-text{
+  margin-left: 1%;
+  margin-top: 1%;
+}
+
+.info-values{
+  margin-left: 1%;
+  margin-top: 1%; 
+  background-color: var(--white-text-color); 
+  border: 2px solid var(--header-color);
+  border-radius: 4px; 
+  padding-left: 1%;
+  padding-right: 2%;
+}
+.results-info-block-borders{
+  background-color: var(--white-text-color); 
+  border: 2px solid var(--header-color);
+  border-radius: 10px; 
+  box-shadow: 0 0 10px var(--header-color);
+  padding:10px;
+  width:10%;
+  height: fit-content;
+  margin: 2%;
+}
+
+
+
+
+
+
 
   .mega-block{
     display: flex;

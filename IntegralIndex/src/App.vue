@@ -69,197 +69,196 @@
       <!-- Меню настроек---------------------------------------------------------------->
       <div v-show="settings_check==='20'">
         <div class="right-panel">
-        <h1 class="settings-title">Настройка параметров здания</h1> 
-        
-        <!-------Основные настройки------------------------->
-        <h1 class="settings-param-name">Этажность здания</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.floors">
-        
-        <h1 class="settings-param-name">Длина здания, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_build">
-
-        <h1 class="settings-param-name">Ширина здания, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.width_build">
-
-        <h1 class="settings-param-name">Длина стен на одном этаже, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_wall">
-
-        <h1 class="settings-param-name">Высота стен на одном этаже, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_wall">
-
-        <h1 class="settings-param-name">Температура внутреннего воздуха, грд C</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_inside">
-
-        <h1 class="settings-param-name">Температура наружного воздуха, грд C</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_outside">
-
-        <h1 class="settings-param-name">Дата постройки</h1>
-        <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_construction">
-
-         <!--- Настройки окон----------------------------->  
-         <h1 class="settings-param-name">Число окон в здании</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_windows">
-
-        <h1 class="settings-param-name">Длина типового окна, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_windows">
-   
-        <h1 class="settings-param-name">Высота типового окна, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_windows">
-
-        <h1 class="settings-param-name">Дата установки окон</h1>
-        <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_windows">   
-
-        <h1 class="settings-param-name">Тип окон</h1>     
-        <select class="settings-param-input" v-model="parametrs_of_build.type_windows">
-          <option v-for="(type_item) in type_windows" :value="type_item.id" :key=type_item.id readonly>
-            {{type_item.val}}
-          </option> 
-        </select>
+          <h1 class="settings-title">Настройка параметров здания</h1> 
           
-        <!--------------- Двери ------------------------------>
-        <h1 class="settings-param-name">Число дверей </h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_doors">
+          <!-------Основные настройки------------------------->
+          <h1 class="settings-param-name">Этажность здания</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.floors">
+          
+          <h1 class="settings-param-name">Длина здания, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_build">
 
-        <h1 class="settings-param-name">Длина типовой входной двери, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_doors">
+          <h1 class="settings-param-name">Ширина здания, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.width_build">
 
-        <h1 class="settings-param-name">Высота типовой входной двери, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_doors">
+          <h1 class="settings-param-name">Длина стен на одном этаже, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_wall">
 
-        <h1 class="settings-param-name">Тип дверей </h1>
-        <select class="settings-param-input" v-model="parametrs_of_build.type_doors">
-          <option v-for="(type_item) in type_doors" :value="type_item.id" :key=type_item.id readonly>
-            {{type_item.val}}
-          </option> 
-        </select>
-        
-        <h1 class="settings-param-name">Дата установки дверей</h1>
-        <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_doors">
+          <h1 class="settings-param-name">Высота стен на одном этаже, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_wall">
 
-        <h1 class="settings-param-name">Класс энергетической эффективности </h1>
-        <h1 class="settings-param-name">ограждающих конструкций </h1>   
-        <select class="settings-param-input" v-model="parametrs_of_build.class_energoeff">
-          <option v-for="(type_item) in class_energoeff" :value="type_item.id" :key=type_item.id readonly>
-            {{type_item.val}}
-          </option> 
-        </select>
+          <h1 class="settings-param-name">Температура внутреннего воздуха, °С</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_inside">
 
-        <!-- Мебель и жильцы--------------------------------------------->
-        <h1 class="settings-param-name">Число шкафов</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_closet">
+          <h1 class="settings-param-name">Температура наружного воздуха, °С</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_outside">
 
-        <h1 class="settings-param-name">Число диванов</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sofa">
+          <h1 class="settings-param-name">Дата постройки</h1>
+          <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_construction">
 
-        <h1 class="settings-param-name">Число столов</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_table">
+          <!--- Настройки окон----------------------------->  
+          <h1 class="settings-param-name">Число окон в здании</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_windows">
 
-        <h1 class="settings-param-name">Число навесных шкафчиков</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_small_closet">
+          <h1 class="settings-param-name">Длина типового окна, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_windows">
+    
+          <h1 class="settings-param-name">Высота типового окна, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_windows">
 
-        <h1 class="settings-param-name">Максимальное число посетителей мужчин</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_men">
+          <h1 class="settings-param-name">Дата установки окон</h1>
+          <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_windows">   
 
-        <h1 class="settings-param-name">Максимальное число посетителей женщин</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_women">
+          <h1 class="settings-param-name">Тип окон</h1>     
+          <select class="settings-param-input" v-model="parametrs_of_build.type_windows">
+            <option v-for="(type_item) in type_windows" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+            
+          <!--------------- Двери ------------------------------>
+          <h1 class="settings-param-name">Число дверей </h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_doors">
 
-        <h1 class="settings-param-name">Максимальное число посетителей детей</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_children">
+          <h1 class="settings-param-name">Длина типовой входной двери, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.length_doors">
 
-        <h1 class="settings-param-name">Среднее время пребывания посетителей</h1>
-        <h1 class="settings-param-name">в сутки</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.time_guests">
+          <h1 class="settings-param-name">Высота типовой входной двери, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_doors">
 
-        <h1 class="settings-param-name">Количество помещений с раковинами </h1>
-        <h1 class="settings-param-name">на этаже</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sink">
+          <h1 class="settings-param-name">Тип дверей </h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.type_doors">
+            <option v-for="(type_item) in type_doors" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+          
+          <h1 class="settings-param-name">Дата установки дверей</h1>
+          <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_doors">
 
-        <h1 class="settings-param-name">Высота подвала, м</h1>
-        <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_basement">
+          <h1 class="settings-param-name">Класс энергетической эффективности </h1>
+          <h1 class="settings-param-name">ограждающих конструкций </h1>   
+          <select class="settings-param-input" v-model="parametrs_of_build.class_energoeff">
+            <option v-for="(type_item) in class_energoeff" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
+          <!-- Мебель и жильцы--------------------------------------------->
+          <h1 class="settings-param-name">Число шкафов</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_closet">
+
+          <h1 class="settings-param-name">Число диванов</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sofa">
+
+          <h1 class="settings-param-name">Число столов</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_table">
+
+          <h1 class="settings-param-name">Число навесных шкафчиков</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_small_closet">
+
+          <h1 class="settings-param-name">Максимальное число посетителей мужчин</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_men">
+
+          <h1 class="settings-param-name">Максимальное число посетителей женщин</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_women">
+
+          <h1 class="settings-param-name">Максимальное число посетителей детей</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_children">
+
+          <h1 class="settings-param-name">Среднее время пребывания посетителей</h1>
+          <h1 class="settings-param-name">в сутки</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.time_guests">
+
+          <h1 class="settings-param-name">Количество помещений с раковинами </h1>
+          <h1 class="settings-param-name">на этаже</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sink">
+
+          <h1 class="settings-param-name">Высота подвала, м</h1>
+          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_basement">
         </div> 
       </div>
       <!-- /Меню настроек--------------------------------------------------------------->
       
 
-      <!-- Основное рабочее пространство  ------------------ ----------------------------------->
+      <!-- Основное рабочее пространство  ----------------------------------------------------->
       <div :style="{'width': 100+'%'}">
         <div class="solution" :style="{'padding-left': menu_check+'%'}">
 
           <!--- Блок выбра шаблона и года--------------------------------->
-            <div class="choise-years-text-title"> Выбор отопительного сезона</div>
-            <div class="block-pat-years">
-            <select class="header-selector" @change="import_from_server()" id="name_of_scheme"  v-model="load_pat.select.picked">
-              <option v-for="(build) in load_pat.select.variants" :key=build >
-                {{build}} 
-              </option>
-            </select>     
-            <select class="header-selector" @change="clear_dop_results()" id="years-selector">
-              <option> Тестовая дата - 01.09.2022</option>
-              <option> 2014-15 - самая тёплая зима</option>
-              <option> 2018-19</option>
-              <option> 2019-20</option>
-              <option> 2020-21 - самая холодная зима</option>
-              <option> 2021-22</option>
-              <option> 2022-23</option>
-            </select>        
+          <div class="choise-years-text-title"> Выбор отопительного сезона</div>
+          <div class="block-pat-years">
+              <select class="header-selector" @change="import_from_server()" id="name_of_scheme"  v-model="load_pat.select.picked">
+                <option v-for="(build) in load_pat.select.variants" :key=build >
+                  {{build}} 
+                </option>
+              </select>     
+              <select class="header-selector" @change="clear_dop_results()" id="years-selector">
+                <option> Тестовая дата - 01.09.2022</option>
+                <option> 2014-15 - самая тёплая зима</option>
+                <option> 2018-19</option>
+                <option> 2019-20</option>
+                <option> 2020-21 - самая холодная зима</option>
+                <option> 2021-22</option>
+                <option> 2022-23</option>
+              </select>        
           </div>
           <!--- Блок выбра шаблона и года--------------------------------->
 
-   
           <!-- Блок с расчетом суммарных притоков и потерь -->
           <div class="sum-block" >
             <div>
               <div id="sum-minus">
-                  <div class="block-title"> Теплопотери</div><br> 
-                  <div class="sum-titles">
-                    <h1> трансмиссионные через окна <sub> </sub> </h1>
-                    <h1> инфильтрационные через окна  <sub> </sub></h1>
-                    <h1> трансмиссионные через входную группу<sub> </sub></h1>
-                    <h1> инфильтрационные через входную группу<sub> </sub></h1>
-                    <h1> теплопроводность через стены<sub> </sub></h1>
-                    <h1> теплопроводность через кровлю<sub> </sub></h1>
-                    <h1> теплопроводность через пол<sub> </sub></h1>
-                    <h1> через систему вытяжной вентиляции <sub> </sub> </h1>
-                    <h1> прогрев здания перед рабочим днем <sub> </sub></h1>
-                  </div>  
-                  <div class="sum-results">
-                    <div v-if="results[2].val != ''">
-                      <h1><sub> {{printVal(results[2].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[3].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[4].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[5].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[6].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[7].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[8].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub> {{printVal(results[9].val, 'Гкал')}}  </sub> </h1>
-                      <h1><sub>{{printVal(results[10].val, 'Гкал')}} </sub> <sub></sub> </h1> 
-                    </div>
-                  </div>              
+                <div class="block-title"> Теплопотери</div><br> 
+                <div class="sum-titles">
+                  <h1> трансмиссионные через окна <sub> </sub> </h1>
+                  <h1> инфильтрационные через окна  <sub> </sub></h1>
+                  <h1> трансмиссионные через входную группу<sub> </sub></h1>
+                  <h1> инфильтрационные через входную группу<sub> </sub></h1>
+                  <h1> теплопроводность через стены<sub> </sub></h1>
+                  <h1> теплопроводность через кровлю<sub> </sub></h1>
+                  <h1> теплопроводность через пол<sub> </sub></h1>
+                  <h1> через систему вытяжной вентиляции <sub> </sub> </h1>
+                  <h1> прогрев здания перед рабочим днем <sub> </sub></h1>
+                </div>  
+                <div class="sum-results">
+                  <div v-if="results[2].val != ''">
+                    <h1><sub> {{printVal(results[2].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[3].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[4].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[5].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[6].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[7].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[8].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[9].val, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results[10].val, 'Гкал')}} </sub> <sub></sub> </h1> 
+                  </div>
+                </div>              
               </div>            
               <div id="sum-plus">
-                  <div class="block-title"> Теплопритоки</div><br> 
-                  <div class="sum-titles">
-                    <h1> от людей <sub> </sub></h1>
-                    <h1> от ГВС рукомойников <sub> </sub></h1>
-                    <h1> от ГВС душевых <sub> </sub></h1>
-                    <h1> от электрооборудования <sub> </sub></h1>
-                    <h1> от неизолированных трубопроводов ГВС<sub> </sub></h1>
-                    <h1> от неизолированных трубопроводов отопления<sub> </sub></h1>
+                <div class="block-title"> Теплопритоки</div><br> 
+                <div class="sum-titles">
+                  <h1> от людей <sub> </sub></h1>
+                  <h1> от ГВС рукомойников <sub> </sub></h1>
+                  <h1> от ГВС душевых <sub> </sub></h1>
+                  <h1> от электрооборудования <sub> </sub></h1>
+                  <h1> от неизолированных трубопроводов ГВС<sub> </sub></h1>
+                  <h1> от неизолированных трубопроводов отопления<sub> </sub></h1>
+                </div>
+                
+                <div class="sum-results">
+                  <div v-if="results[11].val != ''">
+                    <h1><sub>{{printVal(results[11].val, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results[12].val, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results[13].val, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results[14].val, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results[15].val, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results[16].val, 'Гкал')}} </sub> </h1>
+                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
+                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                   </div>
-                  
-                  <div class="sum-results">
-                    <div v-if="results[11].val != ''">
-                      <h1><sub>{{printVal(results[11].val, 'Гкал')}} </sub> </h1>
-                      <h1><sub>{{printVal(results[12].val, 'Гкал')}} </sub> </h1>
-                      <h1><sub>{{printVal(results[13].val, 'Гкал')}} </sub> </h1>
-                      <h1><sub>{{printVal(results[14].val, 'Гкал')}} </sub> </h1>
-                      <h1><sub>{{printVal(results[15].val, 'Гкал')}} </sub> </h1>
-                      <h1><sub>{{printVal(results[16].val, 'Гкал')}} </sub> </h1>
-                      <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                      <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                      <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                    </div>
-                  </div>                            
+                </div>                            
               </div> 
             </div>
 
@@ -292,12 +291,9 @@
             <!-- /Вывод суммарных теплопотерь и теплопритоков --------------------------------------->
           </div>
           <!-- Конец блока c расчетом суммарных притоков и потерь ------------------------------------------------------------->
-          
-
-
+   
           <!-- Пространство кнопок расчетов  ------------------------------------------------------>
           <div class="buttons-for-calc">
-
             <!-- Формульный расчет по СП -->
             <div class="math-calc-block">
               <div class="flex-between">            
@@ -314,7 +310,6 @@
                 <p class="comment-text">Разница теплопотерь и теплопритоков</p> 
               </div>         
             </div>
-          
 
             <!-- пока пропустила ------------------------------------------->
             <!-- Расчет искусственной нейронной сетью -->
@@ -339,8 +334,6 @@
               </div>
               <input v-if="0 == 1" class="output-field" type="text" readonly>         
             </div>
-            
-
 
             <!-- Отпуск тепловой энергии ТЭЦ -->
             <div class="math-calc-block">
@@ -355,50 +348,86 @@
 
             <!-- Потребление тепловой энергии от ЦТП  -->
             <div class="math-calc-block">                
-                <button class="btn-calc btn-TC" @click="calc_cpt()">
-                  <div class=btn-calc-text> Потребление тепловой энергии от ЦТП </div>
-                </button> 
-                <div v-if="results[18].val != ''">
-                  <input class="output-field" type="text" :value="printVal(results[18].val, 'Гкал')" readonly>                
-                  <p class="comment-text">Расчет ЦТП</p>  
-                </div>     
+              <button class="btn-calc btn-TC" @click="calc_cpt()">
+                <div class=btn-calc-text> Потребление тепловой энергии от ЦТП </div>
+              </button> 
+              <div v-if="results[18].val != ''">
+                <input class="output-field" type="text" :value="printVal(results[18].val, 'Гкал')" readonly>                
+                <p class="comment-text">Расчет ЦТП</p>  
+              </div>     
             </div>
           </div>   
 
-          <div class="razn-TC-CTP-block" v-if="(dop_results[3].val != '')">
-              <input class="output-field" type="text" :value="printVal(dop_results[3].val, 'Гкал')" readonly>
-              <p class="comment-text">Разница ТЭЦ и ЦТП</p>    
+          <div class="razn-TC-CTP-block" v-if="(dop_results[3].val !== '')">
+            <input class="output-field" type="text" :value="printVal(dop_results[3].val, 'Гкал')" readonly>
+            <p class="comment-text">Разница ТЭЦ и ЦТП</p>    
           </div>
 
           <!-- Экологический ущерб ------------------------>
-          <div class="ecology-block" v-if="(dop_results[2].val != '') || (dop_results[3].val != '')">
+          <div class="ecology-block" v-if="(dop_results[2].val != '') || (dop_results[3].val !== '')">
             <p class="block-title">Экологический ущерб </p> 
             <div class="flex-between">
-            <div v-if="(dop_results[2].val != '')" class="math-calc-block">
-              <input class="output-field" type="text" :value="printVal(dop_results[4].val, 'т.у.т')" readonly>
-              <input class="output-field" type="text" :value="printVal(dop_results[5].val, 'кг CO2/год')" readonly>
-            </div>
+              <div v-if="(dop_results[2].val != '')" class="math-calc-block">
+                <input class="output-field" type="text" :value="printVal(dop_results[4].val, 'т.у.т')" readonly>
+                <input class="output-field" type="text" :value="printVal(dop_results[5].val, 'кг CO2/год')" readonly>
+              </div>
 
-            <div v-if="(dop_results[3].val != '')" class="math-calc-block">
-              <input class="output-field"  type="text" :value="printVal(dop_results[6].val, 'т.у.т')" readonly>
-              <input class="output-field"  type="text" :value="printVal(dop_results[7].val, 'кг СО2/год')" readonly> 
+              <div v-if="(dop_results[3].val !== '')" class="math-calc-block">
+                <input class="output-field"  type="text" :value="printVal(dop_results[6].val, 'т.у.т')" readonly>
+                <input class="output-field"  type="text" :value="printVal(dop_results[7].val, 'кг СО2/год')" readonly> 
+              </div>
+            </div>
+          </div>       
+          <!-- /Экологический ущерб ------------------------>
+          <!-- /Пространство кнопок расчетов---------------------------------------------------->
+          
+          <div v-for="(section, index_section) in sections" :key=index_section>     
+            <div v-show="section.check==='true'">
+              <div class="mega-block-title"> {{section.title}} </div>                                          
+              <div class="mega-block-sections">
+                <div class="parametrs-info-block-borders"> 
+                  <div class="mega-block-subtitle"> {{section.subtitle}} </div>         
+                  <div v-for="(item, index) in section.title_fields" :key=index>             
+                    <div class="parametrs-info-block">
+                      <div class="info-text"> {{item}} </div>  
+                      <div class="info-values"> 
+                        <div v-if="section.value_fields[index] === 'type_windows'"> 
+                          {{ type_windows_selected }}
+                        </div>
+                        <div v-else> 
+                          <div v-if="section.value_fields[index] === 'type_doors'"> 
+                            {{ type_doors_selected }}
+                          </div>
+                          <div v-else> 
+                            <div v-if="section.value_fields[index] === 'class_energoeff'"> 
+                              {{ class_energoeff_selected }}
+                            </div>
+                            <div v-else>
+                              {{parametrs_of_build[section.value_fields[index]]}}
+                            </div>
+                          </div>
+                        </div> 
+                      </div>               
+                      <div class="info-text"> {{section.ue_fields[index]}} </div> 
+                    </div>           
+                  </div>
+                </div>  
+                <div class="results-info-block-borders">
+                  <div class="info-text"> {{results[2].val}} </div>  
+                </div>       
+              </div>  
             </div>
           </div>
-        </div>       
-        <!-- /Экологический ущерб ------------------------>   
-        
-        <!-- /Пространство кнопок расчетов--------- ------------------------------------------->
-          
 
-
-          <!-- Отрисовка основных блоков расчета ------------------------------------------------>
+          <!-- старое-->
           <div v-for="section in sections" :key=section>
-            <div v-show="section.check==='true'">
+            <!-- <div v-show="section.check==='true'">  -->
+              <div v-show="'false'==='true'"> 
               <div class="mega-block-sections">
                 <div class="mega-block-title"> {{section.title}} </div>
-                <div class="mega-block-borders">
+                
                   <div class="mega-block">
-                    <div :class="[section.name == 'reliability' || section.name == 'add_heatcosts' ? 'rel-block' : 'main-block']" :style="{'width': section.main_block_width+'%'}"> 
+                    <div :class="[section.name == 'reliability' || section.name == 'add_heatcosts' ? 'rel-block' : 'main-block']" > 
                       <!-- Формы ввода для основных блоков   ------------------------------------->
                       <div v-for="(func, ind) in functions" :key=func>
                         <div v-if="func.id===section.name && func.render !== false">
@@ -481,7 +510,7 @@
                           </div> 
                         </div>
                       </div>         
-                    </div> 
+                  
                 <!-- /Формы ввода для основных блоков   ----------------------------------->
                     <div v-if="section.name!=='general'" class="res-block">
                       <div class= "res-block block-r">
@@ -498,10 +527,10 @@
               </div>
             </div>
           </div>
-          <!-- /Отрисовка основных блоков расчета --------------------------------------------->
-        </div>
-      </div>
-    </div>
+          <!-- старое-->
+        </div> <!--solution-->
+      </div> <!--рабочее пр-во-->
+    </div> <!--body-->
     <!--/Тело ----------------------------------------------------------------------->
     <dialogbox-login v-model:show=login_reg_check>
     </dialogbox-login> 

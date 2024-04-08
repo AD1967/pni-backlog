@@ -34,24 +34,141 @@ import func from '@/connect/funcs'
         time : 2019,
         sections:
         [
-          {  section:'хар-ка здания',   name: 'general',                      title: 'Общая характеристика здания', check: 'false'},
-          {  section:'Надежность' ,     name: 'reliability',                  title: 'Надежность', check: 'false'},
-          {  section:'Теплопотери',     name: 'heat_los_win',                 title: 'Расчет тепловых потерь через окна', check: 'false'},
-          {  section:'Теплопотери',     name: 'inf_win',                      title: 'Расчет инфильтрации через окна', check: 'false'},
-          {  section:'Теплопотери',     name: 'heat_los_inpgr',               title: 'Расчет тепловых потерь через входную группу', check: 'false'},
-          {  section:'Теплопотери',     name: 'inf_inpgr',                    title: 'Расчет инфильтрации через входную группу', check: 'false'},
-          {  section:'Теплопотери',     name: 'heat_los_heatcond_benv',       title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', check: 'false'},
-          {  section:'Теплопотери',     name: 'heat_los_heatcond_roof',       title: 'Определение теплопотерь посредством теплопроводности через кровлю', check: 'false'},
-          {  section:'Теплопотери',     name: 'heat_los_floor',               title: 'Расчет теплопотерь через пол', check: 'false'},
-          {  section:'Теплопотери',     name: 'heat_los_vent',                title: 'Расчет теплопотерь, связанных с вентиляцией', check: 'false'},
-          {  section:'Теплопотери',     name: 'add_heatcosts',                title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров'},
-          {  section:'Теплопритоки',    name: 'heat_gains_people',            title: 'Определение теплопритоков от людей', check: 'false'},
-          {  section:'Теплопритоки',    name: 'heat_gains_washstands',        title: 'Определение затрат тепловой энергии на ГВС для рукомойников', check: 'false'},
-          {  section:'Теплопритоки',    name: 'heat_gains_showers',           title: 'Определение затрат тепловой энергии на ГВС для душевых', check: 'false'},
-          {  section:'Теплопритоки',    name: 'heat_gains_electriclighting',  title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', check: 'false'},
-          {  section:'Теплопритоки',    name: 'heat_gains_GVS',               title: 'Определение теплопритока от неизолированных трубопроводов ГВС', check: 'false'},
-          {  section:'Теплопритоки',    name: 'heat_gains_pipelines',         title: 'Определение теплопритока от неизолированных трубопроводов отопления', check: 'false'},
+          {  section:'хар-ка здания',  name: 'general',  title: 'Общая характеристика здания', check: 'false'}, //удалить потом
+          
+          // {  section:'Надежность' ,     name: 'reliability',                  title: 'Надежность', check: 'false'},
+          { section:'Теплопотери',     
+            name: 'heat_los_win',                 
+            title: 'Расчет тепловых потерь через окна', 
+            subtitle: 'Характеристика окон',
+            check: 'false',
+            title_fields: ['Число окон',    'Длина типового окна', 'Высота типового окна', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип окон',     'Дата установки окон', 'Дата постройки'],
+            value_fields: ['count_windows', 'length_windows',      'height_windows',       'temp_inside',                     'temp_outside',                  'type_windows', 'date_windows',        'date_construction'],
+            ue_fields:    ['ед.', 'м', 'м', '°С', '°С','ед.', 'ед.', 'ед.']
+          },
+          {  section:'Теплопотери',     
+             name: 'inf_win',                      
+             title: 'Расчет инфильтрации через окна',
+             subtitle: 'Характеристика окон', 
+             check: 'false',
+             title_fields:  ['Число окон',    'Длина типового окна', 'Высота типового окна', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип окон',     'Дата установки окон', 'Дата постройки'],
+             value_fields: ['count_windows', 'length_windows',      'height_windows',       'temp_inside',                     'temp_outside',                  'type_windows', 'date_windows',        'date_construction'],
+             ue_fields:    ['ед.', 'м', 'м', '°С', '°С','ед.', 'ед.', 'ед.']
+          },
+          {  section:'Теплопотери',     
+             name: 'heat_los_inpgr',               
+             title: 'Расчет тепловых потерь через входную группу',
+             subtitle: 'Характеристика входной группы',
+             check: 'false',
+             title_fields: ['Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Этажность', 'Высота стен', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип двери', 'Дата установки дверей', 'Дата постройки'],
+             value_fields: ['count_doors', 'length_doors', 'height_doors', 'floors', 'height_wall', 'temp_inside', 'temp_outside', 'type_doors', 'date_doors', 'date_construction'],
+             ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', 'ед.', 'ед.', 'ед.']
+            },
+          {  section:'Теплопотери',     
+             name: 'inf_inpgr',                    
+             title: 'Расчет инфильтрации через входную группу', 
+             subtitle: 'Характеристика входной группы',
+             check: 'false',
+             title_fields: ['Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Этажность', 'Высота стен', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип двери', 'Дата установки дверей', 'Дата постройки'],
+             value_fields: ['count_doors', 'length_doors', 'height_doors', 'floors', 'height_wall', 'temp_inside', 'temp_outside', 'type_doors', 'date_doors', 'date_construction'],
+             ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', 'ед.', 'ед.', 'ед.']
+          },
+          {  section:'Теплопотери',     
+             name: 'heat_los_heatcond_benv',       
+             title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', 
+             subtitle: 'Характеристика класса энергетической эффективности',
+             check: 'false',
+             title_fields: ['Длина здания', 'Ширина здания', 'Этажность', 'Высота стен', 'Число окон', 'Длина типового окна', 'Высота типового окна', 'Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Класс энергетической эффективности ограждающих конструкций', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Дата постройки'],
+             value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_windows', 'length_windows', 'height_windows', 'count_doors', 'length_doors', 'height_doors', 'class_energoeff', 'temp_inside', 'temp_outside', 'date_construction'],
+             ue_fields:    ['м', 'м', 'ед.', 'м',  'ед.', 'м', 'м', 'ед.', 'м', 'м', 'ед.', '°С', '°С', 'ед.']
+          },
+          {  section:'Теплопотери',     
+             name: 'heat_los_heatcond_roof',       
+             title: 'Определение теплопотерь посредством теплопроводности через кровлю', 
+             subtitle: 'Характеристика класса энергетической эффективности',
+             check: 'false',
+             title_fields: ['Температура внутреннего воздуха', 'Температура наружного воздуха', 'Длина здания', 'Ширина здания', 'Класс энергетической эффективности ограждающих конструкций'],
+             value_fields: ['temp_inside', 'temp_outside', 'length_build', 'width_build', 'class_energoeff'],
+             ue_fields:    ['°С', '°С', 'м', 'м', 'ед.']
+         },
+         {  section:'Теплопотери',     
+            name: 'heat_los_floor',               
+            title: 'Расчет теплопотерь через пол', 
+            subtitle: 'Тепловые потери через пол',
+            check: 'false',
+            title_fields: ['Длина здания', 'Ширина здания', 'Длина стен на одном этаже', 'Высота подвала', 'Температура внутреннего воздуха', 'Температура наружного воздуха'],
+            value_fields: ['length_build', 'width_build', 'length_wall', 'height_basement', 'temp_inside', 'temp_outside'],
+            ue_fields:    ['м', 'м', 'м', 'м','°С', '°С']
+         },
+         {  section:'Теплопотери',     
+            name: 'heat_los_vent',                
+            title: 'Расчет теплопотерь, связанных с вентиляцией', 
+            subtitle: 'Тепловые потери связанные с вентиляцией',
+            check: 'false',
+            title_fields: ['Длина здания', 'Ширина здания', 'Высота стен на одном этаже', 'Температура внутреннего воздуха', 'Температура наружного воздуха'],
+            value_fields: ['length_build', 'width_build', 'height_wall',  'temp_inside', 'temp_outside'],
+            ue_fields:    ['м', 'м', 'м','°С', '°С']
+         },
+         {  section:'Теплопотери',     
+            name: 'add_heatcosts',                
+            title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров',
+            subtitle: 'Характеристика интерьера и внутренних перегородок',
+            check: 'false',
+            title_fields: ['Число дверей', 'Число шкафов', 'Число диванов', 'Число столов', 'Число навесных шкафчиков', 'Этажность', 'Длина здания', 'Ширина здания','Длина стен на одном этаже' ,'Высота стен на одном этаже'],
+            value_fields: ['count_doors', 'count_closet', 'count_sofa', 'count_table', 'count_small_closet', 'floors', 'length_build', 'width_build', 'length_wall', 'height_wall'],
+            ue_fields:    ['ед.', 'ед.', 'ед.', 'ед.', 'ед.', 'ед.', 'м', 'м', 'м', 'м']
+          },
+          {  section:'Теплопритоки',    
+             name: 'heat_gains_people',            
+             title: 'Определение теплопритоков от людей', 
+             subtitle: 'Теплопритоки от людей',
+             check: 'false',
+             title_fields: ['Число посетителей/жильцов мужчин', 'Число посетителей/жильцов женщин','Число посетителей/жильцов детей', 'Среднее время пребывания посетителей/жильцов в сутки', 'Температура внутреннего воздуха'],
+             value_fields: ['count_men', 'count_women', 'count_children', 'time_guests', 'temp_inside'],
+             ue_fields: ['чел', 'чел', 'чел', 'чел/сутки', '°С']
+          },
+          {  section:'Теплопритоки',    
+             name: 'heat_gains_washstands',        
+             title: 'Определение затрат тепловой энергии на ГВС для рукомойников', 
+             check: 'false',
+             title_fields: ['Число посетителей/жильцов мужчин', 'Число посетителей/жильцов женщин','Число посетителей/жильцов детей'],
+             value_fields: ['count_men', 'count_women', 'count_children'],
+             ue_fields:    ['чел', 'чел', 'чел']
+          },
+          {  section:'Теплопритоки',    
+             name: 'heat_gains_showers',           
+             title: 'Определение затрат тепловой энергии на ГВС для душевых', 
+             check: 'false',
+             title_fields: ['Число посетителей/жильцов мужчин', 'Число посетителей/жильцов женщин','Число посетителей/жильцов детей'],
+             value_fields: ['count_men', 'count_women', 'count_children'],
+             ue_fields:    ['чел', 'чел', 'чел']
+          },
+          {  section:'Теплопритоки',    
+             name: 'heat_gains_electriclighting',  
+             title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', 
+             check: 'false',
+             title_fields: ['Длина здания', 'Ширина здания','Этажность'],
+             value_fields: ['length_build', 'width_build', 'floors'],
+             ue_fields:    ['м', 'м', 'ед.']
+          },
+          {  section:'Теплопритоки',  //тип трубы?? труба металлопластиковая  
+             name: 'heat_gains_GVS',               
+             title: 'Определение теплопритока от неизолированных трубопроводов ГВС', 
+             check: 'false',
+             title_fields: ['Длина здания', 'Ширина здания','Этажность', 'Высота стен на одном этаже', 'Число помещений с раковинами на этаже', 'Температура внутреннего воздуха'],
+             value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_sink',  'temp_inside'],
+             ue_fields:    ['м', 'м', 'ед.', 'м', 'ед.', '°С']
+          },
+          {  section:'Теплопритоки',    
+             name: 'heat_gains_pipelines',   //тип трубы?? труба металлопластиковая        
+             title: 'Определение теплопритока от неизолированных трубопроводов отопления', 
+             check: 'false',
+             title_fields: ['Длина здания', 'Ширина здания','Этажность', 'Высота стен на одном этаже', 'Количество окон', 'Температура внутреннего воздуха'],
+             value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_windows',  'temp_inside'],
+             ue_fields:    ['м', 'м', 'ед.', 'м', 'ед.', '°С']
+          },
         ],
+
         results: [
           {id: 'general',                     val: ''}, //0
           {id: 'reliability',                 val: ''}, //1
@@ -124,7 +241,7 @@ import func from '@/connect/funcs'
           {id: 5, val: "Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ"},
           {id: 6, val: "Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ, низкоэмиссионное покрытие"},
         ],
-
+        
         type_doors:[
           {id: 1,  val: "Двери одинарные деревянные без тамбура"},
           {id: 2,  val: "Двери одинарные деревянные с тамбуром между ними"},
@@ -139,19 +256,28 @@ import func from '@/connect/funcs'
           {id: 11, val: "Двери двойные (распашные) алюминиевые без тамбура"},
           {id: 12, val: "Двери двойные (распашные) алюминиевые с тамбуром между ними"}
         ],
+        
 
         class_energoeff:[
-          {id: 1,   val: "A++ (очень высокий, R = 8.8 м^2*град/В)"},
-          {id: 2,   val: "A+  (очень высокий, R = 7.5 м^2*град/В)"},
-          {id: 3,   val: "A   (очень высокий, R = 6.5 м^2*град/В)"},
-          {id: 4,   val: "B+  (высокий, R = 5.5 м^2*град/В)"},
-          {id: 5,   val: "В   (высокий, R = 4.5 м^2*град/В)"},
-          {id: 6,   val: "C+  (нормальный, R = 3.8 м^2*град/В)"},
-          {id: 7,   val: "С   (нормальный, R = 3.5 м^2*град/В)"},
-          {id: 8,   val: "С-  (нормальный, R = 3.2 м^2*град/В)"},
-          {id: 9,   val: "D   (пониженный, R = 2.8 м^2*град/В)"},
-          {id: 10,  val: "E   (низкий, R = 2.5 м^2*град/В)"}    
+          {id: 1,   val: "A++ (очень высокий, R = 8.8 м² °С/В)"},
+          {id: 2,   val: "A+  (очень высокий, R = 7.5 м² °С/В)"},
+          {id: 3,   val: "A   (очень высокий, R = 6.5 м² °С/В)"},
+          {id: 4,   val: "B+  (высокий, R = 5.5 м² °С/В)"},
+          {id: 5,   val: "В   (высокий, R = 4.5 м² °С/В)"},
+          {id: 6,   val: "C+  (нормальный, R = 3.8 м² °С/В)"},
+          {id: 7,   val: "С   (нормальный, R = 3.5 м² °С/В)"},
+          {id: 8,   val: "С-  (нормальный, R = 3.2 м² °С/В)"},
+          {id: 9,   val: "D   (пониженный, R = 2.8 м² °С/В)"},
+          {id: 10,  val: "E   (низкий, R = 2.5 м² °С/В)"}    
         ],
+
+        
+
+
+
+
+
+
 
         functions:
         [    
@@ -427,7 +553,9 @@ import func from '@/connect/funcs'
           }
         }
       },
+
     methods:{
+
     numberWithSpaces(x) {
       var parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -449,7 +577,7 @@ import func from '@/connect/funcs'
         this.dop_results[6].val = this.dop_results[3].val * 0.1486;
         this.dop_results[7].val = this.dop_results[3].val * 276.28;
       }     
-      },
+    },
       logout(){
         localStorage.setItem("token", null)
         login_funcs.logout()
@@ -622,8 +750,19 @@ import func from '@/connect/funcs'
         })  
       }
     },
-    beforeCreate(){
-      
+    computed:{
+      type_windows_selected(){
+        if (this.parametrs_of_build.type_windows !== undefined)
+            return this.type_windows[this.parametrs_of_build.type_windows-1].val      
+      },
+      type_doors_selected(){
+        if (this.parametrs_of_build.type_doors !== undefined)
+            return this.type_doors[this.parametrs_of_build.type_doors-1].val 
+      },
+      class_energoeff_selected(){
+        if (this.parametrs_of_build.class_energoeff !== undefined)
+            return this.class_energoeff[this.parametrs_of_build.class_energoeff-1].val   
+      }
     },
     mounted() {
         // Проверить валидность токена
