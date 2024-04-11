@@ -55,10 +55,7 @@ function export_b(self){
     console.log("export")
     let build = {}
     build.name = get_input(self, "general", 0)
-    self.parametrs_of_build.forEach(function(d) {
-        Object.assign(build, d);
-    });
-
+    build = Object.assign(build, self.parametrs_of_build);
     return {"error": false, "result": build}
 }
 

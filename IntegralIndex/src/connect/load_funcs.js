@@ -154,7 +154,7 @@ function load_build(self, id_build, result_func){
                 self.parametrs_of_build.height_wall             = build.height       
                 self.parametrs_of_build.temp_inside             = build.temp_inside        
                 self.parametrs_of_build.temp_outside            = build.temp_outside      
-                self.parametrs_of_build.date_construction       = build.date_build  
+                self.parametrs_of_build.date_build              = build.date_build
                 self.parametrs_of_build.count_windows           = build.count_windows      
                 self.parametrs_of_build.length_windows          = build.length_wnd    
                 self.parametrs_of_build.height_windows          = build.height_wnd    

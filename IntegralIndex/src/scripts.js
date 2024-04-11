@@ -211,7 +211,7 @@ import func from '@/connect/funcs'
           height_wall:         '',
           temp_inside:         '',
           temp_outside:        '',
-          date_construction:   '',
+          date_build:          '',
           count_windows:       '',
           length_windows:      '',
           height_windows:      '',

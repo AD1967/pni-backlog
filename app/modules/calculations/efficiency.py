@@ -229,7 +229,7 @@ def Q_walls(build_id):
     rotband = get_one_from_table(Material, 8)
     shtukaturka = get_one_from_table(Material, 9)
 
-    return float(cur_info['height']) * float(cur_info['len_sum']) * float(cur_info['floors']) * (material.capacity * brick.thickness * \
+    return float(cur_info['height_wall']) * float(cur_info['len_sum']) * float(cur_info['floors']) * (material.capacity * brick.thickness * \
     material.density + rotband.capacity * rotband.thickness * rotband.density + shtukaturka.capacity * \
     shtukaturka.thickness * shtukaturka.density) * (heat - dezh) * period.T
     
@@ -264,7 +264,7 @@ def Q_floors(build_id):
     fanera = get_one_from_table(Material, 19)
     parket = get_one_from_table(Material, 20)
 
-    Q = (float(cur_info['len_a']) * float(cur_info['len_b'])  - (float(cur_info['len_sum']) * float(cur_info['floors']) * \
+    Q = (float(cur_info['length_build']) * float(cur_info['width_build'])  - (float(cur_info['len_sum']) * float(cur_info['floors']) * \
         (brick.thickness + rotband.thickness + shtukaturka.thickness))) * (heat - dezh)
 
     # Вместо умножения на период в конце
@@ -316,7 +316,7 @@ def Q_shkaf(build_id):
     #period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['id_period']))
     material = get_one_from_table(Material, int(cur_info['mebel_material']))
-    return material.capacity * float(cur_info['count_shkaf'])  * V * material.density * (heat - dezh) * \
+    return material.capacity * float(cur_info['count_closet']) * V * material.density * (heat - dezh) * \
         period.T
 
 ########################################################################################################################################################################
@@ -335,7 +335,7 @@ def Q_divan(build_id):
     heat = 20
     dezh = 12
 
-    return material.capacity * float(cur_info['count_divan']) * V * material.density * (heat - dezh) * \
+    return material.capacity * float(cur_info['count_sofa']) * V * material.density * (heat - dezh) * \
         period.T
 ########################################################################################################################################################################
 
@@ -370,7 +370,7 @@ def Q_shkafchik(build_id):
     #period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['id_period']))
     material = get_one_from_table(Material, int(cur_info['mebel_material']))
-    count = float(cur_info['count_shkafchik'])
+    count = float(cur_info['count_small_closet'])
     material_capacity = material.capacity
     material_density = material.density
 
@@ -464,15 +464,15 @@ def Q_wnd_(build_id):
     #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
 
     dYears = 365 
-    t = math.floor((this_date - datetime.strptime(cur_info['date_wnd'], '%Y-%m-%d')).days)/ dYears
+    t = math.floor((this_date - datetime.strptime(cur_info['date_windows'], '%Y-%m-%d')).days)/ dYears
     tBuild = math.floor((this_date - datetime.strptime(cur_info['date_build'], '%Y-%m-%d')).days)/ dYears
-    window_type = get_one_from_table(Window, int(cur_info['id_window']))
+    window_type = get_one_from_table(Window, int(cur_info['type_windows']))
     k = 1
     if tBuild >= 40:
         k = 1.68
     elif tBuild > 1:
         k = 1 + 0.0169 * tBuild
-    return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_wnd'])* int(cur_info['height_wnd']) * \
+    return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_windows'])* int(cur_info['height_windows']) * \
         k * 8.5984e-7 * dt / window_type.R
 
 ########################################################################################################################################################################
@@ -492,9 +492,9 @@ def Q_wnd_inf(build_id):
     #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
-    window_type = get_one_from_table(Window, int(cur_info['id_window_inf']))
-    return 1.005 * dt * 2.388458966275e-7 * (int(cur_info['temp_inside']) - weather.T) * int(cur_info['count_windows_inf']) * \
-        (2 * int(cur_info['length_wnd_inf']) + 2 * int(cur_info['height_wnd_inf'])) * window_type.q * window_type.a
+    window_type = get_one_from_table(Window, int(cur_info['type_windows']))
+    return 1.005 * dt * 2.388458966275e-7 * (int(cur_info['temp_inside']) - weather.T) * int(cur_info['count_windows']) * \
+        (2 * int(cur_info['length_windows']) + 2 * int(cur_info['height_windows'])) * window_type.q * window_type.a
 
 ########################################################################################################################################################################
 
@@ -594,7 +594,7 @@ def Q_doors_(build_id):
     t = math.floor((this_date - datetime.strptime(cur_info['date_doors'], '%Y-%m-%d')).days)/ dYears
     tBuild = math.floor((this_date - datetime.strptime(cur_info['date_build'], '%Y-%m-%d')).days)/ dYears
 
-    door_type = get_one_from_table(Door, int(cur_info['id_door']))
+    door_type = get_one_from_table(Door, int(cur_info['type_doors']))
     k = 1
     if tBuild >= 40:
         k = 1.68
@@ -603,8 +603,8 @@ def Q_doors_(build_id):
 
     print(cur_info)
 
-    return (float(cur_info['temp_inside']) - weather.T) * (1.1 + door_type.beta * float(cur_info['height']) * float(cur_info['floors'])) * \
-        float(cur_info['q_doors_count_doors']) * float(cur_info['length_door']) * float(cur_info['height_door']) * k * 8.5984e-7 * dt  / door_type.R
+    return (float(cur_info['temp_inside']) - weather.T) * (1.1 + door_type.beta * float(cur_info['height_wall']) * float(cur_info['floors'])) * \
+        float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors']) * k * 8.5984e-7 * dt  / door_type.R
 
 ########################################################################################################################################################################
 
@@ -621,12 +621,12 @@ def Q_doors_inf(build_id):
     #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
-    door_type = get_one_from_table(Door, int(cur_info['id_door_inf']))
+    door_type = get_one_from_table(Door, int(cur_info['type_doors']))
     print(cur_info)
-    print(1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors_inf']) * \
-        (2 * float(cur_info['length_door_inf']) + 2 * float(cur_info['height_door_inf'])) * door_type.q * door_type.a)
-    return 1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors_inf']) * \
-        (2 * float(cur_info['length_door_inf']) + 2 * float(cur_info['height_door_inf'])) * door_type.q * door_type.a
+    print(1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors']) * \
+        (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a)
+    return 1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors']) * \
+        (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a
 
 ########################################################################################################################################################################
 
@@ -719,7 +719,7 @@ def Q_constructs_(build_id):
     #q_wnd = get_one_by_id_build(Q_wnd, build_id)
     #q_doors = get_one_by_id_build(Q_door, build_id)
     #construct = get_one_by_id_build(Q_construct_roof, build_id)
-    energoeff = get_one_from_table(Energoeff, int(cur_info['constructs_energoeff']))
+    energoeff = get_one_from_table(Energoeff, int(cur_info['class_energoeff']))
 
     #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
@@ -734,12 +734,12 @@ def Q_constructs_(build_id):
         k = 1.68
     elif tBuild > 1:
         k = 1 + 0.0169 * tBuild
-    return (float(cur_info['temp_inside'])- weather.T) * \
-         (1 + 0.1) * (2 * float(cur_info['len_a']) * float(cur_info['height']) * float(cur_info['floors']) + \
-         2 * float(cur_info['len_b']) * float(cur_info['height']) * float(cur_info['floors']) - \
-         float(cur_info['count_windows_c']) * float(cur_info['length_wnd_c']) * float(cur_info['height_wnd_c']) - \
-         float(cur_info['count_doors_c']) * float(cur_info['length_door_c']) * float(cur_info['height_door_c'])) * \
-         k * 8.5984e-7  * dt/  energoeff.R 
+    return (float(cur_info['temp_inside']) - weather.T) * \
+         (1 + 0.1) * (2 * float(cur_info['length_build']) * float(cur_info['height_wall']) * float(cur_info['floors']) + \
+         2 * float(cur_info['width_build']) * float(cur_info['height_wall']) * float(cur_info['floors']) - \
+         float(cur_info['count_windows']) * float(cur_info['length_windows']) * float(cur_info['height_windows']) - \
+         float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors'])) * \
+         k * 8.5984e-7 * dt / energoeff.R
 
 ########################################################################################################################################################################
 
@@ -768,8 +768,8 @@ def Q_roof_(build_id):
     #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
-    energoeff = get_one_from_table(Energoeff, int(cur_info['roof_energoeff']))
-    return float(cur_info['len_a']) * float(cur_info['len_b']) * (float(cur_info['temp_inside']) - weather.T) * \
+    energoeff = get_one_from_table(Energoeff, int(cur_info['class_energoeff']))
+    return float(cur_info['length_build']) * float(cur_info['width_build']) * (float(cur_info['temp_inside']) - weather.T) * \
         8.5984e-7 * dt / energoeff.R
 
 ########################################################################################################################################################################
@@ -855,9 +855,9 @@ def Q_hws_pipes(build_id):
     k = 5
     if int(cur_info['hws_type']) <= 2:
        k = 12
-    h = float(cur_info['height']) * (float(cur_info['floors']) - 1)
-    l = 2 * h * int(cur_info['count_crane']) + \
-        2 * (float(cur_info['len_a'])+ float(cur_info['len_b']))
+    h = float(cur_info['height_wall']) * (float(cur_info['floors']) - 1)
+    l = 2 * h * int(cur_info['count_sink']) + \
+        2 * (float(cur_info['length_build']) + float(cur_info['width_build']))
 
     return k * 3.14 * 0.028 * l * 0.3 * (60 - float(cur_info['temp_inside'])) * \
          8.5984e-7 * dt
@@ -885,8 +885,8 @@ def Q_heat_pipes(build_id):
     if int(cur_info['pip_type']) <= 2:
        k = 12
 
-    h = float(cur_info['height'])
-    l = 2 * (float(cur_info['len_a']) + float(cur_info['len_b'])) + h * float(cur_info['count_windows_pip']) / 2.0
+    h = float(cur_info['height_wall'])
+    l = 2 * (float(cur_info['length_build']) + float(cur_info['width_build'])) + h * float(cur_info['count_windows']) / 2.0
 
     # Заменили 60 на 90
     # См. файл с диска
@@ -969,8 +969,8 @@ def Q_people(build_id):
     #q_people = get_one_by_id_build(Q_person, build_id)
     #build = q_people.build
     print(cur_info)
-    n_men = k_men * int(cur_info['mens'])
-    n_women = k_women * int(cur_info['womens'])
+    n_men = k_men * int(cur_info['count_men'])
+    n_women = k_women * int(cur_info['count_women'])
     return  (n_men * (220 - 5 * float(cur_info['temp_inside'])) + \
             0.85 * n_women * (220 - 5 * float(cur_info['temp_inside'])) + 0.75 * n_children * k_children * (220 - 5 * float(cur_info['temp_inside']))) * \
             8.5984e-7 * dt
@@ -1020,8 +1020,8 @@ def calc_eff_people(build_id):
 def Q_hws_cranes(build_id):
     #q_people = get_one_by_id_build(Q_person, build_id)
     print(cur_info)
-    n_men = k_men * int(cur_info['mens_w'])
-    n_women = k_women * int(cur_info['womens_w'])
+    n_men = k_men * int(cur_info['count_men'])
+    n_women = k_women * int(cur_info['count_women'])
     return  0.00009 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
         (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
 
@@ -1069,8 +1069,8 @@ def calc_eff_hws_cranes(build_id):
 
 def Q_hws_showers(build_id):
     #q_people = get_one_by_id_build(Q_person, build_id)
-    n_men = k_men * int(cur_info['mens_s'])
-    n_women = k_women * int(cur_info['womens_s'])
+    n_men = k_men * int(cur_info['count_men'])
+    n_women = k_women * int(cur_info['count_women'])
     return  0.00018 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
         500 * (60 - 15) / 84600 * 8.5984e-7 * dt
 
@@ -1121,7 +1121,7 @@ def Q_electro(build_id):
     print(cur_info)
     if cur_info['elec_consumption_by_period'] is None:
         #build = q_electro.build
-        return 0.95 * float(cur_info['len_a']) * float(cur_info['len_b'])* float(cur_info['floors']) * 8.5984e-7 * dt
+        return 0.95 * float(cur_info['length_build']) * float(cur_info['width_build']) * float(cur_info['floors']) * 8.5984e-7 * dt
     return 0.95 * float(cur_info['elec_consumption_by_period']) * 8.5984e-7 * dt
 ########################################################################################################################################################################
 
@@ -1189,8 +1189,8 @@ def Q_vent(build_id):
        n = 3
     if cur_info['name'].find('Школа') != -1: 
        n = 2.5
-    A = float(cur_info['len_a']) * float(cur_info['len_b'])
-    h = float(cur_info['height'])
+    A = float(cur_info['length_build']) * float(cur_info['width_build'])
+    h = float(cur_info['height_wall'])
 
     ####### Расчет плотности воздуха #########
     Ps = 133.3 * math.exp(18.6 - 3992/(t_out + 233.8))
@@ -1301,9 +1301,9 @@ def Q_floor_(build_id):
 
     t_in = float(cur_info['temp_inside'])
     t_out = weather.T
-    a = float(cur_info['len_a'])
-    b = float(cur_info['len_a'])
-    h = float(cur_info['height_floor'])
+    a = float(cur_info['length_build'])
+    b = float(cur_info['width_build'])
+    h = float(cur_info['height_basement'])
 
     S = a * b
     P = 2 * (a + b)
