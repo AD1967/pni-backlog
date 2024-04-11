@@ -585,8 +585,7 @@ import func from '@/connect/funcs'
       },
 
       async save_current_calc(){
-        this.set_all_check_left_panel("true")
-        func.save_cur(this.results, this.dop_results)
+        func.save_cur(this.parametrs_of_build, this.results, this.dop_results)
       },
 
       left_panel_show(){

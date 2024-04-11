@@ -51,6 +51,16 @@ function is_block_checked(self, id){
     return result
 }
 
+function export_b(self){
+    console.log("export")
+    let build = {}
+    build.name = get_input(self, "general", 0)
+    self.parametrs_of_build.forEach(function(d) {
+        Object.assign(build, d);
+    });
+
+    return {"error": false, "result": build}
+}
 
 function export_build(self, full){
     console.log("export")
@@ -310,6 +320,7 @@ function export_build(self, full){
 
 let export_funcs = {};
 export_funcs.export_build = export_build
+export_funcs.export_b = export_b
 
 
 export default export_funcs

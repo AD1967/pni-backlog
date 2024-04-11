@@ -121,14 +121,26 @@ def update_cur_info(data):
 
 
 # Сохранение текущих расчётов
-def save(data):
+def save(build, results):
     res_excel = 'cur_results.xlsx'
-    global cur_info
-    print(cur_info)
-    build = cur_info.copy()
-    del build["cur_date"]
+    # global cur_info
+    # print(cur_info)
+    # build = cur_info.copy()
+    # del build["cur_date"]
     df1 = pd.DataFrame()
-    df1 = pd.concat([df1, pd.Series(build)], axis=1, ignore_index=True)
+    column_build = ['Этажность здания', 'Длина здания, м', 'Ширина здания, м',
+                    'Длина стен на одном этаже, м', 'Высота стен на одном этаже, м',
+                    'Температура внутреннего воздуха, °С', 'Температура наружного воздуха, °С',
+                    'Дата постройки', 'Число окон в здании', 'Длина типового окна, м',
+                    'Высота типового окна, м', 'Дата установки окон', 'Тип окон',
+                    'Число дверей', 'Длина типовой входной двери, м', 'Высота типовой входной двери, м',
+                    'Тип дверей', 'Дата установки дверей', 'Класс энергетической эффективности ограждающих конструкций',
+                    'Число шкафов', 'Число диванов', 'Число столов', 'Число навесных шкафчиков',
+                    'Максимальное число посетителей мужчин', 'Максимальное число посетителей женщин',
+                    'Максимальное число посетителей детей', 'Среднее время пребывания посетителей в сутки',
+                    'Количество помещений с раковинами на этаже', 'Высота подвала, м'
+    ]
+    df1 = pd.concat([df1, pd.Series(column_build), pd.Series(build)], axis=1, ignore_index=True)
 
     df2 = pd.DataFrame()
     column_results = ['Теплопотери трансмиссионные через окна', 'Теплопотери инфильтрационные через окна',
@@ -145,7 +157,7 @@ def save(data):
                       'Расчет ТЭЦ', 'Расчет ЦТП', 'Разница ТЭЦ и ЦТП', 'Эк. ущерб ТЭЦ/ЦТП т.у.т ',
                       'Эк. ущерб ТЭЦ/ЦТП CO2'
                       ]
-    df2 = pd.concat([df2, pd.Series(column_results), pd.Series(data)], axis=1, ignore_index=True)
+    df2 = pd.concat([df2, pd.Series(column_results), pd.Series(results)], axis=1, ignore_index=True)
 
     with pd.ExcelWriter('app/' + res_excel) as writer:
         df1.to_excel(writer, sheet_name='Build')

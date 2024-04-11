@@ -43,12 +43,14 @@ def api_calc_cpt():
 def api_save_cur():
     print('Создается excel таблица..')
     res_excel = 'cur_results.xlsx'
+    parametrs_of_build = request.json.get('parametrs_of_build')
     results = request.json.get('results')
     dop_results = request.json.get('dop_results')
+    build = [param.get(key) for param in parametrs_of_build for key in param]
     res = [item['val'] for item in results]
     dop = [item['val'] for item in dop_results]
     data = res[2:17] + dop[:3] + dop[4:6] + res[17:] + dop[3:4] + dop[6:]
-    save(data)
+    save(build, data)
 
     print('Данные успешно сохранены в файл ', res_excel)
     return send_file(res_excel, as_attachment=True, download_name='current_results.xlsx')
