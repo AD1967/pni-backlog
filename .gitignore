@@ -346,3 +346,4 @@ healthchecksdb
 .vscode/
 
 app/modules/db/local_db.db
+/app/cur_results.xlsx
