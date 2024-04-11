@@ -263,7 +263,7 @@
             </div>
 
             <!-- Вывод суммарных теплопотерь и теплопритоков --------------------------------------->
-            <div v-if="dop_results[0].val != ''" >
+            <div v-if="dop_results.sum_los !== ''" >
               <h1 style="color:var(--white-text-color)">.</h1>
               <div class="flex-between">
                 <hr style="width: 45%; margin-left:4%; margin-right:2%;">
@@ -275,7 +275,7 @@
                     <h1 class="sum-text"> &Sum;<sub style="font-size:20px">теплопотерь</sub></h1>   
                   </div>
                   <div> 
-                    <h1 class="sum-text"> <sub> {{printVal(dop_results[0].val, 'Гкал')}} </sub> </h1>
+                    <h1 class="sum-text"> <sub> {{printVal(dop_results.sum_los, 'Гкал')}} </sub> </h1>
                   </div>
                 </div>
                 <div style="width: 45%; margin-right:4%;" class="flex-between">
@@ -283,7 +283,7 @@
                     <h1 class="sum-text"> &Sum;<sub style="font-size:20px">теплопритоков</sub> </h1> 
                   </div>
                   <div>
-                    <h1 class="sum-text"> <sub> {{printVal(dop_results[1].val, 'Гкал')}} </sub> </h1>
+                    <h1 class="sum-text"> <sub> {{printVal(dop_results.sum_add, 'Гкал')}} </sub> </h1>
                   </div> 
                 </div>
               </div>
@@ -305,8 +305,8 @@
                   </a>           
               </div>
 
-              <div v-if="dop_results[2].val != ''">
-                <input class="output-field" type="text" :value="printVal(dop_results[2].val, 'Гкал')" readonly>
+              <div v-if="dop_results.razn_los_add != ''">
+                <input class="output-field" type="text" :value="printVal(dop_results.razn_los_add, 'Гкал')" readonly>
                 <p class="comment-text">Разница теплопотерь и теплопритоков</p> 
               </div>         
             </div>
@@ -348,7 +348,7 @@
 
             <!-- Потребление тепловой энергии от ЦТП  -->
             <div class="math-calc-block">                
-              <button class="btn-calc btn-TC" @click="calc_cpt()">
+              <button class="btn-calc btn-TC" @click="calc_ctp()">
                 <div class=btn-calc-text> Потребление тепловой энергии от ЦТП </div>
               </button> 
               <div v-if="results[18].val != ''">
@@ -358,29 +358,30 @@
             </div>
           </div>   
 
-          <div class="razn-TC-CTP-block" v-if="(dop_results[3].val !== '')">
-            <input class="output-field" type="text" :value="printVal(dop_results[3].val, 'Гкал')" readonly>
+          <div class="razn-TC-CTP-block" v-if="(dop_results.razn_tec_ctp !== '')">
+            <input class="output-field" type="text" :value="printVal(dop_results.razn_tec_ctp, 'Гкал')" readonly>
             <p class="comment-text">Разница ТЭЦ и ЦТП</p>    
           </div>
 
           <!-- Экологический ущерб ------------------------>
-          <div class="ecology-block" v-if="(dop_results[2].val != '') || (dop_results[3].val !== '')">
+          <div class="ecology-block" v-if="(dop_results.razn_los_add !== '') || (dop_results.razn_tec_ctp !== '')">
             <p class="block-title">Экологический ущерб </p> 
             <div class="flex-between">
-              <div v-if="(dop_results[2].val != '')" class="math-calc-block">
-                <input class="output-field" type="text" :value="printVal(dop_results[4].val, 'т.у.т')" readonly>
-                <input class="output-field" type="text" :value="printVal(dop_results[5].val, 'кг CO2/год')" readonly>
+              <div v-if="(dop_results.razn_los_add !== '')" class="math-calc-block">
+                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_tut, 'т.у.т')" readonly>
+                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_co2, 'кг CO2/год')" readonly>
               </div>
 
-              <div v-if="(dop_results[3].val !== '')" class="math-calc-block">
-                <input class="output-field"  type="text" :value="printVal(dop_results[6].val, 'т.у.т')" readonly>
-                <input class="output-field"  type="text" :value="printVal(dop_results[7].val, 'кг СО2/год')" readonly> 
+              <div v-if="(dop_results.razn_tec_ctp !== '')" class="math-calc-block">
+                <input class="output-field"  type="text" :value="printVal(dop_results.eclg_tec_ctp_tut, 'т.у.т')" readonly>
+                <input class="output-field"  type="text" :value="printVal(dop_results.eclg_tec_ctp_co2, 'кг СО2/год')" readonly> 
               </div>
             </div>
           </div>       
           <!-- /Экологический ущерб ------------------------>
           <!-- /Пространство кнопок расчетов---------------------------------------------------->
           
+          <!--Отрисовка информационных блоков--------------------------------------------------->
           <div v-for="(section, index_section) in sections" :key=index_section>     
             <div v-show="section.check==='true'">
               <div class="mega-block-title"> {{section.title}} </div>                                          
@@ -418,8 +419,9 @@
               </div>  
             </div>
           </div>
+          <!--/Отрисовка информационных блоков--------------------------------------------------->
 
-          <!-- старое-->
+          <!-- старое--------------------------------->
           <div v-for="section in sections" :key=section>
             <!-- <div v-show="section.check==='true'">  -->
               <div v-show="'false'==='true'"> 
@@ -527,9 +529,11 @@
               </div>
             </div>
           </div>
-          <!-- старое-->
+          <!-- старое--------------------------------->
+
+
         </div> <!--solution-->
-      </div> <!--рабочее пр-во-->
+      </div> <!--/ Основное рабочее пространство-->
     </div> <!--body-->
     <!--/Тело ----------------------------------------------------------------------->
     <dialogbox-login v-model:show=login_reg_check>

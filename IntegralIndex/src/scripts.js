@@ -33,10 +33,12 @@ import func from '@/connect/funcs'
         ],
         time : 2019,
         sections:
-        [
-          {  section:'хар-ка здания',  name: 'general',  title: 'Общая характеристика здания', check: 'false'}, //удалить потом
-          
-          // {  section:'Надежность' ,     name: 'reliability',                  title: 'Надежность', check: 'false'},
+        [          
+          { section:'Надежность' ,     
+            name:   'reliability',                  
+            title:  'Надежность', 
+            check:  'false'
+          },
           { section:'Теплопотери',     
             name: 'heat_los_win',                 
             title: 'Расчет тепловых потерь через окна', 
@@ -44,7 +46,7 @@ import func from '@/connect/funcs'
             check: 'false',
             title_fields: ['Число окон',    'Длина типового окна', 'Высота типового окна', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип окон',     'Дата установки окон', 'Дата постройки'],
             value_fields: ['count_windows', 'length_windows',      'height_windows',       'temp_inside',                     'temp_outside',                  'type_windows', 'date_windows',        'date_construction'],
-            ue_fields:    ['ед.', 'м', 'м', '°С', '°С','ед.', 'ед.', 'ед.']
+            ue_fields:    ['ед.', 'м', 'м', '°С', '°С','', '', '']
           },
           {  section:'Теплопотери',     
              name: 'inf_win',                      
@@ -53,7 +55,7 @@ import func from '@/connect/funcs'
              check: 'false',
              title_fields:  ['Число окон',    'Длина типового окна', 'Высота типового окна', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип окон',     'Дата установки окон', 'Дата постройки'],
              value_fields: ['count_windows', 'length_windows',      'height_windows',       'temp_inside',                     'temp_outside',                  'type_windows', 'date_windows',        'date_construction'],
-             ue_fields:    ['ед.', 'м', 'м', '°С', '°С','ед.', 'ед.', 'ед.']
+             ue_fields:    ['ед.', 'м', 'м', '°С', '°С','', '', '']
           },
           {  section:'Теплопотери',     
              name: 'heat_los_inpgr',               
@@ -62,7 +64,7 @@ import func from '@/connect/funcs'
              check: 'false',
              title_fields: ['Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Этажность', 'Высота стен', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип двери', 'Дата установки дверей', 'Дата постройки'],
              value_fields: ['count_doors', 'length_doors', 'height_doors', 'floors', 'height_wall', 'temp_inside', 'temp_outside', 'type_doors', 'date_doors', 'date_construction'],
-             ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', 'ед.', 'ед.', 'ед.']
+             ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', '', '', '']
             },
           {  section:'Теплопотери',     
              name: 'inf_inpgr',                    
@@ -71,7 +73,7 @@ import func from '@/connect/funcs'
              check: 'false',
              title_fields: ['Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Этажность', 'Высота стен', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип двери', 'Дата установки дверей', 'Дата постройки'],
              value_fields: ['count_doors', 'length_doors', 'height_doors', 'floors', 'height_wall', 'temp_inside', 'temp_outside', 'type_doors', 'date_doors', 'date_construction'],
-             ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', 'ед.', 'ед.', 'ед.']
+             ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', '', '', '']
           },
           {  section:'Теплопотери',     
              name: 'heat_los_heatcond_benv',       
@@ -80,7 +82,7 @@ import func from '@/connect/funcs'
              check: 'false',
              title_fields: ['Длина здания', 'Ширина здания', 'Этажность', 'Высота стен', 'Число окон', 'Длина типового окна', 'Высота типового окна', 'Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Класс энергетической эффективности ограждающих конструкций', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Дата постройки'],
              value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_windows', 'length_windows', 'height_windows', 'count_doors', 'length_doors', 'height_doors', 'class_energoeff', 'temp_inside', 'temp_outside', 'date_construction'],
-             ue_fields:    ['м', 'м', 'ед.', 'м',  'ед.', 'м', 'м', 'ед.', 'м', 'м', 'ед.', '°С', '°С', 'ед.']
+             ue_fields:    ['м', 'м', 'ед.', 'м',  'ед.', 'м', 'м', 'ед.', 'м', 'м', '', '°С', '°С', '']
           },
           {  section:'Теплопотери',     
              name: 'heat_los_heatcond_roof',       
@@ -89,7 +91,7 @@ import func from '@/connect/funcs'
              check: 'false',
              title_fields: ['Температура внутреннего воздуха', 'Температура наружного воздуха', 'Длина здания', 'Ширина здания', 'Класс энергетической эффективности ограждающих конструкций'],
              value_fields: ['temp_inside', 'temp_outside', 'length_build', 'width_build', 'class_energoeff'],
-             ue_fields:    ['°С', '°С', 'м', 'м', 'ед.']
+             ue_fields:    ['°С', '°С', 'м', 'м', '']
          },
          {  section:'Теплопотери',     
             name: 'heat_los_floor',               
@@ -188,87 +190,86 @@ import func from '@/connect/funcs'
           {id: 'heat_gains_GVS',              val: ''}, //15
           {id: 'heat_gains_pipelines',        val: ''}, //16
           {id: 'tec',                         val: ''}, //17
-          {id: 'cpt',                         val: ''}  //18
+          {id: 'ctp',                         val: ''}  //18
         ],
-        dop_results:[
-          {id: 'sum_pritok',                  val: ''}, //0
-          {id: 'sum_poter',                   val: ''}, //1
-          {id: 'razn_poter_pritok',           val: ''}, //2
-          {id: 'razn_tec_cpt',                val: ''}, //3
-          {id: 'eclg_sp_tut',                 val: ''}, //4
-          {id: 'eclg_sp_co2',                 val: ''}, //5
-          {id: 'eclg_tc_cpt_tut',             val: ''}, //6
-          {id: 'eclg_tc_cpt_co2',             val: ''}, //7
-        ],
+        dop_results:{
+          sum_los:             '', 
+          sum_add:             '', 
+          razn_los_add:        '', 
+          razn_tec_ctp:        '', 
+          eclg_sp_tut:         '', 
+          eclg_sp_co2:         '', 
+          eclg_tec_ctp_tut:    '', 
+          eclg_tec_ctp_co2:    '', 
+      },
 
-        parametrs_of_build:[
-          {floors:              ''},
-          {length_build:        ''},
-          {width_build:         ''},
-          {length_wall:         ''},
-          {height_wall:         ''},
-          {temp_inside:         ''},
-          {temp_outside:        ''},
-          {date_construction:   ''},
-          {count_windows:       ''},
-          {length_windows:      ''},
-          {height_windows:      ''},
-          {date_windows:        ''},
-          {type_windows:        ''},
-          {count_doors:         ''},
-          {length_doors:        ''},
-          {height_doors:        ''},
-          {type_doors:          ''},
-          {date_doors:          ''},
-          {class_energoeff:     ''},
-          {count_closet:        ''},
-          {count_sofa:          ''},
-          {count_table:         ''},
-          {count_small_closet:  ''},
-          {count_men:           ''},
-          {count_women:         ''},
-          {count_children:      ''},
-          {time_guests:         ''},
-          {count_sink:          ''},
-          {height_basement:     ''}
-        ],
+        parametrs_of_build:{
+          floors:              '',
+          length_build:        '',
+          width_build:         '',
+          length_wall:         '',
+          height_wall:         '',
+          temp_inside:         '',
+          temp_outside:        '',
+          date_construction:   '',
+          count_windows:       '',
+          length_windows:      '',
+          height_windows:      '',
+          date_windows:        '',
+          type_windows:        '',
+          count_doors:         '',
+          length_doors:        '',
+          height_doors:        '',
+          type_doors:          '',
+          date_doors:          '',
+          class_energoeff:     '',
+          count_closet:        '',
+          count_sofa:          '',
+          count_table:         '',
+          count_small_closet:  '',
+          count_men:           '',
+          count_women:         '',
+          count_children:      '',
+          time_guests:         '',
+          count_sink:          '',
+          height_basement:     ''
+      },
 
        type_windows:[
-          {id: 1, val: "Деревянные окна с двойным остеклением"},
-          {id: 2, val: "Стеклопакет 24мм (4-16-4) в корпусе ПВХ"},
-          {id: 3, val: "Стеклопакет 24мм (4-16-4) в корпусе ПВХ, низкоэмиссионное покрытие"},
-          {id: 4, val: "Стеклопакет 36мм (4-10-4-14-4) в корпусе ПВХ"},
-          {id: 5, val: "Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ"},
-          {id: 6, val: "Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ, низкоэмиссионное покрытие"},
+          {id: 1, val: 'Деревянные окна с двойным остеклением'},
+          {id: 2, val: 'Стеклопакет 24мм (4-16-4) в корпусе ПВХ'},
+          {id: 3, val: 'Стеклопакет 24мм (4-16-4) в корпусе ПВХ, низкоэмиссионное покрытие'},
+          {id: 4, val: 'Стеклопакет 36мм (4-10-4-14-4) в корпусе ПВХ'},
+          {id: 5, val: 'Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ'},
+          {id: 6, val: 'Стеклопакет 44мм (4-12-4-20-4) в корпусе ПВХ, низкоэмиссионное покрытие'},
         ],
         
         type_doors:[
-          {id: 1,  val: "Двери одинарные деревянные без тамбура"},
-          {id: 2,  val: "Двери одинарные деревянные с тамбуром между ними"},
-          {id: 3,  val: "Двери двойные (распашные) деревянные без тамбура"},
-          {id: 4,  val: "Двери двойные (распашные) деревянные с тамбуром между ними"},
-          {id: 5,  val: "Двери одинарные ПВХ без тамбура"},
-          {id: 6,  val: "Двери одинарные ПВХ с тамбуром между ними"},
-          {id: 7,  val: "Двери двойные (распашные) ПВХ без тамбура"},
-          {id: 8,  val: "Двери двойные (распашные) ПВХ с тамбуром между ними"},
-          {id: 9,  val: "Двери одинарные алюминиевые без тамбура"},
-          {id: 10, val: "Двери одинарные алюминиевые с тамбуром между ними"},
-          {id: 11, val: "Двери двойные (распашные) алюминиевые без тамбура"},
-          {id: 12, val: "Двери двойные (распашные) алюминиевые с тамбуром между ними"}
+          {id: 1,  val: 'Двери одинарные деревянные без тамбура'},
+          {id: 2,  val: 'Двери одинарные деревянные с тамбуром между ними'},
+          {id: 3,  val: 'Двери двойные (распашные) деревянные без тамбура'},
+          {id: 4,  val: 'Двери двойные (распашные) деревянные с тамбуром между ними'},
+          {id: 5,  val: 'Двери одинарные ПВХ без тамбура'},
+          {id: 6,  val: 'Двери одинарные ПВХ с тамбуром между ними'},
+          {id: 7,  val: 'Двери двойные (распашные) ПВХ без тамбура'},
+          {id: 8,  val: 'Двери двойные (распашные) ПВХ с тамбуром между ними'},
+          {id: 9,  val: 'Двери одинарные алюминиевые без тамбура'},
+          {id: 10, val: 'Двери одинарные алюминиевые с тамбуром между ними'},
+          {id: 11, val: 'Двери двойные (распашные) алюминиевые без тамбура'},
+          {id: 12, val: 'Двери двойные (распашные) алюминиевые с тамбуром между ними'}
         ],
         
-
         class_energoeff:[
-          {id: 1,   val: "A++ (очень высокий, R = 8.8 м² °С/В)"},
-          {id: 2,   val: "A+  (очень высокий, R = 7.5 м² °С/В)"},
-          {id: 3,   val: "A   (очень высокий, R = 6.5 м² °С/В)"},
-          {id: 4,   val: "B+  (высокий, R = 5.5 м² °С/В)"},
-          {id: 5,   val: "В   (высокий, R = 4.5 м² °С/В)"},
-          {id: 6,   val: "C+  (нормальный, R = 3.8 м² °С/В)"},
-          {id: 7,   val: "С   (нормальный, R = 3.5 м² °С/В)"},
-          {id: 8,   val: "С-  (нормальный, R = 3.2 м² °С/В)"},
-          {id: 9,   val: "D   (пониженный, R = 2.8 м² °С/В)"},
-          {id: 10,  val: "E   (низкий, R = 2.5 м² °С/В)"}    
+          {id: 1,   val: 'A++ (очень высокий, R = 8.8 м² °С/В)'},
+          {id: 2,   val: 'A+  (очень высокий, R = 7.5 м² °С/В)'},
+          {id: 3,   val: 'A   (очень высокий, R = 6.5 м² °С/В)'},
+          {id: 4,   val: 'B+  (высокий, R = 5.5 м² °С/В)'},
+          {id: 5,   val: 'В   (высокий, R = 4.5 м² °С/В)'},
+          {id: 6,   val: 'C+  (нормальный, R = 3.8 м² °С/В)'},
+          {id: 7,   val: 'С   (нормальный, R = 3.5 м² °С/В)'},
+          {id: 8,   val: 'С-  (нормальный, R = 3.2 м² °С/В)'},
+          {id: 9,   val: 'D   (пониженный, R = 2.8 м² °С/В)'},
+          {id: 10,  val: 'E   (низкий, R = 2.5 м² °С/В)'}    
         ],
 
         
@@ -278,7 +279,7 @@ import func from '@/connect/funcs'
 
 
 
-
+        //удалить сразу после того как появятся расчеты из панели настроек
         functions:
         [    
           // 0 общая характеристика здания  ---------------------------------------------------------------------
@@ -526,7 +527,7 @@ import func from '@/connect/funcs'
 
 
 
-
+    //вот это посмотреть мб тоже удалить
     watch: {
        // для системы подогрева (блок появляется если ihp = true)
         // при каждом изменении 'functions[2].input[0][2]' эта функция будет запускаться
@@ -564,18 +565,19 @@ import func from '@/connect/funcs'
     printVal(val, ue){
       return this.numberWithSpaces(parseFloat(val).toFixed(3)) + ' ' +  ue;
     },
+
     calc_dop_results(){
       if (this.results[2].val != ''){
-        this.dop_results[0].val = parseFloat(this.results[2].val)  + parseFloat(this.results[3].val)  + parseFloat(this.results[4].val)  + parseFloat(this.results[5].val)  + parseFloat(this.results[6].val)  + parseFloat(this.results[7].val) + parseFloat(this.results[8].val) + parseFloat(this.results[9].val) + parseFloat(this.results[10].val);
-        this.dop_results[1].val = parseFloat(this.results[11].val) + parseFloat(this.results[12].val) + parseFloat(this.results[13].val) + parseFloat(this.results[14].val) + parseFloat(this.results[15].val) + parseFloat(this.results[16].val);
-        this.dop_results[2].val = this.dop_results[0].val - this.dop_results[1].val;
-        this.dop_results[4].val = this.dop_results[2].val * 0.1486;
-        this.dop_results[5].val = this.dop_results[2].val * 276.28;
+        this.dop_results.sum_los      = parseFloat(this.results[2].val)  + parseFloat(this.results[3].val)  + parseFloat(this.results[4].val)  + parseFloat(this.results[5].val)  + parseFloat(this.results[6].val)  + parseFloat(this.results[7].val) + parseFloat(this.results[8].val) + parseFloat(this.results[9].val) + parseFloat(this.results[10].val);
+        this.dop_results.sum_add      = parseFloat(this.results[11].val) + parseFloat(this.results[12].val) + parseFloat(this.results[13].val) + parseFloat(this.results[14].val) + parseFloat(this.results[15].val) + parseFloat(this.results[16].val);
+        this.dop_results.razn_los_add = this.dop_results.sum_los - this.dop_results.sum_add;
+        this.dop_results.eclg_sp_tut  = this.dop_results.razn_los_add * 0.1486;
+        this.dop_results.eclg_sp_co2  = this.dop_results.razn_los_add * 276.28;
       }
       if (this.results[18].val != '' && this.results[17].val != ''){
-        this.dop_results[3].val = parseFloat(this.results[17].val) - parseFloat(this.results[18].val);
-        this.dop_results[6].val = this.dop_results[3].val * 0.1486;
-        this.dop_results[7].val = this.dop_results[3].val * 276.28;
+        this.dop_results.razn_tec_ctp = parseFloat(this.results[17].val) - parseFloat(this.results[18].val);
+        this.dop_results.eclg_tec_ctp_tut = this.dop_results.razn_tec_ctp * 0.1486;
+        this.dop_results.eclg_tec_ctp_co2 = this.dop_results.razn_tec_ctp * 276.28;
       }     
     },
       logout(){
@@ -597,17 +599,15 @@ import func from '@/connect/funcs'
       },
       set_all_check_left_panel(flag){
           this.sections.forEach(function(item){
-          if (item.name !=='general')
-                item.check = flag })
+            item.check = flag 
+          })
       }         
        ,
        set_all_checkbox(){  
           this.set_all_flag = !this.set_all_flag;  
           this.set_all_check_left_panel(this.set_all_flag.toString()); 
        } ,
-
-
-       
+      
       calc_result(id){
         let self = this
         this.results.forEach(function(item){
@@ -640,59 +640,40 @@ import func from '@/connect/funcs'
         self.calc_result("tec", self)
         this.calc_dop_results()
       },
-      calc_cpt(){
+      calc_ctp(){
         let self = this
-        self.calc_result("cpt", self)
+        self.calc_result("ctp", self)
         this.calc_dop_results()
       },
-    calc_all_after_dialog(val_pair){
-      let val = val_pair[0]
-      let mode = val_pair[1]
-      switch (val) {
-        //save
-        case 0:
-          this.export_to_server_and_calc(mode)
-          break;
-        //server
-        case 1:
-          this.calc_all_server()
-          break;
-        //отмена
-        case 2:
-          break;
-        default:
-          console.log("calc_all_after_dialog:logic_error")
-          break;
-      }
-    },
     download_excel(){
       let downl_res = func.download_excel()
       console.log(downl_res)        
     },
-      validate_input(val, type){
-        if(type == 'str'){
-          return val.length > 0
-        }
-        else if(type == 'uint'){
-          let num = Number(val)
-          return val != "" && !isNaN(num) && num >= 0
-        }
-        else  if(type == 'int'){
-          let num = Number(val)
-          return val != "" && !isNaN(num)
-        }
-        return true
-      },
-      condition_render_itp(){
-          return this.functions[1].radio_elem && this.functions[1].radio_elem[0]  == 'ИТП'
-      },
-      condition_render_elec_consumption_by_period(){
-          return !this.functions[19].check_elem[0]
-      },
 
+    //это тоже удалить потом
+    validate_input(val, type){
+      if(type == 'str'){
+        return val.length > 0
+      }
+      else if(type == 'uint'){
+        let num = Number(val)
+        return val != "" && !isNaN(num) && num >= 0
+      }
+      else  if(type == 'int'){
+        let num = Number(val)
+        return val != "" && !isNaN(num)
+      }
+      return true
+    },
+    condition_render_itp(){
+        return this.functions[1].radio_elem && this.functions[1].radio_elem[0]  == 'ИТП'
+    },
+    condition_render_elec_consumption_by_period(){
+        return !this.functions[19].check_elem[0]
+    },
+    // (удалить)
 
-
-      // отслеживание изменений
+      // отслеживание изменений (удалить потом!!!)
       changes(func_ind, type, dataid, new_val){
           let result = false
           if(type == 'input'){
@@ -733,33 +714,27 @@ import func from '@/connect/funcs'
               this.build_changes.add(this.functions[func_ind].id)
           }
       },  
-      export_to_server(){
-        func.export(this, this.savepat.radio.picked != 'Сохранять только из выбранных расчётов', true)
-      },
-      export_to_server_and_calc(mode){
-        func.export(this, mode != 'Сохранять только из выбранных расчётов', true, function(self){self.calc_all()})
-      },
+
       import_from_server(){
         func.import(this)
         this.clear_dop_results();
       },
       clear_dop_results(){
-        this.dop_results.forEach(function(item){
-          item.val = '';
-        })  
+        for (var key in this.dop_results)
+          this.dop_results[key] = '';
       }
     },
     computed:{
       type_windows_selected(){
-        if (this.parametrs_of_build.type_windows !== undefined)
+        if (this.parametrs_of_build.type_windows !== '')
             return this.type_windows[this.parametrs_of_build.type_windows-1].val      
       },
       type_doors_selected(){
-        if (this.parametrs_of_build.type_doors !== undefined)
+        if (this.parametrs_of_build.type_doors !== '')
             return this.type_doors[this.parametrs_of_build.type_doors-1].val 
       },
       class_energoeff_selected(){
-        if (this.parametrs_of_build.class_energoeff !== undefined)
+        if (this.parametrs_of_build.class_energoeff !== '')
             return this.class_energoeff[this.parametrs_of_build.class_energoeff-1].val   
       }
     },

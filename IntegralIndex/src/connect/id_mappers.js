@@ -70,7 +70,7 @@ let calc_map = {
     "heat_gains_GVS":               "/calc_efficiency_hws_pipes",
     "heat_gains_pipelines":         "/calc_efficiency_heat_pipes",
     "tec":                          "/calc_tec",
-    "cpt":                          "/calc_ctp"
+    "ctp":                          "/calc_ctp"
 }
 
 let calc_result_map = {
@@ -131,7 +131,7 @@ let calc_dec_result_map = {
     "heat_gains_GVS":               function(result){return result.toFixed(3)},
     "heat_gains_pipelines":         function(result){return result.toFixed(3)},
     "tec":                          function(result){return result.toFixed(3)},
-    "cpt":                          function(result){return result.toFixed(3)}
+    "ctp":                          function(result){return result.toFixed(3)}
 }
 
 let yearsMap = {
