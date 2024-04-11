@@ -53,7 +53,12 @@ function is_block_checked(self, id){
 
 
 function export_build(self, full){
-    console.log("export")
+    for (var key in self.parametrs_of_build)
+        console.log("Вывод значений", self.parametrs_of_build[key])
+
+
+
+
     let build = {}
     try {
         console.log("general")
