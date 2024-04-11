@@ -171,27 +171,27 @@ import func from '@/connect/funcs'
           },
         ],
 
-        results: [
-          {id: 'general',                     val: ''}, //0
-          {id: 'reliability',                 val: ''}, //1
-          {id: 'heat_los_win',                val: ''}, //2
-          {id: 'inf_win',                     val: ''}, //3
-          {id: 'heat_los_inpgr',              val: ''}, //4
-          {id: 'inf_inpgr',                   val: ''}, //5
-          {id: 'heat_los_heatcond_benv',      val: ''}, //6
-          {id: 'heat_los_heatcond_roof',      val: ''}, //7
-          {id: 'heat_los_floor',              val: ''}, //8
-          {id: 'heat_los_vent',               val: ''}, //9
-          {id: 'add_heatcosts',               val: ''}, //10
-          {id: 'heat_gains_people',           val: ''}, //11
-          {id: 'heat_gains_washstands',       val: ''}, //12
-          {id: 'heat_gains_showers',          val: ''}, //13
-          {id: 'heat_gains_electriclighting', val: ''}, //14
-          {id: 'heat_gains_GVS',              val: ''}, //15
-          {id: 'heat_gains_pipelines',        val: ''}, //16
-          {id: 'tec',                         val: ''}, //17
-          {id: 'ctp',                         val: ''}  //18
-        ],
+        results: {
+          general:                      '', //0
+          reliability:                  '', //1
+          heat_los_win:                 '', //2
+          inf_win:                      '', //3
+          heat_los_inpgr:               '', //4
+          inf_inpgr:                    '', //5
+          heat_los_heatcond_benv:       '', //6
+          heat_los_heatcond_roof:       '', //7
+          heat_los_floor:               '', //8
+          heat_los_vent:                '', //9
+          add_heatcosts:                '', //10
+          heat_gains_people:            '', //11
+          heat_gains_washstands:        '', //12
+          heat_gains_showers:           '', //13
+          heat_gains_electriclighting:  '', //14
+          heat_gains_GVS:               '', //15
+          heat_gains_pipelines:         '', //16
+          tec:                          '', //17
+          ctp:                          ''  //18
+        },
         dop_results:{
           sum_los:             '', 
           sum_add:             '', 
@@ -567,15 +567,15 @@ import func from '@/connect/funcs'
     },
 
     calc_dop_results(){
-      if (this.results[2].val != ''){
-        this.dop_results.sum_los      = parseFloat(this.results[2].val)  + parseFloat(this.results[3].val)  + parseFloat(this.results[4].val)  + parseFloat(this.results[5].val)  + parseFloat(this.results[6].val)  + parseFloat(this.results[7].val) + parseFloat(this.results[8].val) + parseFloat(this.results[9].val) + parseFloat(this.results[10].val);
-        this.dop_results.sum_add      = parseFloat(this.results[11].val) + parseFloat(this.results[12].val) + parseFloat(this.results[13].val) + parseFloat(this.results[14].val) + parseFloat(this.results[15].val) + parseFloat(this.results[16].val);
+      if (this.results.heat_los_win != ''){
+        this.dop_results.sum_los      = parseFloat(this.results.heat_los_win)  + parseFloat(this.results.inf_win)  + parseFloat(this.results.heat_los_inpgr)  + parseFloat(this.results.inf_inpgr)  + parseFloat(this.results.heat_los_heatcond_benv)  + parseFloat(this.results.heat_los_heatcond_roof) + parseFloat(this.results.heat_los_floor) + parseFloat(this.results.heat_los_vent) + parseFloat(this.results.add_heatcosts);
+        this.dop_results.sum_add      = parseFloat(this.results.heat_gains_people) + parseFloat(this.results.heat_gains_washstands) + parseFloat(this.results.heat_gains_showers) + parseFloat(this.results.heat_gains_electriclighting) + parseFloat(this.results.heat_gains_GVS) + parseFloat(this.results.heat_gains_pipelines);
         this.dop_results.razn_los_add = this.dop_results.sum_los - this.dop_results.sum_add;
         this.dop_results.eclg_sp_tut  = this.dop_results.razn_los_add * 0.1486;
         this.dop_results.eclg_sp_co2  = this.dop_results.razn_los_add * 276.28;
       }
-      if (this.results[18].val != '' && this.results[17].val != ''){
-        this.dop_results.razn_tec_ctp = parseFloat(this.results[17].val) - parseFloat(this.results[18].val);
+      if (this.results.tec != '' && this.results.ctp != ''){
+        this.dop_results.razn_tec_ctp = parseFloat(this.results.tec) - parseFloat(this.results.ctp);
         this.dop_results.eclg_tec_ctp_tut = this.dop_results.razn_tec_ctp * 0.1486;
         this.dop_results.eclg_tec_ctp_co2 = this.dop_results.razn_tec_ctp * 276.28;
       }     
@@ -611,14 +611,14 @@ import func from '@/connect/funcs'
       
       calc_result(id){
         let self = this
-        this.results.forEach(function(item){
-          if(item.id == id){
+        for (var key in this.results) {
+          if(key == id){
               let year = document.getElementById('years-selector');
               let calc_res = func.calc(id, self, year.value)
-              item.val = calc_res[0]
+              this.results[key] = calc_res[0]
               return false
           }
-        })
+        }
         return id
       },
     calc_all_server(){

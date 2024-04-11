@@ -222,16 +222,16 @@
                   <h1> прогрев здания перед рабочим днем <sub> </sub></h1>
                 </div>  
                 <div class="sum-results">
-                  <div v-if="results[2].val != ''">
-                    <h1><sub> {{printVal(results[2].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[3].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[4].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[5].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[6].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[7].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[8].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[9].val, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results[10].val, 'Гкал')}} </sub> <sub></sub> </h1> 
+                  <div v-if="results.heat_los_win != ''">
+                    <h1><sub> {{printVal(results.heat_los_win, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.inf_win, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.heat_los_inpgr, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.inf_inpgr, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.heat_los_heatcond_benv, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.heat_los_heatcond_roof, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.heat_los_floor, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.heat_los_vent, 'Гкал')}}  </sub> </h1>
+                    <h1><sub> {{printVal(results.add_heatcosts, 'Гкал')}} </sub> <sub></sub> </h1> 
                   </div>
                 </div>              
               </div>            
@@ -247,13 +247,13 @@
                 </div>
                 
                 <div class="sum-results">
-                  <div v-if="results[11].val != ''">
-                    <h1><sub>{{printVal(results[11].val, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results[12].val, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results[13].val, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results[14].val, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results[15].val, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results[16].val, 'Гкал')}} </sub> </h1>
+                  <div v-if="results.heat_gains_people != ''">
+                    <h1><sub>{{printVal(results.heat_gains_people, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results.heat_gains_washstands, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results.heat_gains_showers, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results.heat_gains_electriclighting, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results.heat_gains_GVS, 'Гкал')}} </sub> </h1>
+                    <h1><sub>{{printVal(results.heat_gains_pipelines, 'Гкал')}} </sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
                     <h1><sub style="color: #e5e5dc;">.</sub> </h1>
@@ -340,8 +340,8 @@
               <button class="btn-calc btn-TC" @click="calc_tec()">
                 <div class=btn-calc-text> Отпуск тепловой энергии ТЭЦ </div>
               </button>    
-              <div v-if="results[17].val != ''">      
-                <input class="output-field" type="text" :value="printVal(results[17].val, 'Гкал')" readonly>  
+              <div v-if="results.tec != ''">      
+                <input class="output-field" type="text" :value="printVal(results.tec, 'Гкал')" readonly>  
                 <p class="comment-text">Расчет ТЭЦ</p>
               </div>         
             </div>
@@ -351,8 +351,8 @@
               <button class="btn-calc btn-TC" @click="calc_ctp()">
                 <div class=btn-calc-text> Потребление тепловой энергии от ЦТП </div>
               </button> 
-              <div v-if="results[18].val != ''">
-                <input class="output-field" type="text" :value="printVal(results[18].val, 'Гкал')" readonly>                
+              <div v-if="results.ctp != ''">
+                <input class="output-field" type="text" :value="printVal(results.ctp, 'Гкал')" readonly>                
                 <p class="comment-text">Расчет ЦТП</p>  
               </div>     
             </div>
@@ -414,7 +414,7 @@
                   </div>
                 </div>  
                 <div class="results-info-block-borders">
-                  <div class="info-text"> {{results[2].val}} </div>  
+                  <div class="info-text"> {{results.general}} </div>  
                 </div>       
               </div>  
             </div>
@@ -511,19 +511,7 @@
                               </div>
                           </div> 
                         </div>
-                      </div>         
-                  
-                <!-- /Формы ввода для основных блоков   ----------------------------------->
-                    <div v-if="section.name!=='general'" class="res-block">
-                      <div class= "res-block block-r">
-                        <div v-for="result in results" :key=result>
-                          <div v-if="result.id===section.name">
-                            <span v-if="section.name !== 'reliability'" v-html="printVal(result.val, 'Гкал')"></span>
-                            <span v-else v-html="printVal(result.val, '')"></span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>               
+                      </div>                       
                   </div>
                 </div>   
               </div>

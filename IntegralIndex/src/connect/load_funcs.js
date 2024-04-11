@@ -55,9 +55,8 @@ function set_r_btn(self, id, val){
 
 function clear_funcs(self){
     self.build_changes = new Set()
-    self.results.forEach(function(item){
-        item.val = ""
-    })
+    for (var key in self.results)
+        self.results[key] = ''
     self.functions.forEach(function(item){
         if(item.select !== null){
             item.select.forEach(function(sel_item){
@@ -96,7 +95,7 @@ function find_elem_by_id(elems, id, id_name){
 //установка select сразу со значением
 
 function set_select_with_name(self, id, number, lst, id_name, val_id){
-    set_select(self,id, number, lst, id_name, find_elem_by_id(lst,  val_id, id_name).name)
+    set_select(self, id, number, lst, id_name, find_elem_by_id(lst,  val_id, id_name).name)
 }
 
 function load_build(self, id_build, result_func){
@@ -474,7 +473,7 @@ function load_build(self, id_build, result_func){
                 return result_func(self, { "fail": false })
             }
             catch (error) {
-                    return result_func(self, { "fail": true, text: "ошибка загрузки с сервера" })
+                return result_func(self, { "fail": true, text: "ошибка загрузки с сервера" })
             }
         })
         .fail(function() {
