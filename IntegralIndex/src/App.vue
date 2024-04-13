@@ -87,6 +87,13 @@
           <h1 class="settings-param-name">Высота стен на одном этаже, м</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_wall">
 
+          <h1 class="settings-param-name">Материал стен</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.walls_material">
+            <option v-for="(type_item) in materials" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
           <h1 class="settings-param-name">Температура внутреннего воздуха, °С</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.temp_inside">
 
@@ -132,6 +139,13 @@
               {{type_item.val}}
             </option> 
           </select>
+
+          <h1 class="settings-param-name">Материал дверей</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.doors_material">
+            <option v-for="(type_item) in materials" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
           
           <h1 class="settings-param-name">Дата установки дверей</h1>
           <input class="settings-param-input" type="date" v-model="parametrs_of_build.date_doors">
@@ -144,15 +158,44 @@
             </option> 
           </select>
 
+          <h1 class="settings-param-name">Материал пола</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.floors_material">
+            <option v-for="(type_item) in materials" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
           <!-- Мебель и жильцы--------------------------------------------->
+
+          <h1 class="settings-param-name">Материал мебели</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.furniture_material">
+            <option v-for="(type_item) in materials" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
           <h1 class="settings-param-name">Число шкафов</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_closet">
 
           <h1 class="settings-param-name">Число диванов</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sofa">
 
+          <h1 class="settings-param-name">Материал диванов</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.sofa_material">
+            <option v-for="(type_item) in materials" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
           <h1 class="settings-param-name">Число столов</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_table">
+
+          <h1 class="settings-param-name">Материал столов</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.table_material">
+            <option v-for="(type_item) in materials" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
 
           <h1 class="settings-param-name">Число навесных шкафчиков</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_small_closet">
@@ -174,8 +217,23 @@
           <h1 class="settings-param-name">на этаже</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sink">
 
+          <h1 class="settings-param-name">Тип трубы</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.type_pipe">
+            <option v-for="(type_item) in type_pipe" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
           <h1 class="settings-param-name">Высота подвала, м</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.height_basement">
+
+          <h1 class="settings-param-name">Период энергосбережения</h1>
+          <select class="settings-param-input" v-model="parametrs_of_build.period_energosave">
+            <option v-for="(type_item) in period_energosave" :value="type_item.id" :key=type_item.id readonly>
+              {{type_item.val}}
+            </option> 
+          </select>
+
         </div> 
       </div>
       <!-- /Меню настроек--------------------------------------------------------------->

@@ -111,7 +111,7 @@ function load_build(self, id_build, result_func){
             requests.async_json_promise_get("/data/elements/pump?" + $.param({name: '',id_pump:''})),
             requests.async_json_promise_get("/data/elements/window?" + $.param({name: '',id_window:''})),
             requests.async_json_promise_get("/data/elements/doors?" + $.param({name: '',id_door:''})),
-            requests.async_json_promise_get("/data/elements/energoeff?" + $.param({name: '',id_energoeff:''})), ///!!!!!!!!!!!!!!!тут
+            requests.async_json_promise_get("/data/elements/energoeff?" + $.param({name: '',id_energoeff:''})), 
             requests.async_json_promise_get("/data/elements/period?" + $.param({name: '',id_period:''})),
             requests.async_json_promise_get("/data/elements/material?" + $.param({name: '',id_material:''}))
         ).done(function (
@@ -153,7 +153,7 @@ function load_build(self, id_build, result_func){
                 self.parametrs_of_build.height_wall             = build.height       
                 self.parametrs_of_build.temp_inside             = build.temp_inside        
                 self.parametrs_of_build.temp_outside            = build.temp_outside      
-                self.parametrs_of_build.date_build              = build.date_build
+                self.parametrs_of_build.date_construction       = build.date_build
                 self.parametrs_of_build.count_windows           = build.count_windows      
                 self.parametrs_of_build.length_windows          = build.length_wnd    
                 self.parametrs_of_build.height_windows          = build.height_wnd    
@@ -174,17 +174,17 @@ function load_build(self, id_build, result_func){
                 // self.parametrs_of_build.count_children          =  build. children    
                 self.parametrs_of_build.time_guests             =  build.time_average       
                 self.parametrs_of_build.count_sink              =  build.count_crane        
-                self.parametrs_of_build.height_basement         =  build.height_floor   
-
-        
-              
+                self.parametrs_of_build.height_basement         =  build.height_floor
+                
+                self.parametrs_of_build.period_energosave       =  build.id_period     
+                self.parametrs_of_build.walls_material          =  build.walls_material
+                self.parametrs_of_build.floors_material         =  build.floors_materials
+                self.parametrs_of_build.doors_material          =  build.doors_material 
+                self.parametrs_of_build.furniture_material      =  build.mebel_material
+                self.parametrs_of_build.sofa_material           =  build.divan_material
+                self.parametrs_of_build.table_material          =  build.table_material
+                self.parametrs_of_build.type_pipe               =  build.id_pipe          
                
-                    
-
-
-
-
-
                 //general
                 set_input(self, "general", 0, build.name)
                 set_input(self, "general", 1, build.floors)

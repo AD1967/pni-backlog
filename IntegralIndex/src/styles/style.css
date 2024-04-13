@@ -76,7 +76,7 @@ html{
   display: flex;
   width: 25%;
   margin-right:8%;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .settings-button-block{
   float: right;
@@ -317,7 +317,7 @@ body::-webkit-scrollbar-thumb {
 
 .block-pat-years{
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .header-selector{
