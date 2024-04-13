@@ -697,6 +697,30 @@ import func from '@/connect/funcs'
       console.log(downl_res)        
     },
 
+    printInfoVal(val){
+      let select_list = ['type_windows', 'type_doors', 'class_energoeff','period_energosave', 'walls_material', 'floors_material','doors_material', 'furniture_material', 'sofa_material', 'table_material', 'type_pipe']
+      if (select_list.indexOf(val) != -1)
+        return this.selected_item(val)                      
+      else 
+        return this.parametrs_of_build[val]                     
+    },
+
+    selected_item(name){
+      let param = this.parametrs_of_build[name] 
+      if (param !== '')
+      switch (name) {
+        case 'type_windows':
+          return this.type_windows[param-1].val
+        case 'type_doors':
+          return this.type_doors[param-1].val
+        case 'class_energoeff':
+          return this.class_energoeff[param-1].val
+        default:
+          break;
+      }
+                  
+    },
+
     //это тоже удалить потом
     validate_input(val, type){
       if(type == 'str'){

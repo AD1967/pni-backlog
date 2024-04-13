@@ -450,22 +450,7 @@
                     <div class="parametrs-info-block">
                       <div class="info-text"> {{item}} </div>  
                       <div class="info-values"> 
-                        <div v-if="section.value_fields[index] === 'type_windows'"> 
-                          {{ type_windows_selected }}
-                        </div>
-                        <div v-else> 
-                          <div v-if="section.value_fields[index] === 'type_doors'"> 
-                            {{ type_doors_selected }}
-                          </div>
-                          <div v-else> 
-                            <div v-if="section.value_fields[index] === 'class_energoeff'"> 
-                              {{ class_energoeff_selected }}
-                            </div>
-                            <div v-else>
-                              {{parametrs_of_build[section.value_fields[index]]}}
-                            </div>
-                          </div>
-                        </div> 
+                        {{ printInfoVal(section.value_fields[index]) }}
                       </div>               
                       <div class="info-text"> {{section.ue_fields[index]}} </div> 
                     </div>           
