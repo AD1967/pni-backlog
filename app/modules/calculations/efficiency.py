@@ -4,8 +4,8 @@ from ..db.common_gets import *
 from ..db.model import *
 import pandas as pd
 
-countOfPoint = 3 #Количество выводимых знаков после запятой
-dt = 1 # Единичный временной промежуток
+countOfPoint = 3  # Количество выводимых знаков после запятой
+dt = 1  # Единичный временной промежуток
 
 tec = {
     8: [75, 44],
@@ -98,7 +98,7 @@ def printGCal(value):
 
 #######################################################################################################################################################################
 test_temp = -20
-k_men  = 0.98
+k_men = 0.98
 k_women = 0.98
 k_children = 0.98
 n_children = 200
@@ -110,10 +110,10 @@ cur_info = {}
 test_date = ""
 ########################################################################################################################################################################
 
-#function Q_walls() {
+# function Q_walls() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    return (this_build['height'] * this_build['len_sum'] * this_build['floors']) * (materials[walls[this_build['walls_material']]['material']]['capacity'] * thickness['kirpich'] * materials[walls[this_build['walls_material']]['material']]['density'] +  materials['rotband']['capacity'] * thickness['rotband'] * materials['rotband']['density'] +  materials['shtukaturka']['capacity'] * thickness['shtukaturka'] * materials['shtukaturka']['density']) * (temp['heat'] - temp['dezh']);
-#}
+# }
 def update_cur_info(data):
     global cur_info
     cur_info = data
@@ -128,18 +128,19 @@ def save(build, results):
     # build = cur_info.copy()
     # del build["cur_date"]
     df1 = pd.DataFrame()
-    column_build = ['Этажность здания', 'Длина здания, м', 'Ширина здания, м',
-                    'Длина стен на одном этаже, м', 'Высота стен на одном этаже, м',
-                    'Температура внутреннего воздуха, °С', 'Температура наружного воздуха, °С',
-                    'Дата постройки', 'Число окон в здании', 'Длина типового окна, м',
-                    'Высота типового окна, м', 'Дата установки окон', 'Тип окон',
-                    'Число дверей', 'Длина типовой входной двери, м', 'Высота типовой входной двери, м',
-                    'Тип дверей', 'Дата установки дверей', 'Класс энергетической эффективности ограждающих конструкций',
+    column_build = ['Этажность здания', 'Длина здания, м', 'Ширина здания, м', 'Длина стен на одном этаже, м',
+                    'Высота стен на одном этаже, м', 'Температура внутреннего воздуха, °С',
+                    'Температура наружного воздуха, °С', 'Дата постройки', 'Число окон в здании',
+                    'Длина типового окна, м', 'Высота типового окна, м', 'Дата установки окон', 'Тип окон',
+                    'Число дверей', 'Длина типовой входной двери, м', 'Высота типовой входной двери, м', 'Тип дверей',
+                    'Дата установки дверей', 'Класс энергетической эффективности ограждающих конструкций',
                     'Число шкафов', 'Число диванов', 'Число столов', 'Число навесных шкафчиков',
                     'Максимальное число посетителей мужчин', 'Максимальное число посетителей женщин',
                     'Максимальное число посетителей детей', 'Среднее время пребывания посетителей в сутки',
-                    'Количество помещений с раковинами на этаже', 'Высота подвала, м'
-    ]
+                    'Количество помещений с раковинами на этаже', 'Высота подвала, м', 'Период энергосбережения',
+                    'Материал стен', 'Материал пола', 'Материал дверей', 'Материал мебели', 'Материал диванов',
+                    'Материал столов', 'Тип трубы'
+                    ]
     df1 = pd.concat([df1, pd.Series(column_build), pd.Series(build)], axis=1, ignore_index=True)
 
     df2 = pd.DataFrame()
@@ -159,14 +160,23 @@ def save(build, results):
                       ]
     df2 = pd.concat([df2, pd.Series(column_results), pd.Series(results)], axis=1, ignore_index=True)
 
-    with pd.ExcelWriter('app/' + res_excel) as writer:
+    with pd.ExcelWriter('app/' + res_excel, engine='xlsxwriter') as writer:
         df1.to_excel(writer, sheet_name='Build')
-        df2.to_excel(writer, sheet_name='Results', index=False)
+        df2.to_excel(writer, sheet_name='Results')
+
+        # Установить ширину столбцов
+        # workbook = writer.book
+        worksheet = writer.sheets['Build']
+        worksheet.set_column('B:B', 58)
+        worksheet.set_column('C:C', 10)
+        worksheet = writer.sheets['Results']
+        worksheet.set_column('B:B', 58)
+        worksheet.set_column('C:C', 10)
 
 
 # Расчёт ТЭЦ
 def calc_tec(build_id):
-    #print(cur_info)
+    # print(cur_info)
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -179,20 +189,21 @@ def calc_tec(build_id):
         t += weather.T
         st += timedelta(seconds=1800)
 
-    t = int(t/48)
-    #print(" t tec = ", t)
+    t = int(t / 48)
+    # print(" t tec = ", t)
 
     if t in tec:
         t1, t2 = tec[t]
     else:
         t1, t2 = 0, 0
 
-    res = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10**(-7) * 24
+    res = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
     return res
+
 
 # Расчёт ЦТП
 def calc_ctp(build_id):
-    #print(cur_info)
+    # print(cur_info)
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -205,15 +216,15 @@ def calc_ctp(build_id):
         t += weather.T
         st += timedelta(seconds=1800)
 
-    t = int(t/48)
-    #print(" t ctp = ", t)
+    t = int(t / 48)
+    # print(" t ctp = ", t)
 
     if t in ctp:
         t1, t2 = ctp[t]
     else:
         t1, t2 = 0, 0
 
-    res = 0.0643 * 4190 * (t1 - t2) * 8.5984 * 10**(-7) * 24
+    res = 0.0643 * 4190 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
     return res
 
 
@@ -221,21 +232,21 @@ def calc_ctp(build_id):
 def Q_walls(build_id):
     heat = 20
     dezh = 12
-    #q_reheat = get_one_by_id_build(Q_reheating, build_id)
+    # q_reheat = get_one_by_id_build(Q_reheating, build_id)
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['walls_material']))
-    #build = q_reheat.build
+    # build = q_reheat.build
     brick = get_one_from_table(Material, 1)
     rotband = get_one_from_table(Material, 8)
     shtukaturka = get_one_from_table(Material, 9)
 
     return float(cur_info['height_wall']) * float(cur_info['length_wall']) * float(cur_info['floors']) * (material.capacity * brick.thickness * \
-    material.density + rotband.capacity * rotband.thickness * rotband.density + shtukaturka.capacity * \
-    shtukaturka.thickness * shtukaturka.density) * (heat - dezh) * period.T
+                material.density + rotband.capacity * rotband.thickness * rotband.density + shtukaturka.capacity * \
+                shtukaturka.thickness * shtukaturka.density) * (heat - dezh) * period.T
 
 ########################################################################################################################################################################
 
-#function Q_floors() {
+# function Q_floors() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    let Q = (this_build['len_a'] * this_build['len_b'] - (this_build['len_sum'] * this_build['floors'] * (thickness['kirpich'] + thickness['rotband'] + thickness['shtukaturka']))) * (temp['heat'] - temp['dezh']);
 
@@ -245,11 +256,11 @@ def Q_walls(build_id):
 #        return Q * ((materials[floors_materials[this_build['floors_material']]['material']]['capacity'] * thickness['plitka'] * materials[floors_materials[this_build['floors_material']]['material']]['density']) + materials['rotband']['capacity'] * thickness['glue'] * materials['rotband']['density']);
 #    else
 #        return Q * ((materials[floors_materials[this_build['floors_material']]['material']]['capacity'] * thickness['parket'] * materials[floors_materials[this_build['floors_material']]['material']]['density']) + materials['sosna']['capacity'] * thickness['fanera'] * materials['sosna']['density']);
-#}
+# }
 
 def Q_floors(build_id):
-    #q_reheat = get_one_by_id_build(Q_reheating, build_id)
-    #build = q_reheat.build
+    # q_reheat = get_one_by_id_build(Q_reheating, build_id)
+    # build = q_reheat.build
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['floors_material']))
     heat = 20
@@ -265,7 +276,7 @@ def Q_floors(build_id):
     parket = get_one_from_table(Material, 20)
 
     Q = (float(cur_info['length_build']) * float(cur_info['width_build']) - (float(cur_info['length_wall']) * float(cur_info['floors']) * \
-        (brick.thickness + rotband.thickness + shtukaturka.thickness))) * (heat - dezh)
+                (brick.thickness + rotband.thickness + shtukaturka.thickness))) * (heat - dezh)
 
     # Вместо умножения на период в конце
     Q = Q * period.T
@@ -278,96 +289,96 @@ def Q_floors(build_id):
         return Q * (material.capacity * linoleum.thickness * material.density)
     elif int(cur_info['floors_material']) == 12:
         return Q * ((material.capacity * plitka.thickness * material.density) + \
-            rotband.capacity * glue.thickness * rotband.density)
+                    rotband.capacity * glue.thickness * rotband.density)
     else:
         return Q * ((material.capacity * parket.thickness * material.density) + \
-            sosna.capacity * fanera.thickness * sosna.density)
+                    sosna.capacity * fanera.thickness * sosna.density)
 
 ########################################################################################################################################################################
 
-#function Q_doors() {
+# function Q_doors() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    return materials[materials_select[this_build['doors_material']]['material']]['capacity'] * this_build['doors'] * V['doors'] * materials[materials_select[this_build['doors_material']]['material']]['density'] * (temp['heat'] - temp['dezh']);
-#}
+# }
 
 def Q_doors(build_id):
     V = get_one_from_table(Volume, 1).value
     heat = 20
     dezh = 12
-    
-    #period = get_one_from_table(Period, q_reheat.id_period)
+
+    # period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['doors_material']))
     return material.capacity * float(cur_info['count_doors']) * V * material.density * (heat - dezh) * \
-        period.T
+           period.T
 
 ########################################################################################################################################################################
 
-#function Q_shkaf() {
+# function Q_shkaf() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    return materials[materials_select[this_build['mebel_material']]['material']]['capacity'] * this_build['shkaf'] * V['shkaf'] * materials[materials_select[this_build['mebel_material']]['material']]['density'] * (temp['heat'] - temp['dezh']);
-#}
+# }
 
 def Q_shkaf(build_id):
     heat = 20
     dezh = 12
     V = get_one_from_table(Volume, 2).value
-    #q_reheat = get_one_by_id_build(Q_reheating, build_id)
-    #period = get_one_from_table(Period, q_reheat.id_period)
+    # q_reheat = get_one_by_id_build(Q_reheating, build_id)
+    # period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['furniture_material']))
     return material.capacity * float(cur_info['count_closet']) * V * material.density * (heat - dezh) * \
-        period.T
+           period.T
 
 ########################################################################################################################################################################
 
-#function Q_divan() {
+# function Q_divan() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    return materials[materials_select[this_build['divan_material']]['material']]['capacity'] * this_build['divan'] * V['divan'] * materials[materials_select[this_build['divan_material']]['material']]['density'] * (temp['heat'] - temp['dezh']);
-#}
+# }
 
 def Q_divan(build_id):
     V = get_one_from_table(Volume, 3).value
-    #q_reheat = get_one_by_id_build(Q_reheating, build_id)
-    #period = get_one_from_table(Period, q_reheat.id_period)
+    # q_reheat = get_one_by_id_build(Q_reheating, build_id)
+    # period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['sofa_material']))
     heat = 20
     dezh = 12
 
     return material.capacity * float(cur_info['count_sofa']) * V * material.density * (heat - dezh) * \
-        period.T
+           period.T
 ########################################################################################################################################################################
 
-#function Q_table() {
+# function Q_table() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    return materials[materials_select[this_build['table_material']]['material']]['capacity'] * this_build['table'] * V['table'] * materials[materials_select[this_build['table_material']]['material']]['density'] * (temp['heat'] - temp['dezh']);
-#}
+# }
 
-def Q_table(build_id):    
+def Q_table(build_id):
     V = get_one_from_table(Volume, 5).value
-    #q_reheat = get_one_by_id_build(Q_reheating, build_id)
-    #period = get_one_from_table(Period, q_reheat.id_period)
+    # q_reheat = get_one_by_id_build(Q_reheating, build_id)
+    # period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['table_material']))
     heat = 20
     dezh = 12
 
     return material.capacity * float(cur_info['count_table']) * V * material.density * (heat - dezh) * \
-        period.T
+           period.T
 ########################################################################################################################################################################
 
-#function Q_shkafchik() {
+# function Q_shkafchik() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    return materials[materials_select[this_build['shkafchik_material']]['material']]['capacity'] * this_build['shkafchik'] * V['shkafchik'] * materials[materials_select[this_build['shkafchik_material']]['material']]['density'] * (temp['heat'] - temp['dezh']);
-#}
+# }
 
 def Q_shkafchik(build_id):
     heat = 20
     dezh = 12
     V = get_one_from_table(Volume, 6).value
-    #q_reheat = get_one_by_id_build(Q_reheating, build_id)
-    #period = get_one_from_table(Period, q_reheat.id_period)
+    # q_reheat = get_one_by_id_build(Q_reheating, build_id)
+    # period = get_one_from_table(Period, q_reheat.id_period)
     period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['furniture_material']))
     count = float(cur_info['count_small_closet'])
@@ -379,9 +390,9 @@ def Q_shkafchik(build_id):
 ########################################################################################################################################################################
 
 # Зачем-то копия Q_shkaf
-#// function Q_bett() {
-#//     return materials[materials_select[this_build['mebel_material']]['name']]['capacity'] * this_build['shkaf'] * V['shkaf'] * materials[materials_select[this_build['mebel_material']]['name']]['density'] * (temp['heat'] - temp['dezh']);
-#// }
+# // function Q_bett() {
+# //     return materials[materials_select[this_build['mebel_material']]['name']]['capacity'] * this_build['shkaf'] * V['shkaf'] * materials[materials_select[this_build['mebel_material']]['name']]['density'] * (temp['heat'] - temp['dezh']);
+# // }
 
 ########################################################################################################################################################################
 
@@ -394,7 +405,7 @@ def Q_shkafchik(build_id):
 # Считает, используя функции Q_walls, ..., Q_doors, а также суммирует их вместо Q_all.
 # Возвращает значение без перевода, надо ли его добавить?
 def calc_eff(build_id):
-    #print(cur_info)
+    # print(cur_info)
     q_walls = Q_walls(build_id)
     q_floors = Q_floors(build_id)
     q_shkaf = Q_shkaf(build_id)
@@ -403,7 +414,7 @@ def calc_eff(build_id):
     q_table = Q_table(build_id)
     q_doors = Q_doors(build_id)
     q_all = q_walls + q_floors + q_shkaf + q_shkafchik + q_divan + q_table + q_doors
-    #result = [q_all, q_walls, q_floors, q_doors, q_shkaf, q_divan, q_table, q_shkafchik]
+    # result = [q_all, q_walls, q_floors, q_doors, q_shkaf, q_divan, q_table, q_shkafchik]
     # Если надо вернуть в ГКал. Не забыть изменить в calc_index.js:
     result = [toGCal(q_all), toGCal(q_walls), toGCal(q_floors), toGCal(q_doors), toGCal(q_shkaf), toGCal(q_divan), \
               toGCal(q_table), toGCal(q_shkafchik)]
@@ -429,12 +440,12 @@ def calc_eff(build_id):
 #        alert(err);
 #        $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
 #    }
-#}
+# }
 
 ########################################################################################################################################################################
 
-#// ОКНА
-#function Q_wnd() {
+# // ОКНА
+# function Q_wnd() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 
 
@@ -450,149 +461,149 @@ def calc_eff(build_id):
 #    return (this_build['temp_windows_inside'] - this_build['temp_windows_outside']) *
 #        (1 + 0.1) * this_build['windows'] * this_build['len_windows'] * this_build['height_windows'] *
 #        k * (8.5984e-7 * 24 * 205) / windows[this_build['type_windows']].R;
-#}
+# }
 
 def Q_wnd_(build_id):
-    #q_wnd = get_one_by_id_build(Q_wnd, build_id)
-    #build = q_wnd.build
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # q_wnd = get_one_by_id_build(Q_wnd, build_id)
+    # build = q_wnd.build
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
-    #print(this_date)
+    # print(this_date)
     weather = get_weather_by_time(this_date)
-    #msYears = 1000 * 60 * 60 * 24 * 365
-    #t = math.floor((this_date - datetime.strptime(q_wnd.date_wnd.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
-    #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
+    # msYears = 1000 * 60 * 60 * 24 * 365
+    # t = math.floor((this_date - datetime.strptime(q_wnd.date_wnd.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
+    # tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
 
-    dYears = 365 
-    t = math.floor((this_date - datetime.strptime(cur_info['date_windows'], '%Y-%m-%d')).days)/ dYears
-    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_build'], '%Y-%m-%d')).days)/ dYears
+    dYears = 365
+    t = math.floor((this_date - datetime.strptime(cur_info['date_windows'], '%Y-%m-%d')).days) / dYears
+    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days) / dYears
     window_type = get_one_from_table(Window, int(cur_info['type_windows']))
     k = 1
     if t >= 40:
         k = 1.68
     elif t > 1:
         k = 1 + 0.0169 * t
-    return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_windows'])* int(cur_info['height_windows']) * \
-        k * 8.5984e-7 * dt / window_type.R
+    return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_windows']) * int(cur_info['height_windows']) * \
+           k * 8.5984e-7 * dt / window_type.R
 
 ########################################################################################################################################################################
 
-#function Q_wnd_inf() {
+# function Q_wnd_inf() {
 #    let this_build = JSON.parse(localStorage.getItem("this_build"));
 #    console.log(windows[this_build['type_windows']].q);
 #    console.log(windows[this_build['type_windows']].a);
 #    return 1.005 * 4000 * 2.388458966275e-7 * (this_build['temp_windows_inside'] - this_build['temp_windows_outside']) *
 #        this_build['windows'] * (2 * this_build['len_windows'] + 2 * this_build['height_windows']) *
 #        windows[this_build['type_windows']].q * windows[this_build['type_windows']].a;
-#}
+# }
 
 def Q_wnd_inf(build_id):
-    #q_wnd = get_one_by_id_build(Q_wnd, build_id)
-    #build = q_wnd.build
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # q_wnd = get_one_by_id_build(Q_wnd, build_id)
+    # build = q_wnd.build
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
     window_type = get_one_from_table(Window, int(cur_info['type_windows']))
     return 1.005 * dt * 2.388458966275e-7 * (int(cur_info['temp_inside']) - weather.T) * int(cur_info['count_windows']) * \
-        (2 * int(cur_info['length_windows']) + 2 * int(cur_info['height_windows'])) * window_type.q * window_type.a
+           (2 * int(cur_info['length_windows']) + 2 * int(cur_info['height_windows'])) * window_type.q * window_type.a
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_wnd() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_wnd();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Тепловые потери через окна<br>Q<sub>окон</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_wnd();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Тепловые потери через окна<br>Q<sub>окон</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 # function print_coeff_eff_wnd_inf() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_wnd() - Q_wnd_inf();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Инфильтрация через окна<br>Q<sub>рез окон</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_wnd() - Q_wnd_inf();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Инфильтрация через окна<br>Q<sub>рез окон</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_wnd(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_wnd_(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 def calc_eff_wnd_inf(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_wnd_inf(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # // ДВЕРИ
 # function Q_doors_() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
 
-    # let this_date = Date.now();
-    # let msYears = 1000 * 60 * 60 * 24 * 365;
-    # let t = Math.floor(this_date - Date.parse(this_build['date_doors'])) / msYears;
-    # let tBuild = Math.floor(this_date - Date.parse(this_build['date_build'])) / msYears;
-    # let k;
-    # if (tBuild <= 1) k = 1;
-    # else if (tBuild >= 40) k = 0.35;
-    # else k = 1 - 0.0169 * t;
+# let this_date = Date.now();
+# let msYears = 1000 * 60 * 60 * 24 * 365;
+# let t = Math.floor(this_date - Date.parse(this_build['date_doors'])) / msYears;
+# let tBuild = Math.floor(this_date - Date.parse(this_build['date_build'])) / msYears;
+# let k;
+# if (tBuild <= 1) k = 1;
+# else if (tBuild >= 40) k = 0.35;
+# else k = 1 - 0.0169 * t;
 
-    # return (this_build['temp_doors_inside'] - this_build['temp_doors_outside']) *
-        # (1 + 0.1 + doors[this_build['type_doors']].beta * this_build['height'] * this_build['floors']) *
-        # this_build['doors_count'] * this_build['len_doors'] * this_build['height_doors'] *
-        # k * (8.5984e-7 * 24 * 205) / doors[this_build['type_doors']].R;
+# return (this_build['temp_doors_inside'] - this_build['temp_doors_outside']) *
+# (1 + 0.1 + doors[this_build['type_doors']].beta * this_build['height'] * this_build['floors']) *
+# this_build['doors_count'] * this_build['len_doors'] * this_build['height_doors'] *
+# k * (8.5984e-7 * 24 * 205) / doors[this_build['type_doors']].R;
 # }
 
 def Q_doors_(build_id):
-    #q_doors = get_one_by_id_build(Q_door, build_id)
-    #build = q_doors.build
-    #this_date = datetime.now()
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # q_doors = get_one_by_id_build(Q_door, build_id)
+    # build = q_doors.build
+    # this_date = datetime.now()
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
-    #msYears = 1000 * 60 * 60 * 24 * 365
-    #t = math.floor((this_date - datetime.strptime(q_doors.date_doors.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
-    #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
+    # msYears = 1000 * 60 * 60 * 24 * 365
+    # t = math.floor((this_date - datetime.strptime(q_doors.date_doors.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
+    # tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
     dYears = 365
-    t = math.floor((this_date - datetime.strptime(cur_info['date_doors'], '%Y-%m-%d')).days)/ dYears
-    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days)/ dYears
+    t = math.floor((this_date - datetime.strptime(cur_info['date_doors'], '%Y-%m-%d')).days) / dYears
+    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days) / dYears
 
     door_type = get_one_from_table(Door, int(cur_info['type_doors']))
     k = 1
@@ -601,288 +612,288 @@ def Q_doors_(build_id):
     elif t > 1:
         k = 1 + 0.0169 * t
 
-    #print(cur_info)
+    # print(cur_info)
 
     return (float(cur_info['temp_inside']) - weather.T) * (1.1 + door_type.beta * float(cur_info['height_wall']) * float(cur_info['floors'])) * \
-        float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors']) * k * 8.5984e-7 * dt  / door_type.R
+           float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors']) * k * 8.5984e-7 * dt / door_type.R
 
 ########################################################################################################################################################################
 
 # function Q_doors_inf() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
-    # return 1.005 * 4000 * 2.388458966275e-7 * (this_build['temp_doors_inside'] - this_build['temp_doors_outside']) *
-        # this_build['doors_count'] * (2 * this_build['len_doors'] + 2 * this_build['height_doors']) *
-        # doors[this_build['type_windows']].q * doors[this_build['type_windows']].a;
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
+# return 1.005 * 4000 * 2.388458966275e-7 * (this_build['temp_doors_inside'] - this_build['temp_doors_outside']) *
+# this_build['doors_count'] * (2 * this_build['len_doors'] + 2 * this_build['height_doors']) *
+# doors[this_build['type_windows']].q * doors[this_build['type_windows']].a;
 # }
 
 def Q_doors_inf(build_id):
-    #q_doors = get_one_by_id_build(Q_door, build_id)
-    #build = q_doors.build
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # q_doors = get_one_by_id_build(Q_door, build_id)
+    # build = q_doors.build
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
     door_type = get_one_from_table(Door, int(cur_info['type_doors']))
-    #print(cur_info)
+    # print(cur_info)
 
     return 1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors']) * \
-        (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a
+           (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_doors() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_doors_();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Тепловые потери через входную группу<br>Q<sub>двери</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_doors_();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Тепловые потери через входную группу<br>Q<sub>двери</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 # function print_coeff_eff_doors_inf() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_doors_() - Q_doors_inf();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Инфильтрация через входную группу<br>Q<sub>рез двери</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_doors_() - Q_doors_inf();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Инфильтрация через входную группу<br>Q<sub>рез двери</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_doors(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_doors_(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 def calc_eff_doors_inf(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_doors_inf(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # // ОГРАЖДАЮЩИЕ КОНСТРУКЦИИ И КРОВЛЯ
 # function Q_constructs() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
 
-    # let this_date = Date.now();
-    # let msYears = 1000 * 60 * 60 * 24 * 365;
+# let this_date = Date.now();
+# let msYears = 1000 * 60 * 60 * 24 * 365;
 
-    # let tBuild = Math.floor(this_date - Date.parse(this_build['date_build'])) / msYears;
-    # let k;
-    # if (tBuild <= 1) k = 1;
-    # else if (tBuild >= 40) k = 0.35;
-    # else k = 1 - 0.0169 * tBuild;
+# let tBuild = Math.floor(this_date - Date.parse(this_build['date_build'])) / msYears;
+# let k;
+# if (tBuild <= 1) k = 1;
+# else if (tBuild >= 40) k = 0.35;
+# else k = 1 - 0.0169 * tBuild;
 
-    # return (this_build['temp_windows_inside'] - this_build['temp_windows_outside']) *
-        # (1 + 0.1) * (2 * this_build['len_a'] * this_build['height'] * this_build['floors'] +
-        # 2 * this_build['len_b'] * this_build['height'] * this_build['floors'] -
-        # this_build['windows'] * this_build['len_windows'] * this_build['height_windows'] -
-        # this_build['doors_count'] * this_build['len_doors'] * this_build['height_doors']) *
-        # k * (8.5984e-7 * 24 * 205) / energoeff[this_build['energoeff_construct']].R;
+# return (this_build['temp_windows_inside'] - this_build['temp_windows_outside']) *
+# (1 + 0.1) * (2 * this_build['len_a'] * this_build['height'] * this_build['floors'] +
+# 2 * this_build['len_b'] * this_build['height'] * this_build['floors'] -
+# this_build['windows'] * this_build['len_windows'] * this_build['height_windows'] -
+# this_build['doors_count'] * this_build['len_doors'] * this_build['height_doors']) *
+# k * (8.5984e-7 * 24 * 205) / energoeff[this_build['energoeff_construct']].R;
 # }
 
 def Q_constructs_(build_id):
-    #print(cur_info)
-    #build = get_one_by_id_build(Build, build_id)
-    #q_wnd = get_one_by_id_build(Q_wnd, build_id)
-    #q_doors = get_one_by_id_build(Q_door, build_id)
-    #construct = get_one_by_id_build(Q_construct_roof, build_id)
+    # print(cur_info)
+    # build = get_one_by_id_build(Build, build_id)
+    # q_wnd = get_one_by_id_build(Q_wnd, build_id)
+    # q_doors = get_one_by_id_build(Q_door, build_id)
+    # construct = get_one_by_id_build(Q_construct_roof, build_id)
     energoeff = get_one_from_table(Energoeff, int(cur_info['class_energoeff']))
 
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
-    #msYears = 1000 * 60 * 60 * 24 * 365
+    # msYears = 1000 * 60 * 60 * 24 * 365
     dYears = 365
-    #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
-    #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).days) / dYears
-    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days)/ dYears
+    # tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
+    # tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).days) / dYears
+    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days) / dYears
     k = 1
     if tBuild >= 40:
         k = 1.68
     elif tBuild > 1:
         k = 1 + 0.0169 * tBuild
     return (float(cur_info['temp_inside']) - weather.T) * \
-         (1 + 0.1) * (2 * float(cur_info['length_build']) * float(cur_info['height_wall']) * float(cur_info['floors']) + \
-         2 * float(cur_info['width_build']) * float(cur_info['height_wall']) * float(cur_info['floors']) - \
-         float(cur_info['count_windows']) * float(cur_info['length_windows']) * float(cur_info['height_windows']) - \
-         float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors'])) * \
-         k * 8.5984e-7 * dt / energoeff.R
+           (1 + 0.1) * (2 * float(cur_info['length_build']) * float(cur_info['height_wall']) * float(cur_info['floors']) + \
+                        2 * float(cur_info['width_build']) * float(cur_info['height_wall']) * float(cur_info['floors']) - \
+                        float(cur_info['count_windows']) * float(cur_info['length_windows']) * float(cur_info['height_windows']) - \
+                        float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors'])) * \
+           k * 8.5984e-7 * dt / energoeff.R
 
 ########################################################################################################################################################################
 
 # function Q_roof() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
 
-    # let this_date = Date.now();
-    # let msYears = 1000 * 60 * 60 * 24 * 365;
+# let this_date = Date.now();
+# let msYears = 1000 * 60 * 60 * 24 * 365;
 
-    # let tBuild = Math.floor(this_date - Date.parse(this_build['date_build'])) / msYears;
-    # let k;
-    # if (tBuild < 1) k = 1;
-    # else if (tBuild >= 40) k = 0.35;
-    # else k = 1 - 0.0169 * tBuild;
+# let tBuild = Math.floor(this_date - Date.parse(this_build['date_build'])) / msYears;
+# let k;
+# if (tBuild < 1) k = 1;
+# else if (tBuild >= 40) k = 0.35;
+# else k = 1 - 0.0169 * tBuild;
 
-    # return (this_build['len_a'] * this_build['len_b']) * (this_build['temp_windows_inside'] - this_build['temp_windows_outside']) *
-        # (8.5984e-7 * 24 * 205) / energoeff[this_build['energoeff_construct']].R;
+# return (this_build['len_a'] * this_build['len_b']) * (this_build['temp_windows_inside'] - this_build['temp_windows_outside']) *
+# (8.5984e-7 * 24 * 205) / energoeff[this_build['energoeff_construct']].R;
 # }
 
 
 def Q_roof_(build_id):
-    #roof = get_one_by_id_build(Q_construct_roof, build_id)
-    #build = roof.build
-    #print(cur_info)
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # roof = get_one_by_id_build(Q_construct_roof, build_id)
+    # build = roof.build
+    # print(cur_info)
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
     energoeff = get_one_from_table(Energoeff, int(cur_info['class_energoeff']))
     return float(cur_info['length_build']) * float(cur_info['width_build']) * (float(cur_info['temp_inside']) - weather.T) * \
-        8.5984e-7 * dt / energoeff.R
+           8.5984e-7 * dt / energoeff.R
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_constructs() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_constructs();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Теплопотери посредством теплопроводности через ограждающие конструкции <br>Q<sub>стен</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_constructs();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Теплопотери посредством теплопроводности через ограждающие конструкции <br>Q<sub>стен</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 # function print_coeff_eff_roof() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_roof();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Теплопотери посредством теплопроводности через кровлю <br>Q<sub>стен инфильтр</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_roof();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Теплопотери посредством теплопроводности через кровлю <br>Q<sub>стен инфильтр</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_constructs(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_constructs_(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 def calc_eff_roof(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_roof_(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # // ТЕПЛОПРИТОК ОТ ТРУБОПРОВОДОВ
 # function Q_hws_pipes() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
-    # let k;
-    # if (this_build['pipe_type'] <= 2) k = 12;
-    # else k = 5;
-    # let h = this_build['height'] * this_build['floors'];
-    # let l = this_build['ascents_hws'] * h + this_build['descents_hws'] * h +
-        # this_build['floors'] * (this_build['len_a'] + this_build['len_b']);
-    # return k * 3.14 * 0.0028 * l * (1 - 0.7) * (60 - this_build['temp_windows_inside']) *
-        # (8.5984e-7 * 24 * 205);
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let k;
+# if (this_build['pipe_type'] <= 2) k = 12;
+# else k = 5;
+# let h = this_build['height'] * this_build['floors'];
+# let l = this_build['ascents_hws'] * h + this_build['descents_hws'] * h +
+# this_build['floors'] * (this_build['len_a'] + this_build['len_b']);
+# return k * 3.14 * 0.0028 * l * (1 - 0.7) * (60 - this_build['temp_windows_inside']) *
+# (8.5984e-7 * 24 * 205);
 # }
 
 def Q_hws_pipes(build_id):
-    #build = get_one_by_id_build(Build, build_id)
-    #reliability = get_one_by_id_build(Reliability, build_id)
-    #print(cur_info)
+    # build = get_one_by_id_build(Build, build_id)
+    # reliability = get_one_by_id_build(Reliability, build_id)
+    # print(cur_info)
     k = 5
     if int(cur_info['type_pipe']) <= 2:
-       k = 12
+        k = 12
     h = float(cur_info['height_wall']) * (float(cur_info['floors']) - 1)
     l = 2 * h * int(cur_info['count_sink']) + \
         2 * (float(cur_info['length_build']) + float(cur_info['width_build']))
 
     return k * 3.14 * 0.028 * l * 0.3 * (60 - float(cur_info['temp_inside'])) * \
-         8.5984e-7 * dt
+           8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
 # function Q_heat_pipes() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
-    # let k;
-    # if (this_build['pipe_type'] <= 2) k = 12;
-    # else k = 5;
-    # let h = this_build['height'] * this_build['floors'];
-    # let l = this_build['ascents_heat'] * h + this_build['descents_heat'] * h +
-        # this_build['floors'] * (this_build['len_a'] + this_build['len_b']);
-    # return k * 3.14 * 0.0028 * l * (1 - 0.7) * (60 - this_build['temp_windows_inside']) *
-        # (8.5984e-7 * 24 * 205);
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let k;
+# if (this_build['pipe_type'] <= 2) k = 12;
+# else k = 5;
+# let h = this_build['height'] * this_build['floors'];
+# let l = this_build['ascents_heat'] * h + this_build['descents_heat'] * h +
+# this_build['floors'] * (this_build['len_a'] + this_build['len_b']);
+# return k * 3.14 * 0.0028 * l * (1 - 0.7) * (60 - this_build['temp_windows_inside']) *
+# (8.5984e-7 * 24 * 205);
 # }
 
 def Q_heat_pipes(build_id):
-    #build = get_one_by_id_build(Build, build_id)
-    #reliability = get_one_by_id_build(Reliability, build_id)
-    #q_wnd = get_one_by_id_build(Q_wnd, build_id)
-    #print(cur_info)
+    # build = get_one_by_id_build(Build, build_id)
+    # reliability = get_one_by_id_build(Reliability, build_id)
+    # q_wnd = get_one_by_id_build(Q_wnd, build_id)
+    # print(cur_info)
     k = 5
     if int(cur_info['type_pipe']) <= 2:
-       k = 12
+        k = 12
 
     h = float(cur_info['height_wall'])
     l = 2 * (float(cur_info['length_build']) + float(cur_info['width_build'])) + h * float(cur_info['count_windows']) / 2.0
@@ -890,233 +901,233 @@ def Q_heat_pipes(build_id):
     # Заменили 60 на 90
     # См. файл с диска
     return k * 3.14 * 0.028 * l * 0.3 * (90 - float(cur_info['temp_inside'])) * \
-         8.5984e-7 * dt
+           8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_hws_pipes() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_hws_pipes();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Теплоприток от неизолированных трубопроводов ГВС <br>Q<sub>труб. ГВС</sub> = " + convertGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_hws_pipes();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Теплоприток от неизолированных трубопроводов ГВС <br>Q<sub>труб. ГВС</sub> = " + convertGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 # function print_coeff_eff_heat_pipes() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_heat_pipes();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Теплоприток от неизолированных трубопроводов отопления <br>Q<sub>труб. отопл.</sub> = " + convertGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_heat_pipes();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Теплоприток от неизолированных трубопроводов отопления <br>Q<sub>труб. отопл.</sub> = " + convertGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_hws_pipes(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_hws_pipes(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 def calc_eff_heat_pipes(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_heat_pipes(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # // ТЕПЛОПРИТОК ОТ ЛЮДЕЙ
 # function Q_people() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
-    # return  (this_build['mens'] * (220 - 5 * this_build['temp_windows_inside']) +
-            # 0.85 * this_build['womens'] * (220 - 5 * this_build['temp_windows_inside'])) *
-            # (this_build['time'] / 24) * (8.5984e-7 * 24 * 205);
+# return  (this_build['mens'] * (220 - 5 * this_build['temp_windows_inside']) +
+# 0.85 * this_build['womens'] * (220 - 5 * this_build['temp_windows_inside'])) *
+# (this_build['time'] / 24) * (8.5984e-7 * 24 * 205);
 # }
 
 def Q_people(build_id):
-    #q_people = get_one_by_id_build(Q_person, build_id)
-    #build = q_people.build
-    #print(cur_info)
+    # q_people = get_one_by_id_build(Q_person, build_id)
+    # build = q_people.build
+    # print(cur_info)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
-    return  (n_men * (220 - 5 * float(cur_info['temp_inside'])) + \
+    return (n_men * (220 - 5 * float(cur_info['temp_inside'])) + \
             0.85 * n_women * (220 - 5 * float(cur_info['temp_inside'])) + 0.75 * n_children * k_children * (220 - 5 * float(cur_info['temp_inside']))) * \
-            8.5984e-7 * dt
+           8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_people() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_people();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Теплоприток от людей <br>Q<sub>персонал</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_people();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Теплоприток от людей <br>Q<sub>персонал</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_people(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_people(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # // ЗАТРАТЫ РУКОМОЙНИКИ
 # function Q_hws_cranes() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
-    # return  0.00009 * 1000 * 4190 * (this_build['mens'] + this_build['womens']) *
-        # 180 * (60 - 15) / 86400 * (8.5984e-7 * 24 * 205);
+# return  0.00009 * 1000 * 4190 * (this_build['mens'] + this_build['womens']) *
+# 180 * (60 - 15) / 86400 * (8.5984e-7 * 24 * 205);
 # }
 
 def Q_hws_cranes(build_id):
-    #q_people = get_one_by_id_build(Q_person, build_id)
-    #print(cur_info)
+    # q_people = get_one_by_id_build(Q_person, build_id)
+    # print(cur_info)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
-    return  0.00009 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
-        (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
+    return 0.00009 * 1000 * 4190 * (n_men + n_women + k_children * n_children) * \
+           (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_hws_cranes() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_hws_cranes();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Затраты тепловой энергии на ГВС для рукомойников <br>Q<sub>рук</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_hws_cranes();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Затраты тепловой энергии на ГВС для рукомойников <br>Q<sub>рук</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_hws_cranes(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_hws_cranes(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # // ЗАТРАТЫ ДУШЕВЫЕ
 # function Q_hws_showers() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
-    # return  0.00018 * 1000 * 4190 * (this_build['mens'] + this_build['womens']) *
-        # 500 * (60 - 15) / 86400 * (8.5984e-7 * 24 * 205);
+# return  0.00018 * 1000 * 4190 * (this_build['mens'] + this_build['womens']) *
+# 500 * (60 - 15) / 86400 * (8.5984e-7 * 24 * 205);
 # }
 
 def Q_hws_showers(build_id):
-    #q_people = get_one_by_id_build(Q_person, build_id)
+    # q_people = get_one_by_id_build(Q_person, build_id)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
-    return  0.00018 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
-        500 * (60 - 15) / 84600 * 8.5984e-7 * dt
+    return 0.00018 * 1000 * 4190 * (n_men + n_women + k_children * n_children) * \
+           500 * (60 - 15) / 84600 * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_hws_showers() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_hws_showers();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Затраты тепловой энергии на ГВС для душевых <br>Q<sub>душ</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_hws_showers();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Затраты тепловой энергии на ГВС для душевых <br>Q<sub>душ</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_hws_showers(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_hws_showers(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # function Q_electro() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
-    # if ($('input[name="W_ee_checkbox"]').is(':checked'))
-        # return 0.95 * this_build['len_a'] * this_build['len_b'] * this_build['floors'] * 0.0008598/4000;
-    # else
-        # return 0.95 * $('#W_ee').val() * 0.0008598/4000;
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
+# if ($('input[name="W_ee_checkbox"]').is(':checked'))
+# return 0.95 * this_build['len_a'] * this_build['len_b'] * this_build['floors'] * 0.0008598/4000;
+# else
+# return 0.95 * $('#W_ee').val() * 0.0008598/4000;
 # }
 
 def Q_electro(build_id):
-    #q_electro = get_one_by_id_build(Q_elec, build_id)
+    # q_electro = get_one_by_id_build(Q_elec, build_id)
     # print(cur_info)
     # if cur_info['elec_consumption_by_period'] is None:
     #     #build = q_electro.build
@@ -1126,59 +1137,59 @@ def Q_electro(build_id):
 ########################################################################################################################################################################
 
 # function print_coeff_eff_electro() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_electro();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Теплоприток от системы электроосвещения и силового электроснабжения <br>Q<sub>ЭЭ ОТОП ПЕРИОД</sub> = " + printGCal(result));
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_electro();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Теплоприток от системы электроосвещения и силового электроснабжения <br>Q<sub>ЭЭ ОТОП ПЕРИОД</sub> = " + printGCal(result));
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_electro(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_electro(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # function Q_vent() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
 
-    # let t_in = this_build['temp_vent_inside'];
-    # let t_out = this_build['temp_vent_outside'];
+# let t_in = this_build['temp_vent_inside'];
+# let t_out = this_build['temp_vent_outside'];
 
-    # let n = 1.25;
-    # if (this_build['name'].indexOf('офис') !== -1) {n = 3};
-    # if (this_build['name'].indexOf('школа') !== -1) {n = 2.5};
-    # let A = this_build['len_a'] * this_build['len_b'];
-    # let h = this_build['height'];
+# let n = 1.25;
+# if (this_build['name'].indexOf('офис') !== -1) {n = 3};
+# if (this_build['name'].indexOf('школа') !== -1) {n = 2.5};
+# let A = this_build['len_a'] * this_build['len_b'];
+# let h = this_build['height'];
 
 
 
-    # return A * h * n * 1.206 * (t_in - t_out) * 0.24e-6;
+# return A * h * n * 1.206 * (t_in - t_out) * 0.24e-6;
 # }
 
 def Q_vent(build_id):
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
-    #build = get_one_by_id_build(Build, build_id)
+    # build = get_one_by_id_build(Build, build_id)
 
     t_in = float(cur_info['temp_inside'])
     t_out = weather.T
@@ -1186,118 +1197,117 @@ def Q_vent(build_id):
 
     n = 1.25
     if cur_info['name'].find('Офис') != -1:
-       n = 3
-    if cur_info['name'].find('Школа') != -1: 
-       n = 2.5
+        n = 3
+    if cur_info['name'].find('Школа') != -1:
+        n = 2.5
     A = float(cur_info['length_build']) * float(cur_info['width_build'])
     h = float(cur_info['height_wall'])
 
     ####### Расчет плотности воздуха #########
-    Ps = 133.3 * math.exp(18.6 - 3992/(t_out + 233.8))
-    d = 622 * (air_humidity * Ps)/(P0 - air_humidity * Ps)
-    P_vp = (d * P0)/(622 + d)
+    Ps = 133.3 * math.exp(18.6 - 3992 / (t_out + 233.8))
+    d = 622 * (air_humidity * Ps) / (P0 - air_humidity * Ps)
+    P_vp = (d * P0) / (622 + d)
     P_sv = P0 - P_vp
-    p_air = (P_sv * 0.029 + P_vp * 0.018)/(8.314 * (t_out + 273.15))
+    p_air = (P_sv * 0.029 + P_vp * 0.018) / (8.314 * (t_out + 273.15))
     #######################################
     return 0.28 * 1005 * 8.5984e-7 * p_air * A * float(cur_info['floors']) * h * n * (t_in - t_out) * dt
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_vent() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_vent();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Тепловые потери от вентиляции<br>Q<sub>вент</sub> = " + printGCal(result)) + "<br>M<sub>CO<sub>2</sub></sub>" + (result * 215.76).toFixed(5) + "кг<sub>CO</sub>";
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_vent();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Тепловые потери от вентиляции<br>Q<sub>вент</sub> = " + printGCal(result)) + "<br>M<sub>CO<sub>2</sub></sub>" + (result * 215.76).toFixed(5) + "кг<sub>CO</sub>";
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_vent(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_vent(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # function Q_floor() {
-    # let this_build = JSON.parse(localStorage.getItem("this_build"));
-    
-    # let t_in = this_build['temp_floor_inside'];
-    # let t_out = this_build['temp_floor_outside'];
-    # let h = this_build['height_floor'];
-    # let S = this_build['len_a'] * this_build['len_b'];
-    # let P = 2 * (this_build['len_a'] + this_build['len_b']);
-    # let a = this_build['len_a'];
-    # let b = this_build['len_b'];
-    # let f1 = 0;
-    # let f2 = 0;
-    # let f3 = 0;
-    # let f4 = 0;
-    # if (h <= 2) {
-        # let f1_floor = S - (a - (2 - h) * 2) * (b - (2 - h) * 2);
-        # let f1_walls = h * P;
-        # f1 = f1_floor + f1_walls;
-        # f2 = S - (a - 2 - (2 - h) * 2) * (b - 2 - (2 - h) * 2) - f1_floor;
-        # f3 = S - (a - 4 - (2 - h) * 2) * (b - 4 - (2 - h) * 2) - f1_floor - f2;
-        # f4 = S - f1_floor - f2 - f3;
-        # if (f2 < 0) {
-            # f2 = S - f1_floor;
-            # f3 = 0; f4 = 0;
-        # }
-        # if (f3 < 0) {
-            # f3 = S - f1_floor - f2;
-            # f4 = 0;
-        # }
-    # } else if (h <= 4) {
-        # f1 = 2 * P;
-        # let f2_floor = S-(a-(2-(h-2))*2)*(b-(2-(h-2))*2);
-        # let f2_walls = (h-2)*P;
-        # f2 = f2_floor + f2_walls;
-        # f3 = S-(a-(4-(h-2))*2)*(b-(4-(h-2))*2)-f2_floor;
-        # f4 = S - f2_floor - f3;
-        # if (f3 < 0) {
-            # f3 = S-f2_floor;
-            # f4 = 0;
-        # }
-    # }
-    # else if (h <= 6) {
-        # f1 = 2 * P;
-        # f2 = 2*P;
-        # let f3_walls = (h-4)*P;
-        # let f3_floor = S-(a-(2-(h-4))*2)*(b-(2-(h-4)*2));
-        # f3 = f3_floor + f3_walls;
-        # f4 = S - f3_floor;
-        # if (f3_floor < 0) {
-            # f3_floor = S; f3 = f3_floor + f3_walls; f4 = 0;
-        # }
-    # }
-    # return (0.476 * f1 + 0.233 * f2 + 0.116 * f3 + 0.07 * f4) * (t_in - t_out) * 3600e-9;
+# let this_build = JSON.parse(localStorage.getItem("this_build"));
+
+# let t_in = this_build['temp_floor_inside'];
+# let t_out = this_build['temp_floor_outside'];
+# let h = this_build['height_floor'];
+# let S = this_build['len_a'] * this_build['len_b'];
+# let P = 2 * (this_build['len_a'] + this_build['len_b']);
+# let a = this_build['len_a'];
+# let b = this_build['len_b'];
+# let f1 = 0;
+# let f2 = 0;
+# let f3 = 0;
+# let f4 = 0;
+# if (h <= 2) {
+# let f1_floor = S - (a - (2 - h) * 2) * (b - (2 - h) * 2);
+# let f1_walls = h * P;
+# f1 = f1_floor + f1_walls;
+# f2 = S - (a - 2 - (2 - h) * 2) * (b - 2 - (2 - h) * 2) - f1_floor;
+# f3 = S - (a - 4 - (2 - h) * 2) * (b - 4 - (2 - h) * 2) - f1_floor - f2;
+# f4 = S - f1_floor - f2 - f3;
+# if (f2 < 0) {
+# f2 = S - f1_floor;
+# f3 = 0; f4 = 0;
+# }
+# if (f3 < 0) {
+# f3 = S - f1_floor - f2;
+# f4 = 0;
+# }
+# } else if (h <= 4) {
+# f1 = 2 * P;
+# let f2_floor = S-(a-(2-(h-2))*2)*(b-(2-(h-2))*2);
+# let f2_walls = (h-2)*P;
+# f2 = f2_floor + f2_walls;
+# f3 = S-(a-(4-(h-2))*2)*(b-(4-(h-2))*2)-f2_floor;
+# f4 = S - f2_floor - f3;
+# if (f3 < 0) {
+# f3 = S-f2_floor;
+# f4 = 0;
+# }
+# }
+# else if (h <= 6) {
+# f1 = 2 * P;
+# f2 = 2*P;
+# let f3_walls = (h-4)*P;
+# let f3_floor = S-(a-(2-(h-4))*2)*(b-(2-(h-4)*2));
+# f3 = f3_floor + f3_walls;
+# f4 = S - f3_floor;
+# if (f3_floor < 0) {
+# f3_floor = S; f3 = f3_floor + f3_walls; f4 = 0;
+# }
+# }
+# return (0.476 * f1 + 0.233 * f2 + 0.116 * f3 + 0.07 * f4) * (t_in - t_out) * 3600e-9;
 # }
 
 def Q_floor_(build_id):
-
-    #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
+    # this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
 
-    #build = get_one_by_id_build(Build, build_id)
-    #q_floor = get_one_by_id_build(Q_floor, build_id)
+    # build = get_one_by_id_build(Build, build_id)
+    # q_floor = get_one_by_id_build(Q_floor, build_id)
 
     t_in = float(cur_info['temp_inside'])
     t_out = weather.T
@@ -1321,78 +1331,78 @@ def Q_floor_(build_id):
         if f3 < 0:
             f3 = S - f1_floor - f2
             f4 = 0
-    elif h <= 4: 
+    elif h <= 4:
         f1 = 2 * P
-        f2_floor = S-(a-(2-(h-2))*2)*(b-(2-(h-2))*2)
-        f2_walls = (h-2)*P
+        f2_floor = S - (a - (2 - (h - 2)) * 2) * (b - (2 - (h - 2)) * 2)
+        f2_walls = (h - 2) * P
         f2 = f2_floor + f2_walls
-        f3 = S-(a-(4-(h-2))*2)*(b-(4-(h-2))*2)-f2_floor
+        f3 = S - (a - (4 - (h - 2)) * 2) * (b - (4 - (h - 2)) * 2) - f2_floor
         f4 = S - f2_floor - f3
         if f3 < 0:
-            f3 = S-f2_floor
+            f3 = S - f2_floor
             f4 = 0
     elif h <= 6:
         f1 = 2 * P
-        f2 = 2*P
-        f3_walls = (h-4)*P
-        f3_floor = S-(a-(2-(h-4))*2)*(b-(2-(h-4)*2))
+        f2 = 2 * P
+        f3_walls = (h - 4) * P
+        f3_floor = S - (a - (2 - (h - 4)) * 2) * (b - (2 - (h - 4) * 2))
         f3 = f3_floor + f3_walls
         f4 = S - f3_floor
         if f3_floor < 0:
             f3_floor = S
-            f3 = f3_floor + f3_walls 
+            f3 = f3_floor + f3_walls
             f4 = 0
     return (0.476 * f1 + 0.233 * f2 + 0.116 * f3 + 0.07 * f4) * (t_in - t_out) * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
 
 # function print_coeff_eff_floor() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_floor();
-        # if (typeof (result) != "undefined") {
-            # $('#coeff_eff').html("Тепловые потери через пол<br>Q<sub>пол</sub> = " + printGCal(result)) + "<br>M<sub>CO<sub>2</sub></sub>" + (result * 215.76).toFixed(5) + "кг<sub>CO<sub>2</sub></sub>";
-        # }
-        # else {
-            # $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_floor();
+# if (typeof (result) != "undefined") {
+# $('#coeff_eff').html("Тепловые потери через пол<br>Q<sub>пол</sub> = " + printGCal(result)) + "<br>M<sub>CO<sub>2</sub></sub>" + (result * 215.76).toFixed(5) + "кг<sub>CO<sub>2</sub></sub>";
+# }
+# else {
+# $('#coeff_eff').html("Q<sub>окон</sub> = " + result);
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
 
 def calc_eff_floor(build_id):
-    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    # print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
-    while(st <= fn):
+    while (st <= fn):
         global test_date
         test_date = st
         res += Q_floor_(build_id)
-        st += timedelta(seconds = 1800)
+        st += timedelta(seconds=1800)
     return res
 
 ########################################################################################################################################################################
 
 # Нет страницы для этого
 # function print_balance() {
-    # try {
-        # // let this_build = JSON.parse(localStorage.getItem("this_build"));
-        # let result = Q_people() + Q_hws_cranes() + Q_hws_showers() + Q_electro() + Q_heat_pipes() + Q_hws_pipes();
-        # let result2 = Q_all() + Q_wnd() + Q_wnd_inf() + Q_doors_() + Q_doors_inf() +Q_constructs() + Q_roof();
-        # if (typeof (result) != "undefined") {
-            # $('#teplopoteri').val(result2);
-            # $('#teplopritoki').val(result);
-        # }
-        # else {
-        # }
-    # }
-    # catch (err) {
-        # alert(err);
-        # $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
-    # }
+# try {
+# // let this_build = JSON.parse(localStorage.getItem("this_build"));
+# let result = Q_people() + Q_hws_cranes() + Q_hws_showers() + Q_electro() + Q_heat_pipes() + Q_hws_pipes();
+# let result2 = Q_all() + Q_wnd() + Q_wnd_inf() + Q_doors_() + Q_doors_inf() +Q_constructs() + Q_roof();
+# if (typeof (result) != "undefined") {
+# $('#teplopoteri').val(result2);
+# $('#teplopritoki').val(result);
+# }
+# else {
+# }
+# }
+# catch (err) {
+# alert(err);
+# $('#coeff_eff').html("Ошибка при попытке выполнения расчёта. Проверьте данные");
+# }
 # }
