@@ -166,7 +166,7 @@ def save(build, results):
 
 # Расчёт ТЭЦ
 def calc_tec(build_id):
-    print(cur_info)
+    #print(cur_info)
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -180,7 +180,7 @@ def calc_tec(build_id):
         st += timedelta(seconds=1800)
 
     t = int(t/48)
-    print(" t tec = ", t)
+    #print(" t tec = ", t)
 
     if t in tec:
         t1, t2 = tec[t]
@@ -192,7 +192,7 @@ def calc_tec(build_id):
 
 # Расчёт ЦТП
 def calc_ctp(build_id):
-    print(cur_info)
+    #print(cur_info)
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -206,7 +206,7 @@ def calc_ctp(build_id):
         st += timedelta(seconds=1800)
 
     t = int(t/48)
-    print(" t ctp = ", t)
+    #print(" t ctp = ", t)
 
     if t in ctp:
         t1, t2 = ctp[t]
@@ -222,17 +222,17 @@ def Q_walls(build_id):
     heat = 20
     dezh = 12
     #q_reheat = get_one_by_id_build(Q_reheating, build_id)
-    period = get_one_from_table(Period, int(cur_info['id_period']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['walls_material']))
     #build = q_reheat.build
     brick = get_one_from_table(Material, 1)
     rotband = get_one_from_table(Material, 8)
     shtukaturka = get_one_from_table(Material, 9)
 
-    return float(cur_info['height_wall']) * float(cur_info['len_sum']) * float(cur_info['floors']) * (material.capacity * brick.thickness * \
+    return float(cur_info['height_wall']) * float(cur_info['length_wall']) * float(cur_info['floors']) * (material.capacity * brick.thickness * \
     material.density + rotband.capacity * rotband.thickness * rotband.density + shtukaturka.capacity * \
     shtukaturka.thickness * shtukaturka.density) * (heat - dezh) * period.T
-    
+
 ########################################################################################################################################################################
 
 #function Q_floors() {
@@ -250,8 +250,8 @@ def Q_walls(build_id):
 def Q_floors(build_id):
     #q_reheat = get_one_by_id_build(Q_reheating, build_id)
     #build = q_reheat.build
-    period = get_one_from_table(Period, int(cur_info['id_period']))
-    material = get_one_from_table(Material, int(cur_info['floors_materials']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
+    material = get_one_from_table(Material, int(cur_info['floors_material']))
     heat = 20
     dezh = 12
     brick = get_one_from_table(Material, 1)
@@ -264,7 +264,7 @@ def Q_floors(build_id):
     fanera = get_one_from_table(Material, 19)
     parket = get_one_from_table(Material, 20)
 
-    Q = (float(cur_info['length_build']) * float(cur_info['width_build'])  - (float(cur_info['len_sum']) * float(cur_info['floors']) * \
+    Q = (float(cur_info['length_build']) * float(cur_info['width_build']) - (float(cur_info['length_wall']) * float(cur_info['floors']) * \
         (brick.thickness + rotband.thickness + shtukaturka.thickness))) * (heat - dezh)
 
     # Вместо умножения на период в конце
@@ -274,9 +274,9 @@ def Q_floors(build_id):
     # Но как я понял, имеется в виду, что '0' – это линолеум, а '1' – плиточный клей + плитка
     # Если что – исправим
 
-    if int(cur_info['floors_materials']) == 17:
+    if int(cur_info['floors_material']) == 17:
         return Q * (material.capacity * linoleum.thickness * material.density)
-    elif int(cur_info['floors_materials']) == 12:
+    elif int(cur_info['floors_material']) == 12:
         return Q * ((material.capacity * plitka.thickness * material.density) + \
             rotband.capacity * glue.thickness * rotband.density)
     else:
@@ -296,7 +296,7 @@ def Q_doors(build_id):
     dezh = 12
     
     #period = get_one_from_table(Period, q_reheat.id_period)
-    period = get_one_from_table(Period, int(cur_info['id_period']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['doors_material']))
     return material.capacity * float(cur_info['count_doors']) * V * material.density * (heat - dezh) * \
         period.T
@@ -314,8 +314,8 @@ def Q_shkaf(build_id):
     V = get_one_from_table(Volume, 2).value
     #q_reheat = get_one_by_id_build(Q_reheating, build_id)
     #period = get_one_from_table(Period, q_reheat.id_period)
-    period = get_one_from_table(Period, int(cur_info['id_period']))
-    material = get_one_from_table(Material, int(cur_info['mebel_material']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
+    material = get_one_from_table(Material, int(cur_info['furniture_material']))
     return material.capacity * float(cur_info['count_closet']) * V * material.density * (heat - dezh) * \
         period.T
 
@@ -330,8 +330,8 @@ def Q_divan(build_id):
     V = get_one_from_table(Volume, 3).value
     #q_reheat = get_one_by_id_build(Q_reheating, build_id)
     #period = get_one_from_table(Period, q_reheat.id_period)
-    period = get_one_from_table(Period, int(cur_info['id_period']))
-    material = get_one_from_table(Material, int(cur_info['divan_material']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
+    material = get_one_from_table(Material, int(cur_info['sofa_material']))
     heat = 20
     dezh = 12
 
@@ -348,7 +348,7 @@ def Q_table(build_id):
     V = get_one_from_table(Volume, 5).value
     #q_reheat = get_one_by_id_build(Q_reheating, build_id)
     #period = get_one_from_table(Period, q_reheat.id_period)
-    period = get_one_from_table(Period, int(cur_info['id_period']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
     material = get_one_from_table(Material, int(cur_info['table_material']))
     heat = 20
     dezh = 12
@@ -368,8 +368,8 @@ def Q_shkafchik(build_id):
     V = get_one_from_table(Volume, 6).value
     #q_reheat = get_one_by_id_build(Q_reheating, build_id)
     #period = get_one_from_table(Period, q_reheat.id_period)
-    period = get_one_from_table(Period, int(cur_info['id_period']))
-    material = get_one_from_table(Material, int(cur_info['mebel_material']))
+    period = get_one_from_table(Period, int(cur_info['period_energosave']))
+    material = get_one_from_table(Material, int(cur_info['furniture_material']))
     count = float(cur_info['count_small_closet'])
     material_capacity = material.capacity
     material_density = material.density
@@ -394,7 +394,7 @@ def Q_shkafchik(build_id):
 # Считает, используя функции Q_walls, ..., Q_doors, а также суммирует их вместо Q_all.
 # Возвращает значение без перевода, надо ли его добавить?
 def calc_eff(build_id):
-    print(cur_info)
+    #print(cur_info)
     q_walls = Q_walls(build_id)
     q_floors = Q_floors(build_id)
     q_shkaf = Q_shkaf(build_id)
@@ -406,7 +406,7 @@ def calc_eff(build_id):
     #result = [q_all, q_walls, q_floors, q_doors, q_shkaf, q_divan, q_table, q_shkafchik]
     # Если надо вернуть в ГКал. Не забыть изменить в calc_index.js:
     result = [toGCal(q_all), toGCal(q_walls), toGCal(q_floors), toGCal(q_doors), toGCal(q_shkaf), toGCal(q_divan), \
-        toGCal(q_table), toGCal(q_shkafchik)]
+              toGCal(q_table), toGCal(q_shkafchik)]
     return result
 
 # function print_coeff_eff() {
@@ -457,7 +457,7 @@ def Q_wnd_(build_id):
     #build = q_wnd.build
     #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
-    print(this_date)
+    #print(this_date)
     weather = get_weather_by_time(this_date)
     #msYears = 1000 * 60 * 60 * 24 * 365
     #t = math.floor((this_date - datetime.strptime(q_wnd.date_wnd.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
@@ -468,10 +468,10 @@ def Q_wnd_(build_id):
     tBuild = math.floor((this_date - datetime.strptime(cur_info['date_build'], '%Y-%m-%d')).days)/ dYears
     window_type = get_one_from_table(Window, int(cur_info['type_windows']))
     k = 1
-    if tBuild >= 40:
+    if t >= 40:
         k = 1.68
-    elif tBuild > 1:
-        k = 1 + 0.0169 * tBuild
+    elif t > 1:
+        k = 1 + 0.0169 * t
     return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_windows'])* int(cur_info['height_windows']) * \
         k * 8.5984e-7 * dt / window_type.R
 
@@ -533,7 +533,7 @@ def Q_wnd_inf(build_id):
 # }
 
 def calc_eff_wnd(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -546,7 +546,7 @@ def calc_eff_wnd(build_id):
     return res
 
 def calc_eff_wnd_inf(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -592,16 +592,16 @@ def Q_doors_(build_id):
     #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
     dYears = 365
     t = math.floor((this_date - datetime.strptime(cur_info['date_doors'], '%Y-%m-%d')).days)/ dYears
-    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_build'], '%Y-%m-%d')).days)/ dYears
+    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days)/ dYears
 
     door_type = get_one_from_table(Door, int(cur_info['type_doors']))
     k = 1
-    if tBuild >= 40:
+    if t >= 40:
         k = 1.68
-    elif tBuild > 1:
-        k = 1 + 0.0169 * tBuild
+    elif t > 1:
+        k = 1 + 0.0169 * t
 
-    print(cur_info)
+    #print(cur_info)
 
     return (float(cur_info['temp_inside']) - weather.T) * (1.1 + door_type.beta * float(cur_info['height_wall']) * float(cur_info['floors'])) * \
         float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors']) * k * 8.5984e-7 * dt  / door_type.R
@@ -622,9 +622,8 @@ def Q_doors_inf(build_id):
     this_date = test_date
     weather = get_weather_by_time(this_date)
     door_type = get_one_from_table(Door, int(cur_info['type_doors']))
-    print(cur_info)
-    print(1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors']) * \
-        (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a)
+    #print(cur_info)
+
     return 1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors']) * \
         (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a
 
@@ -664,7 +663,7 @@ def Q_doors_inf(build_id):
 # }
 
 def calc_eff_doors(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -677,7 +676,7 @@ def calc_eff_doors(build_id):
     return res
 
 def calc_eff_doors_inf(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -714,7 +713,7 @@ def calc_eff_doors_inf(build_id):
 # }
 
 def Q_constructs_(build_id):
-    print(cur_info)
+    #print(cur_info)
     #build = get_one_by_id_build(Build, build_id)
     #q_wnd = get_one_by_id_build(Q_wnd, build_id)
     #q_doors = get_one_by_id_build(Q_door, build_id)
@@ -728,7 +727,7 @@ def Q_constructs_(build_id):
     dYears = 365
     #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).total_seconds()) * 1000 / msYears
     #tBuild = math.floor((this_date - datetime.strptime(build.date_build.strftime('%Y-%m-%d'), '%Y-%m-%d')).days) / dYears
-    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_build'], '%Y-%m-%d')).days)/ dYears
+    tBuild = math.floor((this_date - datetime.strptime(cur_info['date_construction'], '%Y-%m-%d')).days)/ dYears
     k = 1
     if tBuild >= 40:
         k = 1.68
@@ -764,7 +763,7 @@ def Q_constructs_(build_id):
 def Q_roof_(build_id):
     #roof = get_one_by_id_build(Q_construct_roof, build_id)
     #build = roof.build
-    print(cur_info)
+    #print(cur_info)
     #this_date = datetime.strptime(test_date, "%Y-%m-%d %H:%M:%S")
     this_date = test_date
     weather = get_weather_by_time(this_date)
@@ -808,7 +807,7 @@ def Q_roof_(build_id):
 # }
 
 def calc_eff_constructs(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -821,7 +820,7 @@ def calc_eff_constructs(build_id):
     return res
 
 def calc_eff_roof(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -851,9 +850,9 @@ def calc_eff_roof(build_id):
 def Q_hws_pipes(build_id):
     #build = get_one_by_id_build(Build, build_id)
     #reliability = get_one_by_id_build(Reliability, build_id)
-    print(cur_info)
+    #print(cur_info)
     k = 5
-    if int(cur_info['hws_type']) <= 2:
+    if int(cur_info['type_pipe']) <= 2:
        k = 12
     h = float(cur_info['height_wall']) * (float(cur_info['floors']) - 1)
     l = 2 * h * int(cur_info['count_sink']) + \
@@ -880,9 +879,9 @@ def Q_heat_pipes(build_id):
     #build = get_one_by_id_build(Build, build_id)
     #reliability = get_one_by_id_build(Reliability, build_id)
     #q_wnd = get_one_by_id_build(Q_wnd, build_id)
-    print(cur_info)
+    #print(cur_info)
     k = 5
-    if int(cur_info['pip_type']) <= 2:
+    if int(cur_info['type_pipe']) <= 2:
        k = 12
 
     h = float(cur_info['height_wall'])
@@ -929,7 +928,7 @@ def Q_heat_pipes(build_id):
 # }
 
 def calc_eff_hws_pipes(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -942,7 +941,7 @@ def calc_eff_hws_pipes(build_id):
     return res
 
 def calc_eff_heat_pipes(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -968,7 +967,7 @@ def calc_eff_heat_pipes(build_id):
 def Q_people(build_id):
     #q_people = get_one_by_id_build(Q_person, build_id)
     #build = q_people.build
-    print(cur_info)
+    #print(cur_info)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
     return  (n_men * (220 - 5 * float(cur_info['temp_inside'])) + \
@@ -995,7 +994,7 @@ def Q_people(build_id):
 # }
 
 def calc_eff_people(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -1019,7 +1018,7 @@ def calc_eff_people(build_id):
 
 def Q_hws_cranes(build_id):
     #q_people = get_one_by_id_build(Q_person, build_id)
-    print(cur_info)
+    #print(cur_info)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
     return  0.00009 * 1000 * 4190 * (n_men + n_women + k_children*n_children) * \
@@ -1045,7 +1044,7 @@ def Q_hws_cranes(build_id):
 # }
 
 def calc_eff_hws_cranes(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -1094,7 +1093,7 @@ def Q_hws_showers(build_id):
 # }
 
 def calc_eff_hws_showers(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -1118,11 +1117,12 @@ def calc_eff_hws_showers(build_id):
 
 def Q_electro(build_id):
     #q_electro = get_one_by_id_build(Q_elec, build_id)
-    print(cur_info)
-    if cur_info['elec_consumption_by_period'] is None:
-        #build = q_electro.build
-        return 0.95 * float(cur_info['length_build']) * float(cur_info['width_build']) * float(cur_info['floors']) * 8.5984e-7 * dt
-    return 0.95 * float(cur_info['elec_consumption_by_period']) * 8.5984e-7 * dt
+    # print(cur_info)
+    # if cur_info['elec_consumption_by_period'] is None:
+    #     #build = q_electro.build
+    #     return 0.95 * float(cur_info['length_build']) * float(cur_info['width_build']) * float(cur_info['floors']) * 8.5984e-7 * dt
+    # return 0.95 * float(cur_info['elec_consumption_by_period']) * 8.5984e-7 * dt
+    return 0.95 * float(cur_info['length_build']) * float(cur_info['width_build']) * float(cur_info['floors']) * 8.5984e-7 * dt
 ########################################################################################################################################################################
 
 # function print_coeff_eff_electro() {
@@ -1143,7 +1143,7 @@ def Q_electro(build_id):
 # }
 
 def calc_eff_electro(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -1221,7 +1221,7 @@ def Q_vent(build_id):
 # }
 
 def calc_eff_vent(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -1364,7 +1364,7 @@ def Q_floor_(build_id):
 # }
 
 def calc_eff_floor(build_id):
-    print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
+    #print(datetime.strptime(cur_info['cur_date'], "%Y-%m-%d"))
     st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
