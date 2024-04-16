@@ -50,20 +50,8 @@ function load(self){
 }
 
 function import_from_server(self){
-    let id_build = ''
-    self.load_pat.select.variants.forEach(function(item, index){
-        if(item == self.load_pat.select.picked){
-            id_build = self.load_pat.select.ids[index]
-            return false
-        }
-    })
-    if(id_build === ''){
-        console.log('import picked error')
-    }
-    else{
-        load_funcs.load_build(self, id_build, load_result_func)
-        localStorage.setItem("this_build_id", id_build);
-    }
+    load_funcs.load_build(self, self.parametrs_of_build.id_build, load_result_func)
+    localStorage.setItem("this_build_id", self.parametrs_of_build.id_build); 
 }
 
 function export_error_alert(self, error = null){

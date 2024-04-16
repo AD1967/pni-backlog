@@ -102,7 +102,6 @@ function load_build(self, id_build, result_func){
     try {
         $.when(
             requests.async_json_promise_get('/data/build/' + id_build),
-            requests.async_json_promise_get('/data/builds?' + $.param({name: '',id_build:''})),
             requests.async_json_promise_get("/data/elements/shutoffvalve?" + $.param({name: '',id_shutoffvalve:''})),
             requests.async_json_promise_get("/data/elements/pipe?" + $.param({name: '',id_pipe:''})),
             requests.async_json_promise_get("/data/elements/radiator?" + $.param({name: '',id_radiator:''})),
@@ -115,11 +114,10 @@ function load_build(self, id_build, result_func){
             requests.async_json_promise_get("/data/elements/period?" + $.param({name: '',id_period:''})),
             requests.async_json_promise_get("/data/elements/material?" + $.param({name: '',id_material:''}))
         ).done(function (
-            build_r,builds_r, shutoffvalves_r,pipes_r,radiators_r,cranes_r,heatexchangers_r,
+            build_r, shutoffvalves_r,pipes_r,radiators_r,cranes_r,heatexchangers_r,
             pumps_r,windows_r,doors_r,energoeffs_r,periods_r,materials_r 
         ) {
             try {
-                let builds = check_error(builds_r, "builds", self)       //, self)
                 let build = check_error(build_r, "build", self)       //, self)
                 let shutoffvalves = check_error(shutoffvalves_r, "shutoffvalves", self)       //, self)
                 let pipes = check_error(pipes_r, "pipes", self)       //, self)
@@ -135,17 +133,10 @@ function load_build(self, id_build, result_func){
 
                 clear_funcs(self)
 
-                self.load_pat.select.variants = []
-                self.load_pat.select.ids = []
-                self.load_pat.select.picked = ''
-                builds.forEach(function (item) {
-                    self.load_pat.select.variants.push(item.name)
-                    self.load_pat.select.ids.push(item["id_build"])
-                })
-                self.load_pat.select.picked = build.name
-
 
                 //settings
+                self.parametrs_of_build.id_build                = id_build
+                self.parametrs_of_build.name_build              = build.name
                 self.parametrs_of_build.floors                  = build.floors
                 self.parametrs_of_build.length_build            = build.len_a      
                 self.parametrs_of_build.width_build             = build.len_b      

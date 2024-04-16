@@ -10,13 +10,6 @@ import func from '@/connect/funcs'
         set_all_flag: false,
         choise_NM: false,
         build_changes: new Set(),
-        load_pat: {
-          select: {
-            variants: [],
-            ids: [],
-            picked: ''
-          }
-        },
         savepat: {
           radio: {
             picked: 'Сохранять только из выбранных расчётов'
@@ -172,25 +165,25 @@ import func from '@/connect/funcs'
         ],
 
         results: {
-          general:                      '', //0
-          reliability:                  '', //1
-          heat_los_win:                 '', //2
-          inf_win:                      '', //3
-          heat_los_inpgr:               '', //4
-          inf_inpgr:                    '', //5
-          heat_los_heatcond_benv:       '', //6
-          heat_los_heatcond_roof:       '', //7
-          heat_los_floor:               '', //8
-          heat_los_vent:                '', //9
-          add_heatcosts:                '', //10
-          heat_gains_people:            '', //11
-          heat_gains_washstands:        '', //12
-          heat_gains_showers:           '', //13
-          heat_gains_electriclighting:  '', //14
-          heat_gains_GVS:               '', //15
-          heat_gains_pipelines:         '', //16
-          tec:                          '', //17
-          ctp:                          ''  //18
+          general:                      '', 
+          reliability:                  '', 
+          heat_los_win:                 '', 
+          inf_win:                      '', 
+          heat_los_inpgr:               '', 
+          inf_inpgr:                    '', 
+          heat_los_heatcond_benv:       '', 
+          heat_los_heatcond_roof:       '', 
+          heat_los_floor:               '', 
+          heat_los_vent:                '', 
+          add_heatcosts:                '', 
+          heat_gains_people:            '', 
+          heat_gains_washstands:        '', 
+          heat_gains_showers:           '', 
+          heat_gains_electriclighting:  '', 
+          heat_gains_GVS:               '', 
+          heat_gains_pipelines:         '', 
+          tec:                          '', 
+          ctp:                          ''  
         },
         dop_results:{
           sum_los:             '', 
@@ -204,6 +197,8 @@ import func from '@/connect/funcs'
         },
 
         parametrs_of_build:{
+          id_build:            '',
+          name_build:          '',
           floors:              '',
           length_build:        '',
           width_build:         '',
@@ -242,6 +237,16 @@ import func from '@/connect/funcs'
           table_material:      '', 
           type_pipe:           ''
       },
+      name_build:[
+        {id: 1,  val: 'Тестовая схема здания'},
+        {id: 2,  val: 'Коттедж ИЖС на одну семью'},
+        {id: 3,  val: 'МКД "хрущёвка" 5 этажей, 3 подьезда,1980г.'},
+        {id: 4,  val: 'МКД монолит 128 , 16 этажей, 2 подъезда, 2012'},
+        {id: 5,  val: 'Офисный центр, 13 этажей, 2020г'},
+        {id: 6,  val: 'МКД панельная, 9 этажей, 3 подъезда, 2012г.'},
+        {id: 7,  val: 'Школа тип Самолёт, 1980г.'},
+        {id: 8,  val: 'Школа тип Самолёт, 2020г.'} 
+      ],
 
       type_windows:[
         {id: 1, val: 'Деревянные окна с двойным остеклением'},

@@ -246,9 +246,9 @@
           <!--- Блок выбра шаблона и года--------------------------------->
           <div class="choise-years-text-title"> Выбор отопительного сезона</div>
           <div class="block-pat-years">
-              <select class="header-selector" @change="import_from_server()" id="name_of_scheme"  v-model="load_pat.select.picked">
-                <option v-for="(build) in load_pat.select.variants" :key=build >
-                  {{build}} 
+              <select class="header-selector" @change="import_from_server()" v-model="parametrs_of_build.id_build">
+                <option v-for="(build) in name_build" :value="build.id" :key=build.id >
+                  {{build.val}} 
                 </option>
               </select>     
               <select class="header-selector" @change="clear_dop_results()" id="years-selector">
