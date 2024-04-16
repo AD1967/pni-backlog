@@ -54,7 +54,6 @@ function is_block_checked(self, id){
 function export_b(self){
     console.log("export")
     let build = {}
-    build.name = get_input(self, "general", 0)
     build = Object.assign(build, self.parametrs_of_build);
     return {"error": false, "result": build}
 }

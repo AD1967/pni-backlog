@@ -127,8 +127,9 @@ def save(build, results):
     # print(cur_info)
     # build = cur_info.copy()
     # del build["cur_date"]
+    build.pop(0)
     df1 = pd.DataFrame()
-    column_build = ['Этажность здания', 'Длина здания, м', 'Ширина здания, м', 'Длина стен на одном этаже, м',
+    column_build = ['Название здания', 'Этажность здания', 'Длина здания, м', 'Ширина здания, м', 'Длина стен на одном этаже, м',
                     'Высота стен на одном этаже, м', 'Температура внутреннего воздуха, °С',
                     'Температура наружного воздуха, °С', 'Дата постройки', 'Число окон в здании',
                     'Длина типового окна, м', 'Высота типового окна, м', 'Дата установки окон', 'Тип окон',
@@ -168,7 +169,7 @@ def save(build, results):
         # workbook = writer.book
         worksheet = writer.sheets['Build']
         worksheet.set_column('B:B', 58)
-        worksheet.set_column('C:C', 10)
+        worksheet.set_column('C:C', 41)
         worksheet = writer.sheets['Results']
         worksheet.set_column('B:B', 58)
         worksheet.set_column('C:C', 10)
@@ -1196,9 +1197,9 @@ def Q_vent(build_id):
     air_humidity = weather.U
 
     n = 1.25
-    if cur_info['name'].find('Офис') != -1:
+    if cur_info['name_build'].find('Офис') != -1:
         n = 3
-    if cur_info['name'].find('Школа') != -1:
+    if cur_info['name_build'].find('Школа') != -1:
         n = 2.5
     A = float(cur_info['length_build']) * float(cur_info['width_build'])
     h = float(cur_info['height_wall'])
