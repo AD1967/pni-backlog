@@ -369,14 +369,13 @@
               </div>         
             </div>
 
-            <!-- пока пропустила ------------------------------------------->
             <!-- Расчет искусственной нейронной сетью -->
             <div class="math-calc-block">
               <div class="flex-between">   
 
                 <div style="display: block;">
-                  <button class="btn-calc" style="width: 100%">
-                    <div class=btn-calc-text id="neuro_calc_id" @click="calc_neuro()"> Расчет искусственной нейронной сетью </div>
+                  <button class="btn-calc" style="width: 100%" @click="calc_INS()">
+                    <div class=btn-calc-text id="neuro_calc_id"> Расчет искусственной нейронной сетью </div>
                   </button>     
                   
                   <!-- <select v-if="choise_NM == true" class="btn-calc" style="width: 100%; margin: 8px; margin-left:0; margin-right: 0;">
@@ -390,7 +389,7 @@
                     <img class="img-download" src="@/download.png"> 
                 </a> 
               </div>
-              <input v-if="0 == 1" class="output-field" type="text" readonly>         
+              <input v-if="results.ins1 !== ''" class="output-field" type="text" :value="printVal(results.ins1, 'Гкал')" readonly>         
             </div>
 
             <!-- Отпуск тепловой энергии ТЭЦ -->

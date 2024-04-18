@@ -183,7 +183,8 @@ import func from '@/connect/funcs'
           heat_gains_GVS:               '', 
           heat_gains_pipelines:         '', 
           tec:                          '', 
-          ctp:                          ''  
+          ctp:                          '',
+          ins1:                         ''
         },
         dop_results:{
           sum_los:             '', 
@@ -684,8 +685,8 @@ import func from '@/connect/funcs'
         this.set_all_check_left_panel("false")
         this.calc_dop_results();
       },
-      calc_neuro(){
-        this.choise_NM = !this.choise_NM;
+      calc_INS(){
+        this.results.ins1 = 5;
       },
       calc_tec(){
         let self = this
