@@ -43,8 +43,18 @@
               <div class="checkbox__body">Выбрать все</div>
             </label>
           </h5>
+          <h4  class="glob-section-title">
+                {{reliability_section.title}}
+          </h4>
+          <h5 class="sub-section-title">  
+            <label class="checkbox style-c">
+              <input type="checkbox" v-model="reliability_section.check" true-value="true" false-value="false" />
+              <div class="checkbox__checkmark"></div>
+              <div class="checkbox__body">Надежность</div>
+            </label>
+          </h5>
           <div v-for="bgsec_name in big_sections_name" :key=bgsec_name>
-            <div >
+            <div>
               <h4  class="glob-section-title">
                 {{bgsec_name.name}}
               </h4>
@@ -439,6 +449,116 @@
           <!-- /Пространство кнопок расчетов---------------------------------------------------->
           
           <!--Отрисовка информационных блоков--------------------------------------------------->
+          <!-- Надежность -->
+          <div v-show="reliability_section.check==='true'">
+            <div class="mega-block-title"> {{reliability_section.title}} </div>
+               <div class="mega-block-sections">
+                  <div class="collection-reliability">
+                    <div class="parametrs-info-block-borders rel-param-info-borders">   
+                      <div class="mega-block-subtitle"> Тепловой пункт </div>
+                      <div class="parametrs-info-block">
+                        <input class="info-values" type="radio" id='elev' name="elev-itp-radio" value=1 v-model="parametrs_of_reliability.elev_itp">
+                        <label class="info-text" for="elev">Элеватор</label>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <input class="info-values" type="radio" id='itp' name="elev-itp-radio" value=0 v-model="parametrs_of_reliability.elev_itp">
+                        <label class="info-text" for="itp">ИТП</label>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <input class="info-values" type="checkbox" id='vetsys' v-model="parametrs_of_reliability.ventsys" true-value='1' false-value='0'>
+                        <label class="info-text" for="vetsys">Наличие подогрева приточного воздуха</label>
+                      </div>
+                      <div v-if="parametrs_of_reliability.ventsys === 1 || parametrs_of_reliability.ventsys === '1'"> 
+                        <div class="mega-block-subtitle"> Система подогрева приточного воздуха </div>
+                        <div class="parametrs-info-block">
+                          <div class="info-text"> Число установок</div> 
+                          <input class="info-values" type="number" min=0 max=100  v-model="parametrs_of_reliability.count_installations">           
+                          <div class="info-text"> ед </div>
+                        </div>      
+                        <div class="parametrs-info-block">
+                          <div class="info-text"> Длина трубы от ТП до установки №1</div> 
+                          <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.length_pipe1">           
+                          <div class="info-text"> м </div>
+                        </div>
+                        <div class="parametrs-info-block">
+                          <div class="info-text"> Длина трубы от ТП до установки №2</div> 
+                          <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.length_pipe2">           
+                          <div class="info-text"> м </div>
+                        </div>
+                      </div>
+                      <div class="mega-block-subtitle"> Система ГВС с рециркуляцией </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Число подъёмов ГВС</div> 
+                        <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.count_up_hws">           
+                        <div class="info-text"> ед </div>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Число опусков ГВС</div> 
+                        <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.count_down_hws">           
+                        <div class="info-text"> ед </div>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Число кранов на каждом этаже (от одного опуска)</div> 
+                        <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.count_crane">           
+                        <div class="info-text"> ед </div>
+                      </div>
+                      <div class="mega-block-subtitle"> Система отопления здания </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Число подъёмов от ТП до чердака</div> 
+                        <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.count_up_loft">           
+                        <div class="info-text"> ед </div>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Число опусков от чердака до ТП</div> 
+                        <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.count_down_loft">           
+                        <div class="info-text"> ед </div>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Число отопительных приборов на этаже (от одного опуска)</div> 
+                        <input class="info-values" type="number" min=0 max=100 v-model="parametrs_of_reliability.count_radiator">           
+                        <div class="info-text"> ед </div>
+                      </div>
+                      <div class="mega-block-subtitle"> Параметры здания</div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Тип запорной арматуры</div> 
+                        <select class="info-values" v-model="parametrs_of_reliability.type_armature">
+                          <option v-for="(type_item) in type_armature" :value="type_item.id" :key=type_item.id readonly>
+                            {{type_item.val}}
+                          </option> 
+                        </select>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Тип трубы</div> 
+                        <select class="info-values" v-model="parametrs_of_reliability.type_pipe">
+                          <option v-for="(type_item) in type_pipe" :value="type_item.id" :key=type_item.id readonly>
+                            {{type_item.val}}
+                          </option> 
+                        </select>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Тип радиатора</div>
+                        <select class="info-values" v-model="parametrs_of_reliability.type_radiator">
+                          <option v-for="(type_item) in type_radiator" :value="type_item.id" :key=type_item.id readonly>
+                            {{type_item.val}}
+                          </option> 
+                        </select>
+                      </div>
+                      <div class="parametrs-info-block">
+                        <div class="info-text"> Тип крана</div> 
+                        <select class="info-values" v-model="parametrs_of_reliability.type_crane">
+                          <option v-for="(type_item) in type_crane" :value="type_item.id" :key=type_item.id readonly>
+                            {{type_item.val}}
+                          </option> 
+                        </select>
+                      </div>
+                    </div>   
+                  </div>
+                  <!-- <div class="results-info-block-borders">
+                    <div class="info-text"> {{results.general}} </div>  
+                  </div>        -->
+               </div>    
+          </div>
+
           <div v-for="(section, index_section) in sections" :key=index_section>     
             <div v-show="section.check==='true'">
               <div class="mega-block-title"> {{section.title}} </div>                                          
@@ -468,8 +588,7 @@
             <!-- <div v-show="section.check==='true'">  -->
               <div v-show="'false'==='true'"> 
               <div class="mega-block-sections">
-                <div class="mega-block-title"> {{section.title}} </div>
-                
+                <div class="mega-block-title"> {{section.title}} </div>               
                   <div class="mega-block">
                     <div :class="[section.name == 'reliability' || section.name == 'add_heatcosts' ? 'rel-block' : 'main-block']" > 
                       <!-- Формы ввода для основных блоков   ------------------------------------->

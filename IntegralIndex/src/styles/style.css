@@ -538,6 +538,11 @@ justify-content: space-between;
   box-shadow: 0 0 10px var(--red-shadow-color);
   background-color: var(--global-fon);
   }
+  .collection-reliability{
+    flex-direction: column;
+    width: 80%;
+  }
+
 
 .parametrs-info-block-borders{
   background-color: var(--white-text-color); 
@@ -547,6 +552,9 @@ justify-content: space-between;
   padding:10px;
   width:80%;
   margin: 2%;
+}
+.rel-param-info-borders{
+  width: 100%;
 }
 
 .parametrs-info-block{
@@ -567,6 +575,7 @@ justify-content: space-between;
   border-radius: 4px; 
   padding-left: 1%;
   padding-right: 2%;
+  width:fit-content;
 }
 .results-info-block-borders{
   background-color: var(--white-text-color); 

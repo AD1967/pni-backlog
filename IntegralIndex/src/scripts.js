@@ -20,18 +20,13 @@ import func from '@/connect/funcs'
         
         big_sections_name:
         [
-          {name: 'Надежность'},
           {name: 'Теплопотери'},
           {name: 'Теплопритоки'}
         ],
         time : 2019,
+        reliability_section: {check: false},
         sections:
         [          
-          { section:'Надежность' ,     
-            name:   'reliability',                  
-            title:  'Надежность', 
-            check:  'false'
-          },
           { section:'Теплопотери',     
             name: 'heat_los_win',                 
             title: 'Расчет тепловых потерь через окна', 
@@ -196,7 +191,23 @@ import func from '@/connect/funcs'
           eclg_tec_ctp_tut:    '', 
           eclg_tec_ctp_co2:    '', 
         },
-
+        parametrs_of_reliability:{
+          elev_itp:             '',
+          ventsys:              '',
+          count_installations:  '',
+          length_pipe1:         '',
+          length_pipe2:         '',
+          count_up_hws:         '',
+          count_down_hws:       '',
+          count_crane:          '',
+          count_up_loft:        '',
+          count_down_loft:      '',
+          count_radiator:       '',
+          type_armature:        '',
+          type_radiator:        '',
+          type_crane:           '',
+          type_pipe:            ''  
+        },
         parametrs_of_build:{
           id_build:            '',
           name_build:          '',
@@ -299,6 +310,20 @@ import func from '@/connect/funcs'
         {id: 4, val: 'Труба металлическая с утеплителем'},
         {id: 5, val: 'Труба металлопластиковая с утеплителем'},
         {id: 6, val: 'Труба пластиковая с утеплителем'}
+      ],
+      type_armature:[
+        {id: 1, val: 'Запорный вентиль шаровый'},
+        {id: 2, val: 'Запорный вентиль винтовой'}
+      ], 
+
+      type_radiator:[
+        {id: 1, val: 'Радиатор чугунный'},
+        {id: 2, val: 'Радиатор биметаллический'}
+      ], 
+      type_crane:[
+        {id: 1, val: 'Кран типа "ёлочка"'},
+        {id: 2, val: 'Кран шаровый с аэратором'},
+        {id: 3, val: 'Кран сенсорный с аэратором'}
       ],
 
       materials:[
@@ -609,7 +634,6 @@ import func from '@/connect/funcs'
       },
 
     methods:{
-
     numberWithSpaces(x) {
       var parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -654,6 +678,7 @@ import func from '@/connect/funcs'
           this.sections.forEach(function(item){
             item.check = flag 
           })
+          this.reliability_section.check = flag
       }         
        ,
        set_all_checkbox(){  
@@ -704,15 +729,21 @@ import func from '@/connect/funcs'
     },
 
     printInfoVal(val){
-      let select_list = ['type_windows', 'type_doors', 'class_energoeff','period_energosave', 'walls_material', 'floors_material','doors_material', 'furniture_material', 'sofa_material', 'table_material', 'type_pipe']
+      let select_list = ['type_windows', 'type_doors', 'class_energoeff','period_energosave', 'walls_material', 'floors_material','doors_material', 'furniture_material', 'sofa_material', 'table_material', 'type_pipe', 'type_armature', 'type_radiator', 'type_crane']
+      let reliability_list = ['count_installations', 'length_pipe1', 'length_pipe2', 'count_up_hws', 'count_down_hws', 'count_crane', 'count_up_loft', 'count_down_loft', 'count_radiator']
       if (select_list.indexOf(val) != -1)
         return this.selected_item(val)                      
       else 
-        return this.parametrs_of_build[val]                     
+        if (reliability_list.indexOf(val) != -1)
+            return this.parametrs_of_reliability[val]
+        else 
+            return this.parametrs_of_build[val]                     
     },
 
     selected_item(name){
       let param = this.parametrs_of_build[name] 
+      if (param == undefined)
+        param = this.parametrs_of_reliability[name]
       if (param !== '')
       switch (name) {
         case 'type_windows':
@@ -721,6 +752,18 @@ import func from '@/connect/funcs'
           return this.type_doors[param-1].val
         case 'class_energoeff':
           return this.class_energoeff[param-1].val
+        case 'period_energosave':
+          return this.period_energosave[param-1].val
+        case 'walls_material' || 'floors_material' || 'doors_material' || 'furniture_material' || 'sofa_material' || 'table_material':
+          return this.materials[param-1].val
+        case 'type_pipe':
+          return this.type_pipe[param-1].val
+        case 'type_armature':
+          return this.type_armature[param-1].val
+        case 'type_radiator':
+          return this.type_radiator[param-1].val
+        case 'type_crane':
+          return this.type_crane[param-1].val
         default:
           break;
       }

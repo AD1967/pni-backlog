@@ -134,58 +134,76 @@ function load_build(self, id_build, result_func){
                 clear_funcs(self)
 
 
-                //settings
-                self.parametrs_of_build.id_build                = id_build
-                self.parametrs_of_build.name_build              = build.name
-                self.parametrs_of_build.floors                  = build.floors
-                self.parametrs_of_build.length_build            = build.len_a      
-                self.parametrs_of_build.width_build             = build.len_b      
-                self.parametrs_of_build.length_wall             = build.len_sum        
-                self.parametrs_of_build.height_wall             = build.height       
-                self.parametrs_of_build.temp_inside             = build.temp_inside        
-                self.parametrs_of_build.temp_outside            = build.temp_outside      
-                self.parametrs_of_build.date_construction       = build.date_build
-                self.parametrs_of_build.count_windows           = build.count_windows      
-                self.parametrs_of_build.length_windows          = build.length_wnd    
-                self.parametrs_of_build.height_windows          = build.height_wnd    
-                self.parametrs_of_build.date_windows            = build.date_wnd       
-                self.parametrs_of_build.type_windows            = build.id_window      
-                self.parametrs_of_build.count_doors             = build.q_doors_count_doors       
-                self.parametrs_of_build.length_doors            = build.length_door       
-                self.parametrs_of_build.height_doors            = build.height_door       
-                self.parametrs_of_build.type_doors              = build.id_door         
-                self.parametrs_of_build.date_doors              = build.date_doors         
-                self.parametrs_of_build.class_energoeff         = build.constructs_energoeff    
-                self.parametrs_of_build.count_closet            = build.count_shkaf       
-                self.parametrs_of_build.count_sofa              = build.count_divan         
-                self.parametrs_of_build.count_table             = build.count_table        
-                self.parametrs_of_build.count_small_closet      = build.count_shkafchik 
-                self.parametrs_of_build.count_men               = build.mens          
-                self.parametrs_of_build.count_women             = build.womens        
-                // self.parametrs_of_build.count_children          =  build. children    
-                self.parametrs_of_build.time_guests             =  build.time_average       
-                self.parametrs_of_build.count_sink              =  build.count_crane        
-                self.parametrs_of_build.height_basement         =  build.height_floor
-                
-                self.parametrs_of_build.period_energosave       =  build.id_period     
-                self.parametrs_of_build.walls_material          =  build.walls_material
-                self.parametrs_of_build.floors_material         =  build.floors_materials
-                self.parametrs_of_build.doors_material          =  build.doors_material 
-                self.parametrs_of_build.furniture_material      =  build.mebel_material
-                self.parametrs_of_build.sofa_material           =  build.divan_material
-                self.parametrs_of_build.table_material          =  build.table_material
-                self.parametrs_of_build.type_pipe               =  build.id_pipe          
+                //ЗАГРУЗКА ПАРАМЕТРОВ ЗДАНИЯ (в меню настройки)
+                self.parametrs_of_build.id_build                 = id_build
+                self.parametrs_of_build.name_build               = build.name
+                self.parametrs_of_build.floors                   = build.floors
+                self.parametrs_of_build.length_build             = build.len_a      
+                self.parametrs_of_build.width_build              = build.len_b      
+                self.parametrs_of_build.length_wall              = build.len_sum        
+                self.parametrs_of_build.height_wall              = build.height       
+                self.parametrs_of_build.temp_inside              = build.temp_inside        
+                self.parametrs_of_build.temp_outside             = build.temp_outside      
+                self.parametrs_of_build.date_construction        = build.date_build
+                self.parametrs_of_build.count_windows            = build.count_windows      
+                self.parametrs_of_build.length_windows           = build.length_wnd    
+                self.parametrs_of_build.height_windows           = build.height_wnd    
+                self.parametrs_of_build.date_windows             = build.date_wnd       
+                self.parametrs_of_build.type_windows             = build.id_window      
+                self.parametrs_of_build.count_doors              = build.q_doors_count_doors       
+                self.parametrs_of_build.length_doors             = build.length_door       
+                self.parametrs_of_build.height_doors             = build.height_door       
+                self.parametrs_of_build.type_doors               = build.id_door         
+                self.parametrs_of_build.date_doors               = build.date_doors         
+                self.parametrs_of_build.class_energoeff          = build.constructs_energoeff    
+                self.parametrs_of_build.count_closet             = build.count_shkaf       
+                self.parametrs_of_build.count_sofa               = build.count_divan         
+                self.parametrs_of_build.count_table              = build.count_table        
+                self.parametrs_of_build.count_small_closet       = build.count_shkafchik 
+                self.parametrs_of_build.count_men                = build.mens          
+                self.parametrs_of_build.count_women              = build.womens        
+                // self.parametrs_of_build.count_children           =  build. children    
+                self.parametrs_of_build.time_guests              =  build.time_average       
+                self.parametrs_of_build.count_sink               =  build.count_crane        
+                self.parametrs_of_build.height_basement          =  build.height_floor
+                 
+                self.parametrs_of_build.period_energosave        =  build.id_period     
+                self.parametrs_of_build.walls_material           =  build.walls_material
+                self.parametrs_of_build.floors_material          =  build.floors_materials
+                self.parametrs_of_build.doors_material           =  build.doors_material 
+                self.parametrs_of_build.furniture_material       =  build.mebel_material
+                self.parametrs_of_build.sofa_material            =  build.divan_material
+                self.parametrs_of_build.table_material           =  build.table_material
+                self.parametrs_of_build.type_pipe                =  build.id_pipe          
                
-                //general
-                set_input(self, "general", 0, build.name)
-                set_input(self, "general", 1, build.floors)
-                set_input(self, "general", 2, build.len_a)
-                set_input(self, "general", 3, build.len_b)
-                set_input(self, "general", 4, build.len_sum)
-                set_input(self, "general", 5, build.height)
-                set_input(self, "general", 6, build.temp_inside)
-                set_input(self, "general", 7, build.temp_outside)
-                set_date(self, "general", 0, build.date_build)
+                //ЗАГРУЗКА ПАРАМЕТРОВ ДЛЯ НАДЕЖНОСТИ
+                self.parametrs_of_reliability.elev_itp            =  build.ihp 
+                self.parametrs_of_reliability.ventsys             =  build.ventsys
+                self.parametrs_of_reliability.count_installations =  build.ventsys? build.readings_vents.length : ''
+                self.parametrs_of_reliability.length_pipe1        =  build.ventsys? build.readings_vents[0] : ''
+                self.parametrs_of_reliability.length_pipe2        =  build.ventsys? build.readings_vents[1] : ''
+                self.parametrs_of_reliability.count_up_hws        =  build.ascents_hws
+                self.parametrs_of_reliability.count_down_hws      =  build.descents_hws
+                self.parametrs_of_reliability.count_crane         =  build.count_crane
+                self.parametrs_of_reliability.count_up_loft       =  build.ascents_heat
+                self.parametrs_of_reliability.count_down_loft     =  build.descents_heat
+                self.parametrs_of_reliability.count_radiator      =  build.count_radiator
+                self.parametrs_of_reliability.type_armature       =  build.id_shutoffvalve   
+                self.parametrs_of_reliability.type_radiator       =  build.id_radiator
+                self.parametrs_of_reliability.type_crane          =  build.id_crane
+                self.parametrs_of_reliability.type_pipe           =  build.id_pipe
+               
+
+                //general  //удалить потом
+                // set_input(self, "general", 0, build.name)
+                // set_input(self, "general", 1, build.floors)
+                // set_input(self, "general", 2, build.len_a)
+                // set_input(self, "general", 3, build.len_b)
+                // set_input(self, "general", 4, build.len_sum)
+                // set_input(self, "general", 5, build.height)
+                // set_input(self, "general", 6, build.temp_inside)
+                // set_input(self, "general", 7, build.temp_outside)
+                // set_date(self, "general", 0, build.date_build)
 
 
                 if ("id_reliability" in build) {
