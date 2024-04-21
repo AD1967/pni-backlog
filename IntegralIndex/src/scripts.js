@@ -160,7 +160,6 @@ import func from '@/connect/funcs'
         ],
 
         results: {
-          general:                      '', 
           reliability:                  '', 
           heat_los_win:                 '', 
           inf_win:                      '', 
@@ -634,6 +633,9 @@ import func from '@/connect/funcs'
       },
 
     methods:{
+    calc_reliability(){
+
+    },
     numberWithSpaces(x) {
       var parts = x.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");

@@ -553,9 +553,13 @@
                       </div>
                     </div>   
                   </div>
-                  <!-- <div class="results-info-block-borders">
-                    <div class="info-text"> {{results.general}} </div>  
-                  </div>        -->
+                  <div class="results-info-block-borders"> 
+                    <div v-if="results.reliability !== ''">
+                      <div class="info-text"> Результаты расчетов </div>  
+                      <div class="info-text"> {{printVal(results.reliability, 'Гкал')}} </div>
+                    </div>
+                    <button class="btn-calc" @click="calc_reliability()" style="position:relative; top: 90%;"> Выполнить расчет</button> 
+                  </div>      
                </div>    
           </div>
 
@@ -566,7 +570,13 @@
                 <div class="parametrs-info-block-borders"> 
                   <div class="mega-block-subtitle"> {{section.subtitle}} </div>         
                   <div v-for="(item, index) in section.title_fields" :key=index>             
-                    <div class="parametrs-info-block">
+                    <div v-if="section.value_fields[index] == 'class_energoeff'" class="parametrs-info-block" style="flex-direction: column"> 
+                      <div class="info-text"> {{item}} </div>  
+                      <div class="info-values"> 
+                        {{ printInfoVal(section.value_fields[index]) }}
+                      </div>
+                    </div>             
+                    <div v-else class="parametrs-info-block">
                       <div class="info-text"> {{item}} </div>  
                       <div class="info-values"> 
                         {{ printInfoVal(section.value_fields[index]) }}
@@ -575,112 +585,14 @@
                     </div>           
                   </div>
                 </div>  
-                <div class="results-info-block-borders">
-                  <div class="info-text"> {{results.general}} </div>  
+                <div v-if="results[section.name] !== ''" class="results-info-block-borders">
+                  <div class="info-text"> Результаты расчетов </div>  
+                  <div class="info-text"> {{printVal(results[section.name], 'Гкал')}} </div>
                 </div>       
               </div>  
             </div>
           </div>
           <!--/Отрисовка информационных блоков--------------------------------------------------->
-
-          <!-- старое--------------------------------->
-          <div v-for="section in sections" :key=section>
-            <!-- <div v-show="section.check==='true'">  -->
-              <div v-show="'false'==='true'"> 
-              <div class="mega-block-sections">
-                <div class="mega-block-title"> {{section.title}} </div>               
-                  <div class="mega-block">
-                    <div :class="[section.name == 'reliability' || section.name == 'add_heatcosts' ? 'rel-block' : 'main-block']" > 
-                      <!-- Формы ввода для основных блоков   ------------------------------------->
-                      <div v-for="(func, ind) in functions" :key=func>
-                        <div v-if="func.id===section.name && func.render !== false">
-                          <div class="block">
-                            <div class="block-title">{{ func.title }}</div><br>
-                            <div v-for="(inp, indexinp) in func.input" :key=inp>
-                              <div v-if="(inp[6]===undefined || inp[6]===null) || inp[6]()">
-                                <div v-if="inp[5]===undefined || inp[5]===null">
-                                    {{inp[0]}} 
-                                    <input class="field-inp" type="text" 
-                                    :value="inp[2]" @input="changes(ind, 'input', indexinp, $event.target.value)" readonly>
-                                    {{inp[1]}} 
-                                    <div v-if="!inp[4]"> 
-                                    <b style="color:red" v-if="String(inp[2]).trim() === ''">Поле не заполнено.</b>
-                                    <b style="color:red" v-if="String(inp[2]).trim() !== '' && (inp[3] == 'int' || inp[3] == 'uint') ">Неверный формат числа.</b>
-                                    </div>
-                                </div>
-                                <div v-else> 
-                                  {{inp[0]}}
-                                  <input class="field-inp" type="text"
-                                  :value="functions[inp[5][0]].input[inp[5][1]][2]" readonly>
-                                  {{inp[1]}} <b style="color:grey">{{inp[5][2]}}</b>
-                                  <div v-if="!functions[inp[5][0]].input[inp[5][1]][4]">
-                                  <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() === ''">поле не заполнено</b>
-                                  <b style="color:red" v-if="String(functions[inp[5][0]].input[inp[5][1]][2]).trim() !== '' && (functions[inp[5][0]].input[inp[5][1]][3] == 'int' || functions[inp[5][0]].input[inp[5][1]][3] == 'uint') ">неправильный формат числа</b>
-                                  </div>
-                              </div>
-                              </div>  
-                            </div>
-                            <div v-for="(btn, indexrbtn) in func.r_btn" :key=btn>
-                              <input type="radio" name={{func}} :id="func.id +'_'+ ind+'_rbtn_'+indexrbtn"
-                              :value=btn
-                                v-on:change="changes(ind, 'radio', 0, $event.target.value)"
-                              :checked="btn==func.radio_elem[0]" readonly
-                              >
-                              <label>{{btn}}</label>
-                            </div>
-                            <table>
-                              <tr>
-                                <div v-for="(sel, indexsel) in func.select" :key=sel>  
-                                <div v-if="(sel[5]===undefined || sel[5]===null) || sel[5]()"> 
-                                  <div v-if="sel[4]===undefined || sel[4]===null">
-                                    <td>{{sel[0]}}</td>
-                                    <input v-if="func.id != 'add_heatcosts'" class="field-inp-select" type="text" :value="sel[3]" @change="changes(ind, 'select', indexsel, $event.target.value)" readonly>
-                                    <select id="big-select" v-else :value="sel[3]" @change="changes(index1, 'select', indexsel, $event.target.value)">
-                                      <option style="" v-for="(selbody, indexbody) in sel[1]" v-bind:key=selbody :id="func.id +'_'+ index1+'_sel_'+indexsel+'_selnum_'+indexbody">
-                                          {{selbody}}
-                                      </option>
-                                    </select>
-                                  </div>
-                                  <div v-else>
-                                      <td>{{sel[0] }}</td>
-                                      <input class="field-inp-select" type="text" :value="functions[sel[4][0]].select[sel[4][1]][3]" readonly>
-                                  </div>
-                                </div> 
-                              </div>
-                              </tr>
-                            </table>
-                              <p v-for="(box, indexcbox) in func.c_box" :key=box>
-                                <input type="checkbox" :id="func.id +'_'+ ind+'_cbox_'+indexcbox" 
-                                  :checked="func.check_elem[indexcbox]"
-                                    v-on:input="changes(ind, 'checkbox', indexcbox, $event.target.checked)"
-                                    readonly
-                                  >
-                                {{box}}
-                              </p>
-                              <div v-for="(d, indexdate) in func.date" :key=d>
-                                    <div v-if="d[2]===undefined || d[2]===null">
-                                        {{d[0]}}
-                                        <input class="field-inp" type="date" :id="func.id +'_'+ ind+'_date_'+indexdate"
-                                        :value="d[1]" @input="changes(ind, 'date', indexdate, $event.target.value)" readonly>
-                                    </div>
-                                    <div v-else>
-                                        {{d[0]}}
-                                        <input class="field-inp" type="date" :id="func.id +'_'+ ind+'_date_'+indexdate"
-                                        :value="functions[d[2][0]].date[d[2][1]][1]" readonly>
-                                        <b style="color:green">{{d[2][2]}}</b>
-                                    </div>
-                              </div>
-                          </div> 
-                        </div>
-                      </div>                       
-                  </div>
-                </div>   
-              </div>
-            </div>
-          </div>
-          <!-- старое--------------------------------->
-
-
         </div> <!--solution-->
       </div> <!--/ Основное рабочее пространство-->
     </div> <!--body-->
