@@ -169,7 +169,7 @@ def save(build, results):
         # workbook = writer.book
         worksheet = writer.sheets['Build']
         worksheet.set_column('B:B', 58)
-        worksheet.set_column('C:C', 41)
+        worksheet.set_column('C:C', 10)
         worksheet = writer.sheets['Results']
         worksheet.set_column('B:B', 58)
         worksheet.set_column('C:C', 10)

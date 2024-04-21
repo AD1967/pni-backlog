@@ -163,7 +163,7 @@ import func from '@/connect/funcs'
         ],
 
         results: {
-          reliability:                  '', 
+          reliability:                  '',
           heat_los_win:                 '', 
           inf_win:                      '', 
           heat_los_inpgr:               '', 
@@ -637,7 +637,9 @@ import func from '@/connect/funcs'
 
     methods:{
     calc_reliability(){
-
+        let self = this
+        let calc_rel = func.calc_reliability(self, this.parametrs_of_reliability)
+        this.results['reliability'] = calc_rel[0]
     },
     numberWithSpaces(x) {
       var parts = x.toString().split(".");

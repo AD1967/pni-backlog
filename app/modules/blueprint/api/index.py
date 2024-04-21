@@ -62,9 +62,9 @@ def api_save_cur():
 @main.route("/calc_index", methods=["POST"])
 @token_auth.login_required
 def api_calc_index():
-    print(request.json["id"])
+    print(request.json.get('parametrs_of_reliability'))
     try:
-        data = calc_index(request.json["id"])
+        data = calc_index(request.json.get('parametrs_of_reliability'))
     except:
         data = None
     

@@ -128,6 +128,31 @@ function calc(id, self, selectedYear){
     }    
 }
 
+function calc_reliability(parametrs_of_reliability) {
+    return new Promise(function(resolve, reject) {
+        let url = id_mappers.calc_map['reliability'];
+        $.ajax({
+            url: server_url + url,
+            type: 'POST',
+            contentType: 'application/json',
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+            data: JSON.stringify(parametrs_of_reliability),
+            success: function(response) {
+                resolve(response); // Возвращаем успешный результат обещания
+            },
+            error: function(xhr, status, error) {
+                reject(error); // Возвращаем ошибку обещания
+            }
+        });
+    })
+    .then(function(response) {
+        var result = response.result;
+        return [id_mappers.calc_dec_result_map['reliability'](result), result];
+    })
+    .catch(function(error) {
+        console.error('Request failed with error', error);
+    });
+}
 
 
 //
@@ -211,6 +236,7 @@ function save_cur(parametrs_of_build, results, dop_results){
 let funcs = {};
 funcs.start = start
 funcs.calc = calc
+funcs.calc_reliability = calc_reliability
 funcs.load = load
 funcs.download_excel = download_excel
 funcs.save_cur = save_cur
