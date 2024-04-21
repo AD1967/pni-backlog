@@ -24,14 +24,17 @@ import func from '@/connect/funcs'
           {name: 'Теплопритоки'}
         ],
         time : 2019,
-        reliability_section: {check: false},
+        reliability_section: {
+          check: false,
+          title: 'Надежность'
+        },
         sections:
-        [          
+        [    
           { section:'Теплопотери',     
             name: 'heat_los_win',                 
             title: 'Расчет тепловых потерь через окна', 
             subtitle: 'Характеристика окон',
-            check: 'false',
+            check: false,
             title_fields: ['Число окон',    'Длина типового окна', 'Высота типового окна', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип окон',     'Дата установки окон', 'Дата постройки'],
             value_fields: ['count_windows', 'length_windows',      'height_windows',       'temp_inside',                     'temp_outside',                  'type_windows', 'date_windows',        'date_construction'],
             ue_fields:    ['ед.', 'м', 'м', '°С', '°С','', '', '']
@@ -40,7 +43,7 @@ import func from '@/connect/funcs'
              name: 'inf_win',                      
              title: 'Расчет инфильтрации через окна',
              subtitle: 'Характеристика окон', 
-             check: 'false',
+             check: false,
              title_fields:  ['Число окон',    'Длина типового окна', 'Высота типового окна', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип окон',     'Дата установки окон', 'Дата постройки'],
              value_fields: ['count_windows', 'length_windows',      'height_windows',       'temp_inside',                     'temp_outside',                  'type_windows', 'date_windows',        'date_construction'],
              ue_fields:    ['ед.', 'м', 'м', '°С', '°С','', '', '']
@@ -49,7 +52,7 @@ import func from '@/connect/funcs'
              name: 'heat_los_inpgr',               
              title: 'Расчет тепловых потерь через входную группу',
              subtitle: 'Характеристика входной группы',
-             check: 'false',
+             check: false,
              title_fields: ['Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Этажность', 'Высота стен', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип двери', 'Дата установки дверей', 'Дата постройки'],
              value_fields: ['count_doors', 'length_doors', 'height_doors', 'floors', 'height_wall', 'temp_inside', 'temp_outside', 'type_doors', 'date_doors', 'date_construction'],
              ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', '', '', '']
@@ -58,7 +61,7 @@ import func from '@/connect/funcs'
              name: 'inf_inpgr',                    
              title: 'Расчет инфильтрации через входную группу', 
              subtitle: 'Характеристика входной группы',
-             check: 'false',
+             check: false,
              title_fields: ['Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Этажность', 'Высота стен', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Тип двери', 'Дата установки дверей', 'Дата постройки'],
              value_fields: ['count_doors', 'length_doors', 'height_doors', 'floors', 'height_wall', 'temp_inside', 'temp_outside', 'type_doors', 'date_doors', 'date_construction'],
              ue_fields:    ['ед.', 'м', 'м', 'ед.', 'м', '°С', '°С', '', '', '']
@@ -67,7 +70,7 @@ import func from '@/connect/funcs'
              name: 'heat_los_heatcond_benv',       
              title: 'Определение теплопотерь посредством теплопроводности через ограждающие конструкции', 
              subtitle: 'Характеристика класса энергетической эффективности',
-             check: 'false',
+             check: false,
              title_fields: ['Длина здания', 'Ширина здания', 'Этажность', 'Высота стен', 'Число окон', 'Длина типового окна', 'Высота типового окна', 'Число дверей', 'Длина типовой входной двери', 'Высота типовой входной двери', 'Класс энергетической эффективности ограждающих конструкций', 'Температура внутреннего воздуха', 'Температура наружного воздуха', 'Дата постройки'],
              value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_windows', 'length_windows', 'height_windows', 'count_doors', 'length_doors', 'height_doors', 'class_energoeff', 'temp_inside', 'temp_outside', 'date_construction'],
              ue_fields:    ['м', 'м', 'ед.', 'м',  'ед.', 'м', 'м', 'ед.', 'м', 'м', '', '°С', '°С', '']
@@ -76,7 +79,7 @@ import func from '@/connect/funcs'
              name: 'heat_los_heatcond_roof',       
              title: 'Определение теплопотерь посредством теплопроводности через кровлю', 
              subtitle: 'Характеристика класса энергетической эффективности',
-             check: 'false',
+             check: false,
              title_fields: ['Температура внутреннего воздуха', 'Температура наружного воздуха', 'Длина здания', 'Ширина здания', 'Класс энергетической эффективности ограждающих конструкций'],
              value_fields: ['temp_inside', 'temp_outside', 'length_build', 'width_build', 'class_energoeff'],
              ue_fields:    ['°С', '°С', 'м', 'м', '']
@@ -85,7 +88,7 @@ import func from '@/connect/funcs'
             name: 'heat_los_floor',               
             title: 'Расчет теплопотерь через пол', 
             subtitle: 'Тепловые потери через пол',
-            check: 'false',
+            check: false,
             title_fields: ['Длина здания', 'Ширина здания', 'Длина стен на одном этаже', 'Высота подвала', 'Температура внутреннего воздуха', 'Температура наружного воздуха'],
             value_fields: ['length_build', 'width_build', 'length_wall', 'height_basement', 'temp_inside', 'temp_outside'],
             ue_fields:    ['м', 'м', 'м', 'м','°С', '°С']
@@ -94,7 +97,7 @@ import func from '@/connect/funcs'
             name: 'heat_los_vent',                
             title: 'Расчет теплопотерь, связанных с вентиляцией', 
             subtitle: 'Тепловые потери связанные с вентиляцией',
-            check: 'false',
+            check: false,
             title_fields: ['Длина здания', 'Ширина здания', 'Высота стен на одном этаже', 'Температура внутреннего воздуха', 'Температура наружного воздуха'],
             value_fields: ['length_build', 'width_build', 'height_wall',  'temp_inside', 'temp_outside'],
             ue_fields:    ['м', 'м', 'м','°С', '°С']
@@ -103,7 +106,7 @@ import func from '@/connect/funcs'
             name: 'add_heatcosts',                
             title: 'Дополнительные затраты теплоты на повторный прогрев внутренних перегородок и интерьеров',
             subtitle: 'Характеристика интерьера и внутренних перегородок',
-            check: 'false',
+            check: false,
             title_fields: ['Число дверей', 'Число шкафов', 'Число диванов', 'Число столов', 'Число навесных шкафчиков', 'Этажность', 'Длина здания', 'Ширина здания','Длина стен на одном этаже' ,'Высота стен на одном этаже'],
             value_fields: ['count_doors', 'count_closet', 'count_sofa', 'count_table', 'count_small_closet', 'floors', 'length_build', 'width_build', 'length_wall', 'height_wall'],
             ue_fields:    ['ед.', 'ед.', 'ед.', 'ед.', 'ед.', 'ед.', 'м', 'м', 'м', 'м']
@@ -112,7 +115,7 @@ import func from '@/connect/funcs'
              name: 'heat_gains_people',            
              title: 'Определение теплопритоков от людей', 
              subtitle: 'Теплопритоки от людей',
-             check: 'false',
+             check: false,
              title_fields: ['Число посетителей/жильцов мужчин', 'Число посетителей/жильцов женщин','Число посетителей/жильцов детей', 'Среднее время пребывания посетителей/жильцов в сутки', 'Температура внутреннего воздуха'],
              value_fields: ['count_men', 'count_women', 'count_children', 'time_guests', 'temp_inside'],
              ue_fields: ['чел', 'чел', 'чел', 'чел/сутки', '°С']
@@ -120,7 +123,7 @@ import func from '@/connect/funcs'
           {  section:'Теплопритоки',    
              name: 'heat_gains_washstands',        
              title: 'Определение затрат тепловой энергии на ГВС для рукомойников', 
-             check: 'false',
+             check: false,
              title_fields: ['Число посетителей/жильцов мужчин', 'Число посетителей/жильцов женщин','Число посетителей/жильцов детей'],
              value_fields: ['count_men', 'count_women', 'count_children'],
              ue_fields:    ['чел', 'чел', 'чел']
@@ -128,7 +131,7 @@ import func from '@/connect/funcs'
           {  section:'Теплопритоки',    
              name: 'heat_gains_showers',           
              title: 'Определение затрат тепловой энергии на ГВС для душевых', 
-             check: 'false',
+             check: false,
              title_fields: ['Число посетителей/жильцов мужчин', 'Число посетителей/жильцов женщин','Число посетителей/жильцов детей'],
              value_fields: ['count_men', 'count_women', 'count_children'],
              ue_fields:    ['чел', 'чел', 'чел']
@@ -136,7 +139,7 @@ import func from '@/connect/funcs'
           {  section:'Теплопритоки',    
              name: 'heat_gains_electriclighting',  
              title: 'Определение теплопритока от систем электроосвещения и силового электроснабжения', 
-             check: 'false',
+             check: false,
              title_fields: ['Длина здания', 'Ширина здания','Этажность'],
              value_fields: ['length_build', 'width_build', 'floors'],
              ue_fields:    ['м', 'м', 'ед.']
@@ -144,7 +147,7 @@ import func from '@/connect/funcs'
           {  section:'Теплопритоки',  //тип трубы?? труба металлопластиковая  
              name: 'heat_gains_GVS',               
              title: 'Определение теплопритока от неизолированных трубопроводов ГВС', 
-             check: 'false',
+             check: false,
              title_fields: ['Длина здания', 'Ширина здания','Этажность', 'Высота стен на одном этаже', 'Число помещений с раковинами на этаже', 'Температура внутреннего воздуха'],
              value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_sink',  'temp_inside'],
              ue_fields:    ['м', 'м', 'ед.', 'м', 'ед.', '°С']
@@ -152,7 +155,7 @@ import func from '@/connect/funcs'
           {  section:'Теплопритоки',    
              name: 'heat_gains_pipelines',   //тип трубы?? труба металлопластиковая        
              title: 'Определение теплопритока от неизолированных трубопроводов отопления', 
-             check: 'false',
+             check: false,
              title_fields: ['Длина здания', 'Ширина здания','Этажность', 'Высота стен на одном этаже', 'Количество окон', 'Температура внутреннего воздуха'],
              value_fields: ['length_build', 'width_build', 'floors', 'height_wall', 'count_windows',  'temp_inside'],
              ue_fields:    ['м', 'м', 'ед.', 'м', 'ед.', '°С']
@@ -685,7 +688,7 @@ import func from '@/connect/funcs'
        ,
        set_all_checkbox(){  
           this.set_all_flag = !this.set_all_flag;  
-          this.set_all_check_left_panel(this.set_all_flag.toString()); 
+          this.set_all_check_left_panel(this.set_all_flag); 
        } ,
       
       calc_result(id){
@@ -707,9 +710,9 @@ import func from '@/connect/funcs'
       })
     },
       calc_all(){
-        this.set_all_check_left_panel("true")
+        this.set_all_check_left_panel(true)
         this.calc_all_server()
-        this.set_all_check_left_panel("false")
+        this.set_all_check_left_panel(false)
         this.calc_dop_results();
       },
       calc_INS(){
@@ -858,6 +861,9 @@ import func from '@/connect/funcs'
       class_energoeff_selected(){
         if (this.parametrs_of_build.class_energoeff !== '')
             return this.class_energoeff[this.parametrs_of_build.class_energoeff-1].val   
+      },
+      show_dop_info_title(){
+        return this.reliability_section.check || this.sections.find((item) => item.check)
       }
     },
     mounted() {

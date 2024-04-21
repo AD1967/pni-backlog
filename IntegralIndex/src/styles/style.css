@@ -514,6 +514,13 @@ justify-content: space-between;
 }
 
 /* Отрисовка вспомогательных информатиыных блоков */
+.informations-glob-title{
+  font-size: var(--header-text-size);
+  color: var(--header-color);
+  margin-left: 8%;
+  margin-top: 4%;
+}
+
 .mega-block-title{
   font-size: var(--header-text-size);
   color: var(--red-shadow-color);
@@ -549,10 +556,10 @@ justify-content: space-between;
   background-color: var(--white-text-color); 
   padding:10px;
   width:60%;
-  margin: 2%;
 }
 .rel-param-info-borders{
   width: 100%;
+  margin-right:2%;
 }
 
 .parametrs-info-block{

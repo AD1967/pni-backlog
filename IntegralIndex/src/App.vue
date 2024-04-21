@@ -48,7 +48,7 @@
           </h4>
           <h5 class="sub-section-title">  
             <label class="checkbox style-c">
-              <input type="checkbox" v-model="reliability_section.check" true-value="true" false-value="false" />
+              <input type="checkbox" v-model="reliability_section.check"  />
               <div class="checkbox__checkmark"></div>
               <div class="checkbox__body">Надежность</div>
             </label>
@@ -62,7 +62,7 @@
                 <div v-if="sec.section===bgsec_name.name">
                   <h5 class="sub-section-title">  
                     <label :for=sec.name class="checkbox style-c">
-                      <input type="checkbox" :id=sec.name v-model="sec.check" true-value="true" false-value="false"/>
+                      <input type="checkbox" :id=sec.name v-model="sec.check" />
                       <div class="checkbox__checkmark"></div>
                       <div class="checkbox__body">{{sec.title}}</div>
                     </label>
@@ -448,9 +448,11 @@
           <!-- /Экологический ущерб ------------------------>
           <!-- /Пространство кнопок расчетов---------------------------------------------------->
           
+
           <!--Отрисовка информационных блоков--------------------------------------------------->
+          <div v-if="show_dop_info_title" class="informations-glob-title"> Дополнительная информация о расчетах </div>
           <!-- Надежность -->
-          <div v-show="reliability_section.check==='true'">
+          <div v-show="reliability_section.check">
             <div class="mega-block-title"> {{reliability_section.title}} </div>
                <div class="mega-block-sections">
                   <div class="collection-reliability">
@@ -564,7 +566,7 @@
           </div>
 
           <div v-for="(section, index_section) in sections" :key=index_section>     
-            <div v-show="section.check==='true'">
+            <div v-show="section.check">
               <div class="mega-block-title"> {{section.title}} </div>                                          
               <div class="mega-block-sections">
                 <div class="parametrs-info-block-borders"> 
