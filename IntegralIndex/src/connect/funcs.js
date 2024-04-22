@@ -31,7 +31,7 @@ function load_result_func(self, result) {
             self.loadpat_error.show = true
         }
         else{
-            alert("ошибка загрузки с сервера")
+            alert("ошибка загрузки с сервера11")
         }
     }
     else{
@@ -67,11 +67,9 @@ function export_error_alert(self, error = null){
 
 
 
-
 function calc(id, self, selectedYear){       
     console.log("calc")
-    let export_build_r = export_funcs.export_b(self)
-    // let export_build_r = export_funcs.export_build(self, false);
+    let export_build_r = export_funcs.export_build(self)
     if (export_build_r.error){
         export_error_alert(self,export_build_r.text)
         //return "ошибка вычислений, проверьте наличие данных и их корректность"

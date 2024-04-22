@@ -261,7 +261,7 @@
                   {{build.val}} 
                 </option>
               </select>     
-              <select class="header-selector" @change="clear_dop_results()" id="years-selector">
+              <select class="header-selector" @change="clear_results()" id="years-selector">
                 <option> Тестовая дата - 01.09.2022</option>
                 <option> 2014-15 - самая тёплая зима</option>
                 <option> 2018-19</option>
@@ -576,7 +576,7 @@
                   <div class="results-info-block-borders"> 
                     <div v-if="results.reliability !== ''">
                       <div class="info-text"> Результаты расчетов </div>  
-                      <div class="info-text"> {{printVal(results.reliability, 'Гкал')}} </div>
+                      <div class="info-text"> {{printVal(results.reliability * 100, '%')}} </div>
                     </div>
                     <button class="btn-calc" @click="calc_reliability()" style="position:sticky; top: 90%; bottom: 10%;"> Выполнить расчет</button> 
                   </div>      
