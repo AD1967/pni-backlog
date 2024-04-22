@@ -67,7 +67,7 @@ def api_calc_index():
         data = calc_index(request.json.get('parametrs_of_reliability'))
     except:
         data = None
-    
+    print('Надёжность = ', data)
     return default_json_response(not data is None, "error" if data is None else data)
     
 # вычисление эффективности

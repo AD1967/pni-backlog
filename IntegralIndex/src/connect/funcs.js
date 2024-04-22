@@ -129,29 +129,17 @@ function calc(id, self, selectedYear){
 }
 
 function calc_reliability(parametrs_of_reliability) {
-    return new Promise(function(resolve, reject) {
-        let url = id_mappers.calc_map['reliability'];
-        $.ajax({
-            url: server_url + url,
-            type: 'POST',
-            contentType: 'application/json',
-            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-            data: JSON.stringify(parametrs_of_reliability),
-            success: function(response) {
-                resolve(response); // Возвращаем успешный результат обещания
-            },
-            error: function(xhr, status, error) {
-                reject(error); // Возвращаем ошибку обещания
-            }
-        });
-    })
-    .then(res=> {
-        console.log('Результат запроса - надежность', res, " и" , res.result)
-        return [id_mappers.calc_dec_result_map['reliability'](res.result), res.result];
-    })
-    .catch(function(error) {
-        console.error('Request failed with error', error);
-    });
+    let self = this
+    let url = id_mappers.calc_map['reliability'];
+    let result = requests.default_spost_request(url, parametrs_of_reliability, self)
+    if(result['fail']){
+        console.log('Результат запроса - надежность', result, " и" , result.error)
+        return ["error", "error"]
+    }
+    else {
+        console.log('Результат запроса - надежность', result, " и" , result.result)
+        return [id_mappers.calc_dec_result_map['reliability'](result.result), result.result];
+    }
 }
 
 
