@@ -146,6 +146,7 @@ function calc_reliability(parametrs_of_reliability) {
         });
     })
     .then(res=> {
+        console.log('Результат запроса - надежность', res, " и" , res.result)
         return [id_mappers.calc_dec_result_map['reliability'](res.result), res.result];
     })
     .catch(function(error) {

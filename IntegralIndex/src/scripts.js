@@ -649,7 +649,7 @@ import func from '@/connect/funcs'
     methods:{
     calc_reliability(){
         let self = this
-        let calc_rel = func.calc_reliability(self.parametrs_of_reliability)
+        let calc_rel = func.calc_reliability(self, self.parametrs_of_reliability)
         this.results['reliability'] = calc_rel[0]
     },
     numberWithSpaces(x) {
