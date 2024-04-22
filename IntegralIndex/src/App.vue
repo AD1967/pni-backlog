@@ -247,7 +247,7 @@
         </div> 
       </div>
       <!-- /Меню настроек--------------------------------------------------------------->
-      
+      <!-- <div id="loading_calc">Производится расчет ... </div> -->
 
       <!-- Основное рабочее пространство  ----------------------------------------------------->
       <div :style="{'width': 100+'%'}">
@@ -466,6 +466,24 @@
                         <input class="info-values" type="radio" id='itp' name="elev-itp-radio" value=0 v-model="parametrs_of_reliability.elev_itp">
                         <label class="info-text" for="itp">ИТП</label>
                       </div>
+                      <div v-if="parametrs_of_reliability.elev_itp == 0">
+                        <div class="parametrs-info-block">
+                          <div class="info-text"> Тип насоса</div> 
+                          <select class="info-values" v-model="parametrs_of_reliability.type_pump">
+                            <option v-for="(type_item) in type_pump" :value="type_item.id" :key=type_item.id readonly>
+                              {{type_item.val}}
+                            </option> 
+                          </select>
+                        </div>
+                        <div class="parametrs-info-block">
+                          <div class="info-text"> Тип теплообменника</div> 
+                          <select class="info-values" v-model="parametrs_of_reliability.type_heatexchanger">
+                            <option v-for="(type_item) in type_heatexchanger" :value="type_item.id" :key=type_item.id readonly>
+                              {{type_item.val}}
+                            </option> 
+                          </select>
+                        </div>
+                      </div>
                       <div class="parametrs-info-block">
                         <input class="info-values" type="checkbox" id='vetsys' v-model="parametrs_of_reliability.ventsys" true-value='1' false-value='0'>
                         <label class="info-text" for="vetsys">Наличие подогрева приточного воздуха</label>
@@ -560,7 +578,7 @@
                       <div class="info-text"> Результаты расчетов </div>  
                       <div class="info-text"> {{printVal(results.reliability, 'Гкал')}} </div>
                     </div>
-                    <button class="btn-calc" @click="calc_reliability()" style="position:relative; top: 90%;"> Выполнить расчет</button> 
+                    <button class="btn-calc" @click="calc_reliability()" style="position:sticky; top: 90%; bottom: 10%;"> Выполнить расчет</button> 
                   </div>      
                </div>    
           </div>

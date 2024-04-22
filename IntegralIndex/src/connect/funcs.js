@@ -145,9 +145,8 @@ function calc_reliability(parametrs_of_reliability) {
             }
         });
     })
-    .then(function(response) {
-        var result = response.result;
-        return [id_mappers.calc_dec_result_map['reliability'](result), result];
+    .then(res=> {
+        return [id_mappers.calc_dec_result_map['reliability'](res.result), res.result];
     })
     .catch(function(error) {
         console.error('Request failed with error', error);

@@ -194,6 +194,7 @@ import func from '@/connect/funcs'
           eclg_tec_ctp_co2:    '', 
         },
         parametrs_of_reliability:{
+          id_build:             '',
           elev_itp:             '',
           ventsys:              '',
           count_installations:  '',
@@ -208,48 +209,50 @@ import func from '@/connect/funcs'
           type_armature:        '',
           type_radiator:        '',
           type_crane:           '',
-          type_pipe:            ''  
+          type_pipe:            '',
+          type_pump:            '',
+          type_heatexchanger:   ''  
         },
         parametrs_of_build:{
-          id_build:            '',
-          name_build:          '',
-          floors:              '',
-          length_build:        '',
-          width_build:         '',
-          length_wall:         '',
-          height_wall:         '',
-          temp_inside:         '',
-          temp_outside:        '',
-          date_construction:   '',
-          count_windows:       '',
-          length_windows:      '',
-          height_windows:      '',
-          date_windows:        '',
-          type_windows:        '',
-          count_doors:         '',
-          length_doors:        '',
-          height_doors:        '',
-          type_doors:          '',
-          date_doors:          '',
-          class_energoeff:     '',
-          count_closet:        '',
-          count_sofa:          '',
-          count_table:         '',
-          count_small_closet:  '',
-          count_men:           '',
-          count_women:         '',
-          count_children:      '',
-          time_guests:         '',
-          count_sink:          '',
-          height_basement:     '',
-          period_energosave:   '',     
-          walls_material:      '', 
-          floors_material:     '', 
-          doors_material:      '', 
-          furniture_material:  '', 
-          sofa_material:       '', 
-          table_material:      '', 
-          type_pipe:           ''
+          id_build:             '',
+          name_build:           '',
+          floors:               '',
+          length_build:         '',
+          width_build:          '',
+          length_wall:          '',
+          height_wall:          '',
+          temp_inside:          '',
+          temp_outside:         '',
+          date_construction:    '',
+          count_windows:        '',
+          length_windows:       '',
+          height_windows:       '',
+          date_windows:         '',
+          type_windows:         '',
+          count_doors:          '',
+          length_doors:         '',
+          height_doors:         '',
+          type_doors:           '',
+          date_doors:           '',
+          class_energoeff:      '',
+          count_closet:         '',
+          count_sofa:           '',
+          count_table:          '',
+          count_small_closet:   '',
+          count_men:            '',
+          count_women:          '',
+          count_children:       '',
+          time_guests:          '',
+          count_sink:           '',
+          height_basement:      '',
+          period_energosave:    '',     
+          walls_material:       '', 
+          floors_material:      '', 
+          doors_material:       '', 
+          furniture_material:   '', 
+          sofa_material:        '', 
+          table_material:       '', 
+          type_pipe:            ''
       },
       name_build:[
         {id: 1,  val: 'Тестовая схема здания'},
@@ -326,6 +329,14 @@ import func from '@/connect/funcs'
         {id: 1, val: 'Кран типа "ёлочка"'},
         {id: 2, val: 'Кран шаровый с аэратором'},
         {id: 3, val: 'Кран сенсорный с аэратором'}
+      ],
+      type_pump:[
+        {id: 1, val: 'Насос 1'},
+        {id: 2, val: 'Насос ЧРП'}
+      ],
+      type_heatexchanger:[
+        {id: 1, val: 'Теплообменник "труба в трубе"'},
+        {id: 2, val: 'Теплообменник пластинчатый'}
       ],
 
       materials:[
@@ -638,7 +649,7 @@ import func from '@/connect/funcs'
     methods:{
     calc_reliability(){
         let self = this
-        let calc_rel = func.calc_reliability(self, this.parametrs_of_reliability)
+        let calc_rel = func.calc_reliability(self.parametrs_of_reliability)
         this.results['reliability'] = calc_rel[0]
     },
     numberWithSpaces(x) {

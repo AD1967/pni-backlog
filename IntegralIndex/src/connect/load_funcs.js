@@ -177,6 +177,7 @@ function load_build(self, id_build, result_func){
                 self.parametrs_of_build.type_pipe                =  build.id_pipe          
                
                 //ЗАГРУЗКА ПАРАМЕТРОВ ДЛЯ НАДЕЖНОСТИ
+                self.parametrs_of_reliability.id_build            =  id_build
                 self.parametrs_of_reliability.elev_itp            =  build.ihp 
                 self.parametrs_of_reliability.ventsys             =  build.ventsys
                 self.parametrs_of_reliability.count_installations =  build.ventsys? build.readings_vents.length : ''
@@ -192,6 +193,8 @@ function load_build(self, id_build, result_func){
                 self.parametrs_of_reliability.type_radiator       =  build.id_radiator
                 self.parametrs_of_reliability.type_crane          =  build.id_crane
                 self.parametrs_of_reliability.type_pipe           =  build.id_pipe
+                self.parametrs_of_reliability.type_pump           =  build.id_pump
+                self.parametrs_of_reliability.type_heatexchanger  =  build.id_heatexchanger
                
 
                 //general  //удалить потом
