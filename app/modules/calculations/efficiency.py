@@ -101,7 +101,6 @@ test_temp = -20
 k_men = 0.98
 k_women = 0.98
 k_children = 0.98
-n_children = 200
 coun_room_with_sinks = 4
 air_humidity = 0.7
 P0 = 101325
@@ -982,8 +981,9 @@ def Q_people(build_id):
     # print(cur_info)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
+    n_children = k_children * int(cur_info['count_children'])
     return (n_men * (220 - 5 * float(cur_info['temp_inside'])) + \
-            0.85 * n_women * (220 - 5 * float(cur_info['temp_inside'])) + 0.75 * n_children * k_children * (220 - 5 * float(cur_info['temp_inside']))) * \
+            0.85 * n_women * (220 - 5 * float(cur_info['temp_inside'])) + 0.75 * n_children * (220 - 5 * float(cur_info['temp_inside']))) * \
            8.5984e-7 * dt
 
 ########################################################################################################################################################################
@@ -1033,7 +1033,8 @@ def Q_hws_cranes(build_id):
     # print(cur_info)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
-    return 0.00009 * 1000 * 4190 * (n_men + n_women + k_children * n_children) * \
+    n_children = k_children * int(cur_info['count_children'])
+    return 0.00009 * 1000 * 4190 * (n_men + n_women + n_children) * \
            (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
@@ -1082,7 +1083,8 @@ def Q_hws_showers(build_id):
     # q_people = get_one_by_id_build(Q_person, build_id)
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
-    return 0.00018 * 1000 * 4190 * (n_men + n_women + k_children * n_children) * \
+    n_children = k_children * int(cur_info['count_children'])
+    return 0.00018 * 1000 * 4190 * (n_men + n_women + n_children) * \
            500 * (60 - 15) / 84600 * 8.5984e-7 * dt
 
 ########################################################################################################################################################################
