@@ -389,6 +389,7 @@ class Q_person(BaseElement):
     id_q_peoples = Column(INTEGER(11), primary_key=True)
     mens = Column(INTEGER(11), nullable=False)
     womens = Column(INTEGER(11), nullable=False)
+    children = Column(INTEGER(11), nullable=False)
     time_average = Column(Float, nullable=False)
     id_build = Column(ForeignKey('build.id_build'), nullable=False, index=True)
 
