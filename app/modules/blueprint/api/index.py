@@ -2,7 +2,7 @@ from .. import main
 from flask import request, jsonify, send_file
 #from flask_login import login_required
 from ...calculations.index import calc_index
-from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, calc_eff_wnd, calc_eff_wnd_inf, calc_eff_doors, calc_eff_doors_inf, \
+from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_add_heatcosts, calc_eff, calc_eff_wnd, calc_eff_wnd_inf, calc_eff_doors, calc_eff_doors_inf, \
 calc_eff_constructs, calc_eff_roof, calc_eff_hws_pipes, calc_eff_heat_pipes, calc_eff_people, calc_eff_hws_cranes, \
 calc_eff_hws_showers, calc_eff_electro, calc_eff_vent, calc_eff_floor, printGCal, convertGCal
 from .responses import default_json_response
@@ -20,7 +20,7 @@ def api_calc_tec():
         data = calc_tec(request.json["id"])
     except:
         data = None
-
+    print('tec ', data)
     return default_json_response(not data is None, "error" if data is None else data)
 
 
@@ -69,18 +69,32 @@ def api_calc_index():
         data = None
     print('Надёжность = ', data)
     return default_json_response(not data is None, "error" if data is None else data)
-    
+
+
 # вычисление эффективности
 @main.route("/calc_efficiency", methods=["POST"])
 @token_auth.login_required
 def api_calc_eff():
     # id_build
     try:
-        data = calc_eff(request.json["id"])
+        data = calc_eff()
     except:
         data = None
 
-    #data = calc_eff(request.json)
+    print('efficiency ', data)
+    return default_json_response(not data is None, "error" if data is None else data)
+
+
+# вычисление эффективности (доп затрат на прогрев)
+@main.route("/calc_efficiency_add_heatcosts", methods=["POST"])
+@token_auth.login_required
+def api_calc_eff_add_heatcosts():
+    # id_build
+    try:
+        data = calc_add_heatcosts(request.json["id"])
+    except:
+        data = None
+
     return default_json_response(not data is None, "error" if data is None else data)
 
 # вычисление эффективности (окна)

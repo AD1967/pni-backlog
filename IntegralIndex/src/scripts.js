@@ -425,23 +425,21 @@ import func from '@/connect/funcs'
           this.set_all_check_left_panel(this.set_all_flag); 
        } ,
       
-      calc_result(id){
+      calc_result(){
         let self = this
-        for (var key in this.results) {
-          if(key == id){
-              let year = document.getElementById('years-selector');
-              let calc_res = func.calc(id, self, year.value)
-              this.results[key] = calc_res[0]
-              return false
+        let year = document.getElementById('years-selector');
+        let calc_res = func.calc("formula_calc", self, year.value)
+        if (calc_res[0]){
+          for (var key in calc_res[1]) {
+            this.results[key] = calc_res[1][key]
           }
         }
-        return id
       },
     calc_all_server(){
       let self = this
-      this.sections.forEach(function(item){
-          self.calc_result(item.name)
-      })
+      //this.sections.forEach(function(){
+          self.calc_result()
+      //})
     },
       calc_all(){
         this.calc_all_server()
@@ -452,12 +450,20 @@ import func from '@/connect/funcs'
       },
       calc_tec(){
         let self = this
-        self.calc_result("tec", self)
+        let year = document.getElementById('years-selector');
+        let calc_res = func.calc("tec", self, year.value);
+        if (calc_res[0]){
+          this.results["tec"] = calc_res[1]["tec"]
+        }
         this.calc_dop_results()
       },
       calc_ctp(){
         let self = this
-        self.calc_result("ctp", self)
+        let year = document.getElementById('years-selector');
+        let calc_res = func.calc("ctp", self, year.value)
+        if (calc_res[0]){
+          this.results["ctp"] = calc_res[1]["ctp"]
+        }
         this.calc_dop_results()
       },
     download_excel(){

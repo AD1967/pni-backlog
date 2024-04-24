@@ -73,7 +73,7 @@ function calc(id, self, selectedYear){
     if (export_build_r.error){
         export_error_alert(self,export_build_r.text)
         //return "ошибка вычислений, проверьте наличие данных и их корректность"
-        return "error calc"
+        return [false, "error calc"]
     }
     else {
         export_error_alert(self,null)
@@ -81,8 +81,7 @@ function calc(id, self, selectedYear){
         const endDate = id_mappers.yearsMap[selectedYear][1];
         let currentDate = new Date(startDate);
 
-        let fatal_fail = false
-        let sum_res = 0.0        
+        var res = {}    
         while(currentDate <= endDate){  
             let year = currentDate.getFullYear();
             let month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -94,36 +93,41 @@ function calc(id, self, selectedYear){
             if(result.fail){
                 if(result.error == 'connect'){
                     export_error_alert(self,"Ошибка подключения к серверу")
-                    fatal_fail = true
-                    break;
+                    return [false, "ошибка подключения к серверу"]
                 }
                 else{
                     export_error_alert(self,"Ошибка выполнения операции")
-                    fatal_fail = true
-                    break;
+                    return [false, "error operation"]
                 }
             }else{
                 let id_build = localStorage.getItem("this_build_id");
                 let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
                 if(result['fail']){
                     if(result['error'] == 'connect'){
-                        return ["ошибка подключения к серверу", "ошибка подключения к серверу"]
+                        return [false, "ошибка подключения к серверу"]
                     }
                     else{
                         //return "ошибка вычислений, проверьте наличие данных и их корректность"
-                        return ["error calc", "error calc"]
+                        return [false, "error calc"]
                     }
                 }
                 else {
-                    sum_res += parseFloat(result["result"])
+                    // console.log('from server ', result)
+                    for (var key in result["result"]) {
+                        if (key in res) {
+                            res[key] += result["result"][key];
+                        }
+                        else {
+                            res[key] = result["result"][key];
+                        }
+                    }
                     currentDate.setDate(currentDate.getDate() + 1);
                 }
             }
         }
-        if(!fatal_fail){
-            return [id_mappers.calc_dec_result_map[id](sum_res), sum_res];
-        }
-    }    
+        console.log('Результат вычислений', res)
+        return [true, res];
+    }
 }
 
 function calc_reliability(parametrs_of_reliability) {

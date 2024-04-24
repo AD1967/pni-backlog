@@ -27,32 +27,9 @@ let input_mapper = {
     'reliability:4':                22,
 }
 
-
-
-
-
-//api:
-//calc_efficiency
-//calc_index
-//calc_efficiency_wnd
-//calc_efficiency_wnd_inf
-//calc_efficiency_doors
-//calc_efficiency_doors_inf
-//calc_efficiency_constructs
-//calc_efficiency_roof
-//calc_efficiency_hws_pipes
-//calc_efficiency_heat_pipes
-//calc_efficiency_people
-//calc_efficiency_hws_cranes
-//calc_efficiency_hws_showers
-//calc_efficiency_electro
-//calc_efficiency_vent
-//calc_efficiency_floor
-
-
-// api to block_id
 let calc_map = {
     "general":                      "",
+    "formula_calc":                 "/calc_efficiency",
     "reliability":                  "/calc_index",
     "heat_los_win":                 "/calc_efficiency_wnd",
     "inf_win":                      "/calc_efficiency_wnd_inf",
@@ -62,7 +39,7 @@ let calc_map = {
     "heat_los_heatcond_roof":       "/calc_efficiency_roof",
     "heat_los_floor":               "/calc_efficiency_floor",
     "heat_los_vent":                "/calc_efficiency_vent",
-    "add_heatcosts":                "/calc_efficiency",
+    "add_heatcosts":                "/calc_efficiency_add_heatcosts",
     "heat_gains_people":            "/calc_efficiency_people",
     "heat_gains_washstands":        "/calc_efficiency_hws_cranes",
     "heat_gains_showers":           "/calc_efficiency_hws_showers",
