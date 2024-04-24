@@ -173,9 +173,8 @@ def save(build, results):
 
 
 # Расчёт ТЭЦ
-def calc_tec(build_id):
-    # print(cur_info)
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+def calc_tec(cur_date):
+    st = datetime.strptime(cur_date, "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
@@ -200,9 +199,8 @@ def calc_tec(build_id):
 
 
 # Расчёт ЦТП
-def calc_ctp(build_id):
-    # print(cur_info)
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+def calc_ctp(cur_date):
+    st = datetime.strptime(cur_date, "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
     res = 0.
@@ -234,7 +232,7 @@ result_keys = ['heat_los_win', 'inf_win', 'heat_los_inpgr', 'inf_inpgr', 'heat_l
           'heat_gains_GVS', 'heat_gains_pipelines']
 
 
-def calc_eff():
+def calc_eff(cur_date):
     results = []
     global const_calc
     global funcs
@@ -243,7 +241,7 @@ def calc_eff():
 
     for name in funcs[:8]:
         func = globals()[name]
-        st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
+        st = datetime.strptime(cur_date, "%Y-%m-%d")
         st = datetime.combine(st.date(), time(0, 0, 0))
         fn = datetime.combine(st.date(), time(23, 59, 59))
         res = 0.

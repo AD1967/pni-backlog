@@ -77,31 +77,31 @@ function calc(id, self, selectedYear){
     }
     else {
         export_error_alert(self,null)
-        const startDate = id_mappers.yearsMap[selectedYear][0];
-        const endDate = id_mappers.yearsMap[selectedYear][1];
-        let currentDate = new Date(startDate);
 
-        var res = {}    
-        while(currentDate <= endDate){  
-            let year = currentDate.getFullYear();
-            let month = String(currentDate.getMonth() + 1).padStart(2, '0');
-            let day = String(currentDate.getDate()).padStart(2, '0');
-            let formattedDate = `${year}-${month}-${day}`;
-           
-            export_build_r.result["cur_date"] = formattedDate
-            let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)       // ,self)
-            if(result.fail){
-                if(result.error == 'connect'){
-                    export_error_alert(self,"Ошибка подключения к серверу")
-                    return [false, "ошибка подключения к серверу"]
-                }
-                else{
-                    export_error_alert(self,"Ошибка выполнения операции")
-                    return [false, "error operation"]
-                }
-            }else{
-                let id_build = localStorage.getItem("this_build_id");
-                let result = requests.default_spost_request(id_mappers.calc_map[id],{"id":id_build}, self)       // ,self)
+        let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)
+        if(result.fail){
+            if(result.error == 'connect'){
+                export_error_alert(self,"Ошибка подключения к серверу")
+                return [false, "ошибка подключения к серверу"]
+            }
+            else{
+                export_error_alert(self,"Ошибка выполнения операции")
+                return [false, "error operation"]
+            }
+        }else{
+            console.log(' hello ')
+            const startDate = id_mappers.yearsMap[selectedYear][0];
+            const endDate = id_mappers.yearsMap[selectedYear][1];
+            let currentDate = new Date(startDate);
+
+            var res = {}
+            while(currentDate <= endDate){
+                let year = currentDate.getFullYear();
+                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                let day = String(currentDate.getDate()).padStart(2, '0');
+                let formattedDate = `${year}-${month}-${day}`;
+
+                let result = requests.default_spost_request(id_mappers.calc_map[id], {"cur_date": formattedDate}, self)
                 if(result['fail']){
                     if(result['error'] == 'connect'){
                         return [false, "ошибка подключения к серверу"]

@@ -13,9 +13,8 @@ from app.modules.blueprint.all_routes_settings import token_auth
 @main.route("/calc_tec", methods=["POST"])
 @token_auth.login_required
 def api_calc_tec():
-    print(request.json["id"])
     try:
-        data = calc_tec(request.json["id"])
+        data = calc_tec(request.json["cur_date"])
     except:
         data = None
     print('tec ', data)
@@ -26,9 +25,8 @@ def api_calc_tec():
 @main.route("/calc_ctp", methods=["POST"])
 @token_auth.login_required
 def api_calc_cpt():
-    print(request.json["id"])
     try:
-        data = calc_ctp(request.json["id"])
+        data = calc_ctp(request.json["cur_date"])
     except:
         data = None
 
@@ -74,9 +72,8 @@ def api_calc_index():
 @main.route("/calc_efficiency", methods=["POST"])
 @token_auth.login_required
 def api_calc_eff():
-    # id_build
     try:
-        data = calc_eff()
+        data = calc_eff(request.json["cur_date"])
     except:
         data = None
 
