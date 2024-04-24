@@ -140,7 +140,7 @@ function calc_reliability(parametrs_of_reliability) {
     }
     else {
         console.log('Результат запроса - надежность', result, " и" , result.result)
-        return [id_mappers.calc_dec_result_map['reliability'](result.result), result.result];
+        return [result.result, result.result];
     }
 }
 

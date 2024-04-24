@@ -2,7 +2,7 @@ from .. import main
 from flask import request, jsonify, send_file
 #from flask_login import login_required
 from ...calculations.index import calc_index
-from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff
+from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, set_count_of_point
 from .responses import default_json_response
 
 # ТОКЕНЫ
@@ -61,7 +61,7 @@ def api_save_cur():
 def api_calc_index():
     print(request.json.get('parametrs_of_reliability'))
     try:
-        data = calc_index(request.json.get('parametrs_of_reliability'))
+        data = set_count_of_point(calc_index(request.json.get('parametrs_of_reliability')))
     except:
         data = None
     print('Надёжность = ', data)

@@ -86,12 +86,13 @@ def toGCal(value):
     new_value = value * 2.3884e-10
     return float(f"{new_value:.{count_of_point}f}")
 
+
 def convertGCal(value):
     new_value = value * 4230.7e-6
     return f"{new_value:.{count_of_point}f} Гкал"
 
 
-def printGCal(value):
+def set_count_of_point(value):
     return float(f"{value:.{count_of_point}f}")
 
 
@@ -250,7 +251,7 @@ def calc_eff(cur_date):
             test_date = st
             res += func()
             st += timedelta(seconds=1800)
-        results.append(printGCal(res))
+        results.append(set_count_of_point(res))
     
     if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
         for name in funcs[8:]:
@@ -259,7 +260,7 @@ def calc_eff(cur_date):
                 res = func()
             else:
                 res = 48 * func()
-            results.append(printGCal(res))
+            results.append(set_count_of_point(res))
         const_calc = results[8:]
         is_first_day = False
     else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
