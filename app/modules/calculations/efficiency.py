@@ -95,7 +95,6 @@ def printGCal(value):
     return float(f"{value:.{count_of_point}f}")
 
 
-
 #######################################################################################################################
 test_temp = -20
 k_men = 0.98
@@ -234,6 +233,7 @@ result_keys = ['heat_los_win', 'inf_win', 'heat_los_inpgr', 'inf_inpgr', 'heat_l
           'heat_los_vent', 'add_heatcosts', 'heat_gains_people', 'heat_gains_washstands', 'heat_gains_showers', 'heat_gains_electriclighting', 
           'heat_gains_GVS', 'heat_gains_pipelines']
 
+
 def calc_eff():
     results = []
     global const_calc
@@ -241,7 +241,6 @@ def calc_eff():
     global result_keys
     global is_first_day
 
-    
     for name in funcs[:8]:
         func = globals()[name]
         st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
@@ -253,13 +252,16 @@ def calc_eff():
             test_date = st
             res += func()
             st += timedelta(seconds=1800)
-        results.append(res)
+        results.append(printGCal(res))
     
     if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
         for name in funcs[8:]:
             func = globals()[name]
-            res = 48 * func()
-            results.append(res)
+            if name == 'calc_add_heatcosts':
+                res = func()
+            else:
+                res = 48 * func()
+            results.append(printGCal(res))
         const_calc = results[8:]
         is_first_day = False
     else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
@@ -268,6 +270,7 @@ def calc_eff():
     return dict(zip(result_keys, results))
 
 
+######################################################################################################################
 # ДОПОЛНИТЕЛЬНЫЕ ЗАТРАТЫ НА ПРОГРЕВ
 def Q_walls():
     heat = 20
@@ -281,8 +284,6 @@ def Q_walls():
     return float(cur_info['height_wall']) * float(cur_info['length_wall']) * float(cur_info['floors']) * (material.capacity * brick.thickness * \
                 material.density + rotband.capacity * rotband.thickness * rotband.density + shtukaturka.capacity * \
                 shtukaturka.thickness * shtukaturka.density) * (heat - dezh) * period.T
-
-######################################################################################################################
 
 
 def Q_floors():
@@ -319,8 +320,6 @@ def Q_floors():
         return Q * ((material.capacity * parket.thickness * material.density) + \
                     sosna.capacity * fanera.thickness * sosna.density)
 
-#######################################################################################################################
-
 
 def Q_doors():
     V = get_one_from_table(Volume, 1).value
@@ -331,8 +330,6 @@ def Q_doors():
     material = get_one_from_table(Material, int(cur_info['doors_material']))
     return material.capacity * float(cur_info['count_doors']) * V * material.density * (heat - dezh) * period.T
 
-#######################################################################################################################
-
 
 def Q_shkaf():
     heat = 20
@@ -342,7 +339,6 @@ def Q_shkaf():
     material = get_one_from_table(Material, int(cur_info['furniture_material']))
     return material.capacity * float(cur_info['count_closet']) * V * material.density * (heat - dezh) * period.T
 
-#######################################################################################################################
 
 def Q_divan():
     V = get_one_from_table(Volume, 3).value
@@ -352,7 +348,7 @@ def Q_divan():
     dezh = 12
 
     return material.capacity * float(cur_info['count_sofa']) * V * material.density * (heat - dezh) * period.T
-#######################################################################################################################
+
 
 def Q_table():
     V = get_one_from_table(Volume, 5).value
@@ -362,8 +358,6 @@ def Q_table():
     dezh = 12
 
     return material.capacity * float(cur_info['count_table']) * V * material.density * (heat - dezh) * period.T
-
-#######################################################################################################################
 
 
 def Q_shkafchik():
@@ -380,7 +374,6 @@ def Q_shkafchik():
 
 ######################################################################################################################
 
-# Считает, используя функции Q_walls, ..., Q_doors, а также суммирует их вместо Q_all.
 def calc_add_heatcosts():
     # print(cur_info)
     q_walls = Q_walls()
@@ -399,7 +392,6 @@ def calc_add_heatcosts():
 
 #######################################################################################################################
 
-# // ОКНА
 def Q_wnd():
     this_date = test_date
     weather = get_weather_by_time(this_date)
@@ -415,8 +407,6 @@ def Q_wnd():
     return (int(cur_info['temp_inside']) - weather.T) * 1.1 * int(cur_info['count_windows']) * int(cur_info['length_windows']) * int(cur_info['height_windows']) * \
            k * 8.5984e-7 * dt / window_type.R
 
-#######################################################################################################################
-
 
 def Q_wnd_inf():
     this_date = test_date
@@ -427,33 +417,6 @@ def Q_wnd_inf():
 
 #######################################################################################################################
 
-def calc_eff_wnd():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_wnd()
-        st += timedelta(seconds=1800)
-    return res
-
-def calc_eff_wnd_inf():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_wnd_inf()
-        st += timedelta(seconds=1800)
-    return res
-
-#######################################################################################################################
-
-# // ДВЕРИ
 def Q_doors_():
     this_date = test_date
     weather = get_weather_by_time(this_date)
@@ -481,33 +444,6 @@ def Q_doors_inf():
            (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a
 
 #######################################################################################################################
-def calc_eff_doors():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_doors_()
-        st += timedelta(seconds=1800)
-    return res
-
-def calc_eff_doors_inf():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_doors_inf()
-        st += timedelta(seconds=1800)
-    return res
-
-#######################################################################################################################
-
-# // ОГРАЖДАЮЩИЕ КОНСТРУКЦИИ И КРОВЛЯ
 
 def Q_constructs():
     energoeff = get_one_from_table(Energoeff, int(cur_info['class_energoeff']))
@@ -538,33 +474,8 @@ def Q_roof():
            8.5984e-7 * dt / energoeff.R
 
 #######################################################################################################################
-def calc_eff_constructs():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_constructs()
-        st += timedelta(seconds=1800)
-    return res
 
-def calc_eff_roof():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_roof()
-        st += timedelta(seconds=1800)
-    return res
-
-#######################################################################################################################
-
-# // ТЕПЛОПРИТОК ОТ ТРУБОПРОВОДОВ
+# ТЕПЛОПРИТОКИ
 
 def Q_hws_pipes():
     k = 5
@@ -574,10 +485,8 @@ def Q_hws_pipes():
     l = 2 * h * int(cur_info['count_sink']) + \
         2 * (float(cur_info['length_build']) + float(cur_info['width_build']))
 
-    return k * 3.14 * 0.028 * l * 0.3 * (60 - float(cur_info['temp_inside'])) * \
-           8.5984e-7 * dt
+    return k * 3.14 * 0.028 * l * 0.3 * (60 - float(cur_info['temp_inside'])) * 8.5984e-7 * dt
 
-#######################################################################################################################
 
 def Q_heat_pipes():
     k = 5
@@ -589,31 +498,6 @@ def Q_heat_pipes():
 
     return k * 3.14 * 0.028 * l * 0.3 * (90 - float(cur_info['temp_inside'])) * 8.5984e-7 * dt
 
-######################################################################################################################
-
-def calc_eff_hws_pipes():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_hws_pipes()
-        st += timedelta(seconds=1800)
-    return res
-
-def calc_eff_heat_pipes():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_heat_pipes()
-        st += timedelta(seconds=1800)
-    return res
 
 def Q_people():
     n_men = k_men * int(cur_info['count_men'])
@@ -623,47 +507,13 @@ def Q_people():
             0.85 * n_women * (220 - 5 * float(cur_info['temp_inside'])) + 0.75 * n_children * (220 - 5 * float(cur_info['temp_inside']))) * \
            8.5984e-7 * dt
 
-########################################################################################################################################################################
 
-def calc_eff_people():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_people()
-        st += timedelta(seconds=1800)
-    return res
-
-########################################################################################################################################################################
-
-
-# ЗАТРАТЫ РУКОМОЙНИКИ
 def Q_hws_cranes():
     n_men = k_men * int(cur_info['count_men'])
     n_women = k_women * int(cur_info['count_women'])
     n_children = k_children * int(cur_info['count_children'])
     return 0.00009 * 1000 * 4190 * (n_men + n_women + n_children) * (180.0 * (60 - 15) / 84600.0) * 8.5984e-7 * dt
 
-########################################################################################################################################################################
-
-def calc_eff_hws_cranes():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_hws_cranes()
-        st += timedelta(seconds=1800)
-    return res
-
-########################################################################################################################################################################
-
-# // ЗАТРАТЫ ДУШЕВЫЕ
 
 def Q_hws_showers():
     n_men = k_men * int(cur_info['count_men'])
@@ -672,41 +522,11 @@ def Q_hws_showers():
     return 0.00018 * 1000 * 4190 * (n_men + n_women + n_children) * \
            500 * (60 - 15) / 84600 * 8.5984e-7 * dt
 
-########################################################################################################################################################################
-
-def calc_eff_hws_showers():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_hws_showers()
-        st += timedelta(seconds=1800)
-    return res
-
-######################################################################################################################
-
 def Q_electro():
     # if cur_info['elec_consumption_by_period'] is None:
     #     return 0.95 * float(cur_info['length_build']) * float(cur_info['width_build']) * float(cur_info['floors']) * 8.5984e-7 * dt
     # return 0.95 * float(cur_info['elec_consumption_by_period']) * 8.5984e-7 * dt
     return 0.95 * float(cur_info['length_build']) * float(cur_info['width_build']) * float(cur_info['floors']) * 8.5984e-7 * dt
-
-#######################################################################################################################
-
-def calc_eff_electro():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_electro()
-        st += timedelta(seconds=1800)
-    return res
 
 #######################################################################################################################
 
@@ -726,7 +546,7 @@ def Q_vent():
     A = float(cur_info['length_build']) * float(cur_info['width_build'])
     h = float(cur_info['height_wall'])
 
-    ####### Расчет плотности воздуха #########
+    # Расчет плотности воздуха
     Ps = 133.3 * math.exp(18.6 - 3992 / (t_out + 233.8))
     d = 622 * (air_humidity * Ps) / (P0 - air_humidity * Ps)
     P_vp = (d * P0) / (622 + d)
@@ -735,21 +555,6 @@ def Q_vent():
 
     return 0.28 * 1005 * 8.5984e-7 * p_air * A * float(cur_info['floors']) * h * n * (t_in - t_out) * dt
 
-#######################################################################################################################
-
-def calc_eff_vent():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_vent()
-        st += timedelta(seconds=1800)
-    return res
-
-######################################################################################################################
 
 def Q_floor_():
     this_date = test_date
@@ -799,17 +604,3 @@ def Q_floor_():
             f3 = f3_floor + f3_walls
             f4 = 0
     return (0.476 * f1 + 0.233 * f2 + 0.116 * f3 + 0.07 * f4) * (t_in - t_out) * 8.5984e-7 * dt
-
-########################################################################################################################################################################
-
-def calc_eff_floor():
-    st = datetime.strptime(cur_info['cur_date'], "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
-    while (st <= fn):
-        global test_date
-        test_date = st
-        res += Q_floor_()
-        st += timedelta(seconds=1800)
-    return res
