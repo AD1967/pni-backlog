@@ -347,3 +347,4 @@ healthchecksdb
 
 app/modules/db/local_db.db
 /app/cur_results.xlsx
+/app/formula_results.xlsx

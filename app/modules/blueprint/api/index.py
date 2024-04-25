@@ -2,7 +2,7 @@ from .. import main
 from flask import request, jsonify, send_file
 #from flask_login import login_required
 from ...calculations.index import calc_index
-from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, set_count_of_point
+from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, set_count_of_point, get_excel
 from .responses import default_json_response
 
 # ТОКЕНЫ
@@ -53,6 +53,18 @@ def api_save_cur():
 
     print('Данные успешно сохранены в файл ', res_excel)
     return send_file(res_excel, as_attachment=True, download_name='current_results.xlsx')
+
+
+# Сохранение в excel результатов вычисления за весь период
+@main.route("/download", methods=["POST"])
+@token_auth.login_required
+def api_download():
+    print('Запрос на получение excel таблицы')
+    res_excel = 'formula_results.xlsx'
+    get_excel(res_excel)
+
+    print('Данные успешно сохранены в файл ', res_excel)
+    return send_file(res_excel, as_attachment=True)
 
 
 # вычисление индекса

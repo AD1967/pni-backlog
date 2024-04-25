@@ -172,21 +172,33 @@ function check_token_before_render(data){
 
 
 function download_excel(){
-    let result = requests.default_sget_request("/download", self)
-
-    if(result['fail']){
-        if(result['error'] == 'connect'){
-            alert("get_from_server: fail connect")
+    const fetch = require('node-fetch');
+    let url = server_url + '/download'
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': " Bearer " + localStorage.getItem("token")
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob();
+        } else {
+            throw new Error('Failed to download Excel file');
         }
-        else{
-            alert("get_from_server: error: " + result['error'])
-        }
-        throw "";
-    }
-    else {
-        console.log(result)
-    }
-    return result
+    })
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'formula_results.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error(error);
+    });
 }
 
 function save_cur(parametrs_of_build, results, dop_results){

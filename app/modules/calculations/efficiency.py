@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, time, date
 import math
+import os
 from ..db.common_gets import *
 from ..db.model import *
 import pandas as pd
@@ -106,6 +107,7 @@ air_humidity = 0.7
 P0 = 101325
 cur_info = {}
 is_first_day = True
+df = []
 
 test_date = ""
 #######################################################################################################################
@@ -115,6 +117,7 @@ def update_cur_info(data):
     global is_first_day
     cur_info = data
     is_first_day = True
+    create_excel()
     return ""
 
 
@@ -125,9 +128,10 @@ def save(build, results):
     # print(cur_info)
     # build = cur_info.copy()
     # del build["cur_date"]
-    build.pop(0)
+    # build.pop(0)
     df1 = pd.DataFrame()
-    column_build = ['Название здания', 'Этажность здания', 'Длина здания, м', 'Ширина здания, м', 'Длина стен на одном этаже, м',
+    column_build = ['id здания', 'Название здания', 'Этажность здания', 'Длина здания, м', 'Ширина здания, м',
+                    'Длина стен на одном этаже, м',
                     'Высота стен на одном этаже, м', 'Температура внутреннего воздуха, °С',
                     'Температура наружного воздуха, °С', 'Дата постройки', 'Число окон в здании',
                     'Длина типового окна, м', 'Высота типового окна, м', 'Дата установки окон', 'Тип окон',
@@ -233,6 +237,47 @@ result_keys = ['heat_los_win', 'inf_win', 'heat_los_inpgr', 'inf_inpgr', 'heat_l
           'heat_gains_GVS', 'heat_gains_pipelines']
 
 
+def add_to_excel(dict_res):
+    global df
+    df = pd.concat([df, pd.Series(dict_res)], axis=1, ignore_index=True)
+
+def create_excel():
+    global df
+    df = pd.DataFrame()
+    column = {
+        'cur_date': 'Дата',
+        'heat_los_win': 'Теплопотери трансмиссионные через окна',
+        'inf_win': 'Теплопотери инфильтрационные через окна',
+        'heat_los_inpgr': 'Теплопотери трансмиссионные через входную группу',
+        'inf_inpgr': 'Теплопотери инфильтрационные через входную группу',
+        'heat_los_heatcond_benv': 'Теплопотери теплопроводность через стены',
+        'heat_los_heatcond_roof': 'теплопроводность через кровлю',
+        'heat_los_floor': 'теплопроводность через пол',
+        'heat_los_vent': 'через систему вытяжной вентиляции',
+        'add_heatcosts': 'прогрев здания перед рабочим днем',
+        'heat_gains_people': 'Теплопритоки от людей',
+        'heat_gains_washstands': 'Теплопритоки от ГВС рукомойников',
+        'heat_gains_showers': 'Теплопритоки от ГВС душевых',
+        'heat_gains_electriclighting': 'Теплопритоки от электрооборудования',
+        'heat_gains_GVS': 'Теплопритоки от неизолированных трубопроводов ГВС',
+        'heat_gains_pipelines': 'Теплопритоки от неизолированных трубопроводов отопления'
+    }
+
+    df = pd.concat([df, pd.Series(column)], axis=1, ignore_index=True)
+
+
+def get_excel(name_excel):
+    global df
+    if os.path.exists(name_excel):
+        os.remove(name_excel)
+
+    with pd.ExcelWriter('app/' + name_excel, engine='xlsxwriter') as writer:
+        df.to_excel(writer, sheet_name='Results', index=False)
+        worksheet = writer.sheets['Results']
+        worksheet.set_column('A:A', 58)
+        worksheet.set_column('B:JN', 10)
+
+
 def calc_eff(cur_date):
     results = []
     global const_calc
@@ -266,6 +311,9 @@ def calc_eff(cur_date):
     else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
         results.extend(const_calc)
 
+    dict_results = dict(zip(result_keys, results))
+    dict_results['cur_date'] = cur_date
+    add_to_excel(dict_results)
     return dict(zip(result_keys, results))
 
 
