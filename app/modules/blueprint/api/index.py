@@ -17,7 +17,7 @@ def api_calc_tec():
         data = calc_tec(request.json["cur_date"])
     except:
         data = None
-    print('tec ', data)
+    # print('tec ', data)
     return default_json_response(not data is None, "error" if data is None else data)
 
 
@@ -64,7 +64,7 @@ def api_calc_index():
         data = set_count_of_point(calc_index(request.json.get('parametrs_of_reliability')))
     except:
         data = None
-    print('Надёжность = ', data)
+    # print('Надёжность = ', data)
     return default_json_response(not data is None, "error" if data is None else data)
 
 
@@ -77,5 +77,5 @@ def api_calc_eff():
     except:
         data = None
 
-    print('efficiency ', data)
+    # print('efficiency ', data)
     return default_json_response(not data is None, "error" if data is None else data)

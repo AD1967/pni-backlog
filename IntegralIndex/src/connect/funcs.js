@@ -89,7 +89,6 @@ function calc(id, self, selectedYear){
                 return [false, "error operation"]
             }
         }else{
-            console.log(' hello ')
             const startDate = id_mappers.yearsMap[selectedYear][0];
             const endDate = id_mappers.yearsMap[selectedYear][1];
             let currentDate = new Date(startDate);
