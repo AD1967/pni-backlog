@@ -70,7 +70,7 @@ function calc(id, self, selectedYear) {
             progress +=1;
             let formattedDate = `${index.getFullYear()}-${String(index.getMonth() + 1).padStart(2, '0')}-${String(index.getDate()).padStart(2, '0')}`
             setTimeout(function(id,  self, progress, formattedDate){
-                document.getElementById('loading_calc').innerHTML = (progress * mul).toFixed(3).toString() + " %"
+                document.getElementById('loading_calc').innerHTML = "Прогресс расчета: " + (progress * mul).toFixed(3).toString() + " %"
                 let result = requests.default_spost_request(id_mappers.calc_map[id], { "cur_date": formattedDate }, self)
                 if (!result['fail']) {
                     for (var key1 in result["result"]) { 

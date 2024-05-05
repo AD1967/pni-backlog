@@ -365,7 +365,6 @@ import func from '@/connect/funcs'
       }
     },
 
-
     methods:{
     calc_reliability(){
         let self = this
