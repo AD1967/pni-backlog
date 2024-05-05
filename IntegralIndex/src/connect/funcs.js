@@ -65,14 +65,12 @@ function export_error_alert(self, error = null){
     }
 }
 
-
+//test
 
 function calc(id, self, selectedYear){       
-    console.log("calc")
     let export_build_r = export_funcs.export_build(self)
     if (export_build_r.error){
         export_error_alert(self,export_build_r.text)
-        //return "ошибка вычислений, проверьте наличие данных и их корректность"
         return [false, "error calc"]
     }
     else {
@@ -106,12 +104,10 @@ function calc(id, self, selectedYear){
                         return [false, "ошибка подключения к серверу"]
                     }
                     else{
-                        //return "ошибка вычислений, проверьте наличие данных и их корректность"
                         return [false, "error calc"]
                     }
                 }
                 else {
-                    // console.log('from server ', result)
                     for (var key in result["result"]) {
                         if (key in res) {
                             res[key] += result["result"][key];
