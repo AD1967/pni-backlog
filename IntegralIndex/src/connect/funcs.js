@@ -6,37 +6,37 @@ import export_funcs from './export_funcs'
 import $ from 'jquery'
 let server_url = "http://127.0.0.1:5000"
 
-function start(self){       // ,self)
+function start(self) {       // ,self)
     if (localStorage.getItem("this_build_id") === null) {
-        let result = requests.default_sget_request("/data/build/test?" + $.param({id_build:''}), self)       // ,self)
-        if(result['fail']){
-            if(result['error'] == 'connect'){
+        let result = requests.default_sget_request("/data/build/test?" + $.param({ id_build: '' }), self)       // ,self)
+        if (result['fail']) {
+            if (result['error'] == 'connect') {
                 alert("get_from_server: fail connect")
             }
-            else{
+            else {
                 alert("get_from_server: error: " + result['error'])
             }
             throw "";
         }
         else {
-            localStorage.setItem("this_build_id",  result["result"]["id_build"])
+            localStorage.setItem("this_build_id", result["result"]["id_build"])
         }
     }
 }
 
 function load_result_func(self, result) {
-    if(result.fail){
-        if(self.check_loadpat){
+    if (result.fail) {
+        if (self.check_loadpat) {
             self.loadpat_error.text = 'Ошибка загрузки с сервера'
             self.loadpat_error.show = true
         }
-        else{
+        else {
             alert("ошибка загрузки с сервера11")
         }
     }
-    else{
+    else {
         //успех
-        if(self.check_loadpat){
+        if (self.check_loadpat) {
             self.check_loadpat = false
             self.loadpat_error.text = ''
             self.loadpat_error.show = false
@@ -44,104 +44,70 @@ function load_result_func(self, result) {
     }
 }
 
-function load(self){
+function load(self) {
     let id_build = localStorage.getItem("this_build_id");
     load_funcs.load_build(self, id_build, load_result_func)
 }
 
-function import_from_server(self){
+function import_from_server(self) {
     load_funcs.load_build(self, self.parametrs_of_build.id_build, load_result_func)
-    localStorage.setItem("this_build_id", self.parametrs_of_build.id_build); 
+    localStorage.setItem("this_build_id", self.parametrs_of_build.id_build);
 }
 
-function export_error_alert(self, error = null){
-    if(error === null){
-        self.savepat_error.text = ''
-        self.savepat_error.show = false
-    }
-    else{
-        self.savepat_error.text = error
-        self.savepat_error.show = true
-    }
-}
-
-//test
-
-function calc(id, self, selectedYear){       
+function calc(id, self, selectedYear) {
+    //основные расчеты
     let export_build_r = export_funcs.export_build(self)
-    if (export_build_r.error){
-        export_error_alert(self,export_build_r.text)
-        return [false, "error calc"]
-    }
-    else {
-        export_error_alert(self,null)
+    var result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)
 
-        let result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)
-        if(result.fail){
-            if(result.error == 'connect'){
-                export_error_alert(self,"Ошибка подключения к серверу")
-                return [false, "ошибка подключения к серверу"]
-            }
-            else{
-                export_error_alert(self,"Ошибка выполнения операции")
-                return [false, "error operation"]
-            }
-        }else{
-            const startDate = id_mappers.yearsMap[selectedYear][0];
-            const endDate = id_mappers.yearsMap[selectedYear][1];
-            let currentDate = new Date(startDate);
-
-            var res = {}
-            while(currentDate <= endDate){
-                let year = currentDate.getFullYear();
-                let month = String(currentDate.getMonth() + 1).padStart(2, '0');
-                let day = String(currentDate.getDate()).padStart(2, '0');
-                let formattedDate = `${year}-${month}-${day}`;
-
-                let result = requests.default_spost_request(id_mappers.calc_map[id], {"cur_date": formattedDate}, self)
-                if(result['fail']){
-                    if(result['error'] == 'connect'){
-                        return [false, "ошибка подключения к серверу"]
-                    }
-                    else{
-                        return [false, "error calc"]
-                    }
-                }
-                else {
-                    for (var key in result["result"]) {
-                        if (key in res) {
-                            res[key] += result["result"][key];
-                        }
-                        else {
-                            res[key] = result["result"][key];
-                        }
-                    }
-                    currentDate.setDate(currentDate.getDate() + 1);
-                }
-            }
+    if (!result.fail) {
+        const startDate = id_mappers.yearsMap[selectedYear][0];
+        const endDate = id_mappers.yearsMap[selectedYear][1];
+        let currentDate = new Date(startDate);
+        var mul = (startDate.getDate() ==  endDate.getDate()) ? 100 : 0.3663
+        var res = {}
+        var progress = 0;
+        for (var index = currentDate; index <= endDate;  index.setDate(currentDate.getDate() + 1)) {
+            progress +=1;
+            let formattedDate = `${index.getFullYear()}-${String(index.getMonth() + 1).padStart(2, '0')}-${String(index.getDate()).padStart(2, '0')}`
+            setTimeout(function(id,  self, progress, formattedDate){
+                document.getElementById('loading_calc').innerHTML = (progress * mul).toFixed(3).toString() + " %"
+                let result = requests.default_spost_request(id_mappers.calc_map[id], { "cur_date": formattedDate }, self)
+                if (!result['fail']) {
+                    for (var key1 in result["result"]) { 
+                        res[key1] = (key1 in res)? res[key1] + result["result"][key1] : result["result"][key1]   
+                    }      
+                }    
+            }, 10, id, self, progress, formattedDate)
         }
-        console.log('Результат вычислений', res)
-        return [true, res];
     }
+    setTimeout(function(res, self){
+        //сохранение
+        for (var key2 in res) {
+            self.results[key2] = res[key2]
+        }
+        //доп вычисления
+        self.calc_dop_results()
+    }, 10, res, self)
+    
 }
 
 function calc_reliability(parametrs_of_reliability) {
     let self = this
     let url = id_mappers.calc_map['reliability'];
     let result = requests.default_spost_request(url, parametrs_of_reliability, self)
-    if(result['fail']){
-        console.log('Результат запроса - надежность', result, " и" , result.error)
+    if (result['fail']) {
+        console.log('Результат запроса - надежность', result, " и", result.error)
         return ["error", "error"]
     }
     else {
-        console.log('Результат запроса - надежность', result, " и" , result.result)
+        console.log('Результат запроса - надежность', result, " и", result.result)
         return [result.result, result.result];
     }
 }
 
 
 //
-function check_token_before_render(data){
+function check_token_before_render(data) {
     let flag = true
     $.ajax({
         type: "POST",
@@ -151,23 +117,23 @@ function check_token_before_render(data){
         data: JSON.stringify(data),
         dataType: "json"
     })
-    .done(function(response) {      // если пришел валидный токен
-        if (response.success) {
-            flag = true
-        } else {
-            flag = false
-            //alert("Кажется вы не авторизовались, мы перенаправим вас на страницу входа")
-        }
-    }).fail(function() {
-        alert("ошибка подключения к серверу")
-    });
+        .done(function (response) {      // если пришел валидный токен
+            if (response.success) {
+                flag = true
+            } else {
+                flag = false
+                //alert("Кажется вы не авторизовались, мы перенаправим вас на страницу входа")
+            }
+        }).fail(function () {
+            alert("ошибка подключения к серверу")
+        });
 
     return flag
 }
 
 
 
-function download_excel(){
+function download_excel() {
     const fetch = require('node-fetch');
     let url = server_url + '/download'
     fetch(url, {
@@ -176,28 +142,28 @@ function download_excel(){
             'Authorization': " Bearer " + localStorage.getItem("token")
         },
     })
-    .then(response => {
-        if (response.ok) {
-            return response.blob();
-        } else {
-            throw new Error('Failed to download Excel file');
-        }
-    })
-    .then(blob => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'formula_results.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        URL.revokeObjectURL(url);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Failed to download Excel file');
+            }
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'formula_results.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
-function save_cur(parametrs_of_build, results, dop_results){
+function save_cur(parametrs_of_build, results, dop_results) {
     const fetch = require('node-fetch');
 
     let url = server_url + '/save_cur'
@@ -207,27 +173,27 @@ function save_cur(parametrs_of_build, results, dop_results){
             'Content-Type': 'application/json',
             'Authorization': " Bearer " + localStorage.getItem("token")
         },
-        body: JSON.stringify({parametrs_of_build, results, dop_results })
+        body: JSON.stringify({ parametrs_of_build, results, dop_results })
     })
-    .then(response => {
-        if (response.ok) {
-            return response.blob();
-        } else {
-            throw new Error('Failed to download Excel file');
-        }
-    })
-    .then(blob => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'current_results.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        URL.revokeObjectURL(url);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Failed to download Excel file');
+            }
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'current_results.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
 let funcs = {};

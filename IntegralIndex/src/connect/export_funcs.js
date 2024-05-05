@@ -1,5 +1,4 @@
 function export_build(self){
-    console.log("export")
     let build = {}
     build = Object.assign(build, self.parametrs_of_build);
     return {"error": false, "result": build}

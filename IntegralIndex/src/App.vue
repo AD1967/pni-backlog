@@ -247,7 +247,7 @@
         </div> 
       </div>
       <!-- /Меню настроек--------------------------------------------------------------->
-      <!-- <div id="loading_calc">Производится расчет ... </div> -->
+      <div id="loading_calc">расчет</div>
 
       <!-- Основное рабочее пространство  ----------------------------------------------------->
       <div :style="{'width': 100+'%'}">
@@ -425,7 +425,7 @@
             </div>
           </div>   
 
-          <div class="razn-TC-CTP-block" v-if="(dop_results.razn_tec_ctp !== '')">
+          <div class="razn-TC-CTP-block" v-if="dop_results.razn_tec_ctp !== ''">
             <input class="output-field" type="text" :value="printVal(dop_results.razn_tec_ctp, 'Гкал')" readonly>
             <p class="comment-text">Разница ТЭЦ и ЦТП</p>    
           </div>

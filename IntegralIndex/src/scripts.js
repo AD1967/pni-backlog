@@ -16,7 +16,6 @@ import func from '@/connect/funcs'
           }
         },
         loadpat_error: {show: false, text: ''},
-        savepat_error: {show: false, text: ''},
         
         big_sections_name:
         [
@@ -383,18 +382,20 @@ import func from '@/connect/funcs'
     },
 
     calc_dop_results(){
-      if (this.results.heat_los_win != ''){
         this.dop_results.sum_los      = parseFloat(this.results.heat_los_win)  + parseFloat(this.results.inf_win)  + parseFloat(this.results.heat_los_inpgr)  + parseFloat(this.results.inf_inpgr)  + parseFloat(this.results.heat_los_heatcond_benv)  + parseFloat(this.results.heat_los_heatcond_roof) + parseFloat(this.results.heat_los_floor) + parseFloat(this.results.heat_los_vent) + parseFloat(this.results.add_heatcosts);
         this.dop_results.sum_add      = parseFloat(this.results.heat_gains_people) + parseFloat(this.results.heat_gains_washstands) + parseFloat(this.results.heat_gains_showers) + parseFloat(this.results.heat_gains_electriclighting) + parseFloat(this.results.heat_gains_GVS) + parseFloat(this.results.heat_gains_pipelines);
-        this.dop_results.razn_los_add = this.dop_results.sum_los - this.dop_results.sum_add;
-        this.dop_results.eclg_sp_tut  = this.dop_results.razn_los_add * 0.1486;
-        this.dop_results.eclg_sp_co2  = this.dop_results.razn_los_add * 276.28;
-      }
-      if (this.results.tec != '' && this.results.ctp != ''){
-        this.dop_results.razn_tec_ctp = parseFloat(this.results.tec) - parseFloat(this.results.ctp);
-        this.dop_results.eclg_tec_ctp_tut = this.dop_results.razn_tec_ctp * 0.1486;
-        this.dop_results.eclg_tec_ctp_co2 = this.dop_results.razn_tec_ctp * 276.28;
-      }     
+        this.dop_results.razn_los_add = this.dop_results.sum_los - this.dop_results.sum_add
+        this.dop_results.eclg_sp_tut  = this.dop_results.razn_los_add * 0.1486
+        this.dop_results.eclg_sp_co2  = this.dop_results.razn_los_add * 276.28 
+        this.dop_results.razn_tec_ctp = parseFloat(this.results.tec) - parseFloat(this.results.ctp)
+        this.dop_results.eclg_tec_ctp_tut = this.dop_results.razn_tec_ctp * 0.1486
+        this.dop_results.eclg_tec_ctp_co2 = this.dop_results.razn_tec_ctp * 276.28
+        
+        for (var key in this.dop_results)
+        {
+          if (isNaN(this.dop_results[key]))
+            this.dop_results[key] = ''
+        }
     },
       logout(){
         localStorage.setItem("token", null)
@@ -425,46 +426,24 @@ import func from '@/connect/funcs'
           this.set_all_check_left_panel(this.set_all_flag); 
        } ,
       
-      calc_result(){
+       calc_all(){
         let self = this
         let year = document.getElementById('years-selector');
-        let calc_res = func.calc("formula_calc", self, year.value)
-        if (calc_res[0]){
-          for (var key in calc_res[1]) {
-            this.results[key] = calc_res[1][key]
-          }
-        }
+        setTimeout(func.calc, 10, "formula_calc", self, year.value)
       },
-    calc_all_server(){
-      let self = this
-      //this.sections.forEach(function(){
-          self.calc_result()
-      //})
-    },
-      calc_all(){
-        this.calc_all_server()
-        this.calc_dop_results();
-      },
+
       calc_INS(){
         this.results.ins1 = 5;
       },
       calc_tec(){
         let self = this
         let year = document.getElementById('years-selector');
-        let calc_res = func.calc("tec", self, year.value);
-        if (calc_res[0]){
-          this.results["tec"] = calc_res[1]["tec"]
-        }
-        this.calc_dop_results()
+        setTimeout(func.calc, 100, "tec", self, year.value)
       },
       calc_ctp(){
         let self = this
         let year = document.getElementById('years-selector');
-        let calc_res = func.calc("ctp", self, year.value)
-        if (calc_res[0]){
-          this.results["ctp"] = calc_res[1]["ctp"]
-        }
-        this.calc_dop_results()
+        setTimeout(func.calc, 100, "ctp", self, year.value)
       },
     download_excel(){
       let downl_res = func.download_excel()
