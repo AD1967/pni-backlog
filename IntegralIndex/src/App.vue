@@ -407,7 +407,7 @@
               <button class="btn-calc btn-TC" @click="calc_tec()">
                 <div class=btn-calc-text> Отпуск тепловой энергии ТЭЦ </div>
               </button>    
-              <div v-if="results.tec != ''">      
+              <div v-if="results.tec != '' || results.tec == '0'">      
                 <input class="output-field" type="text" :value="printVal(results.tec, 'Гкал')" readonly>  
                 <p class="comment-text">Расчет ТЭЦ</p>
               </div>         
@@ -418,7 +418,7 @@
               <button class="btn-calc btn-TC" @click="calc_ctp()">
                 <div class=btn-calc-text> Потребление тепловой энергии от ЦТП </div>
               </button> 
-              <div v-if="results.ctp != ''">
+              <div v-if="results.ctp != '' || results.ctp == '0'">
                 <input class="output-field" type="text" :value="printVal(results.ctp, 'Гкал')" readonly>                
                 <p class="comment-text">Расчет ЦТП</p>  
               </div>     
