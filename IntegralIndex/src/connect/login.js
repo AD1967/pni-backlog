@@ -1,8 +1,8 @@
 import requests from '@/connect/server_requests'
 import $ from 'jquery'
 
-let server_url = "http://127.0.0.1:5000"
-
+//let server_url = "http://127.0.0.1:5000"
+let server_url = window.location.href + "api"
 function enter(self) {
     let user_login = self.login_
     let user_psw = self.psw
