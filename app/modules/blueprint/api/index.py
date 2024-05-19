@@ -38,18 +38,15 @@ def api_calc_cpt():
 @token_auth.login_required
 def api_save_cur():
     print('Создается excel таблица..')
-    res_excel = 'cur_results.xlsx'
-    parametrs_of_build = request.json.get('parametrs_of_build')
+    name_excel = 'cur_results.xlsx'
+    parameters_of_build = request.json.get('parametrs_of_build')
     results = request.json.get('results')
     dop_results = request.json.get('dop_results')
-    build = list(parametrs_of_build.values())
-    res = list(results.values())
-    dop = list(dop_results.values())
-    data = res[2:17] + dop[:3] + dop[4:6] + res[17:] + dop[3:4] + dop[6:]
-    save(build, data)
+    data = results | dop_results
+    save(parameters_of_build, data, name_excel)
 
-    print('Данные успешно сохранены в файл ', res_excel)
-    return send_file(res_excel, as_attachment=True, download_name='current_results.xlsx')
+    print('Данные успешно сохранены в файл ', name_excel)
+    return send_file(name_excel, as_attachment=True, download_name='current_results.xlsx')
 
 
 # Сохранение в excel результатов вычисления за весь период

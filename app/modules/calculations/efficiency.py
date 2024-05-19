@@ -111,6 +111,7 @@ df = []
 test_date = ""
 #######################################################################################################################
 
+
 def update_cur_info(data):
     global cur_info
     global is_first_day
@@ -121,55 +122,91 @@ def update_cur_info(data):
 
 
 # Сохранение текущих расчётов
-def save(build, results):
-    res_excel = 'cur_results.xlsx'
-    # build.pop(0)
-    df1 = pd.DataFrame()
-    column_build = ['id здания', 'Название здания', 'Этажность здания', 'Длина здания, м', 'Ширина здания, м',
-                    'Длина стен на одном этаже, м',
-                    'Высота стен на одном этаже, м', 'Температура внутреннего воздуха, °С',
-                    'Температура наружного воздуха, °С', 'Дата постройки', 'Число окон в здании',
-                    'Длина типового окна, м', 'Высота типового окна, м', 'Дата установки окон', 'Тип окон',
-                    'Число дверей', 'Длина типовой входной двери, м', 'Высота типовой входной двери, м', 'Тип дверей',
-                    'Дата установки дверей', 'Класс энергетической эффективности ограждающих конструкций',
-                    'Число шкафов', 'Число диванов', 'Число столов', 'Число навесных шкафчиков',
-                    'Максимальное число посетителей мужчин', 'Максимальное число посетителей женщин',
-                    'Максимальное число посетителей детей', 'Среднее время пребывания посетителей в сутки',
-                    'Количество помещений с раковинами на этаже', 'Высота подвала, м', 'Период энергосбережения',
-                    'Материал стен', 'Материал пола', 'Материал дверей', 'Материал мебели', 'Материал диванов',
-                    'Материал столов', 'Тип трубы'
-                    ]
-    df1 = pd.concat([df1, pd.Series(column_build), pd.Series(build)], axis=1, ignore_index=True)
+def save(parameters_of_build, data_results, name_excel):
+    name_parameters = {
+        "name_build": "Название здания",
+        "floors": "Этажность здания",
+        "length_build": "Длина здания, м",
+        "width_build": "Ширина здания, м",
+        "length_wall": "Длина стен на одном этаже, м",
+        "height_wall": "Высота стен на одном этаже, м",
+        "temp_inside": "Температура внутреннего воздуха, °С",
+        "temp_outside": "Температура наружного воздуха, °С",
+        "date_construction": "Дата постройки",
+        "count_windows": "Число окон в здании",
+        "length_windows": "Длина типового окна, м",
+        "height_windows": "Высота типового окна, м",
+        "date_windows": "Дата установки окон",
+        "type_windows": "Тип окон",
+        "count_doors": "Число дверей",
+        "length_doors": "Длина типовой входной двери, м",
+        "height_doors": "Высота типовой входной двери, м",
+        "type_doors": "Тип дверей",
+        "date_doors": "Дата установки дверей",
+        "class_energoeff": "Класс энергетической эффективности ограждающих конструкций",
+        "count_closet": "Число шкафов",
+        "count_sofa": "Число диванов",
+        "count_table": "Число столов",
+        "count_small_closet": "Число навесных шкафчиков",
+        "count_men": "Максимальное число посетителей мужчин",
+        "count_women": "Максимальное число посетителей женщин",
+        "count_children": "Максимальное число посетителей детей",
+        "time_guests": "Среднее время пребывания посетителей в сутки",
+        "count_sink": "Количество помещений с раковинами на этаже",
+        "height_basement": "Высота подвала, м",
+        "period_energosave": "Период энергосбережения",
+        "walls_material": "Материал стен",
+        "floors_material": "Материал пола",
+        "doors_material": "Материал дверей",
+        "furniture_material": "Материал мебели",
+        "sofa_material": "Материал диванов",
+        "table_material": "Материал столов",
+        "type_pipe": "Тип трубы"
+    }
+    name_results = {
+        'heat_los_win': 'Теплопотери трансмиссионные через окна',
+        'inf_win': 'Теплопотери инфильтрационные через окна',
+        'heat_los_inpgr': 'Теплопотери трансмиссионные через входную группу',
+        'inf_inpgr': 'Теплопотери инфильтрационные через входную группу',
+        'heat_los_heatcond_benv': 'Теплопотери теплопроводность через стены',
+        'heat_los_heatcond_roof': 'теплопроводность через кровлю',
+        'heat_los_floor': 'теплопроводность через пол',
+        'heat_los_vent': 'через систему вытяжной вентиляции',
+        'add_heatcosts': 'прогрев здания перед рабочим днем',
+        'heat_gains_people': 'Теплопритоки от людей',
+        'heat_gains_washstands': 'Теплопритоки от ГВС рукомойников',
+        'heat_gains_showers': 'Теплопритоки от ГВС душевых',
+        'heat_gains_electriclighting': 'Теплопритоки от электрооборудования',
+        'heat_gains_GVS': 'Теплопритоки от неизолированных трубопроводов ГВС',
+        'heat_gains_pipelines': 'Теплопритоки от неизолированных трубопроводов отопления',
+        'sum_los': 'Сумма теплопотерь',
+        'sum_add': 'Сумма теплопритоков',
+        'razn_los_add': 'Разница теплопотерь и теплопритоков',
+        'eclg_sp_tut': 'Эк. ущерб СП т.у.т ',
+        'eclg_sp_co2': 'Эк. ущерб СП CO2',
+        'tec': 'Расчет ТЭЦ',
+        'ctp': 'Расчет ЦТП',
+        'razn_tec_ctp': 'Разница ТЭЦ и ЦТП',
+        'eclg_tec_ctp_tut': 'Эк. ущерб ТЭЦ/ЦТП т.у.т ',
+        'eclg_tec_ctp_co2': 'Эк. ущерб ТЭЦ/ЦТП CO2'
+    }
 
-    df2 = pd.DataFrame()
-    column_results = ['Теплопотери трансмиссионные через окна', 'Теплопотери инфильтрационные через окна',
-                      'Теплопотери трансмиссионные через входную группу',
-                      'Теплопотери инфильтрационные через входную группу',
-                      'Теплопотери теплопроводность через стены', 'теплопроводность через кровлю',
-                      'теплопроводность через пол', 'через систему вытяжной вентиляции',
-                      'прогрев здания перед рабочим днем',
-                      'Теплопритоки от людей', 'Теплопритоки от ГВС рукомойников', 'Теплопритоки от ГВС душевых',
-                      'Теплопритоки от электрооборудования', 'Теплопритоки от неизолированных трубопроводов ГВС',
-                      'Теплопритоки от неизолированных трубопроводов отопления', 'Сумма теплопотерь',
-                      'Сумма теплопритоков',
-                      'Разница теплопотерь и теплопритоков', 'Эк. ущерб СП т.у.т ', 'Эк. ущерб СП CO2',
-                      'Расчет ТЭЦ', 'Расчет ЦТП', 'Разница ТЭЦ и ЦТП', 'Эк. ущерб ТЭЦ/ЦТП т.у.т ',
-                      'Эк. ущерб ТЭЦ/ЦТП CO2'
-                      ]
-    df2 = pd.concat([df2, pd.Series(column_results), pd.Series(results)], axis=1, ignore_index=True)
+    build = pd.DataFrame.from_dict({name_parameters[key]: parameters_of_build[key] for key in name_parameters.keys()
+                                      if parameters_of_build[key] != ''}, orient='index')
+    results = pd.DataFrame.from_dict({name_results[key]: data_results[key] for key in name_results.keys()
+                                      if data_results[key] != ''}, orient='index')
 
-    with pd.ExcelWriter('app/' + res_excel, engine='xlsxwriter') as writer:
-        df1.to_excel(writer, sheet_name='Build')
-        df2.to_excel(writer, sheet_name='Results')
+    with pd.ExcelWriter('app/' + name_excel, engine='xlsxwriter') as writer:
+        build.to_excel(writer, sheet_name='Build')
+        results.to_excel(writer, sheet_name='Results')
 
         # Установить ширину столбцов
-        # workbook = writer.book
         worksheet = writer.sheets['Build']
-        worksheet.set_column('B:B', 58)
-        worksheet.set_column('C:C', 10)
+        worksheet.set_column('A:A', 58)
+        worksheet.set_column('B:B', 10)
         worksheet = writer.sheets['Results']
-        worksheet.set_column('B:B', 58)
-        worksheet.set_column('C:C', 10)
+        worksheet.set_column('A:A', 58)
+        worksheet.set_column('B:B', 10)
 
 
 # Расчёт ТЭЦ
@@ -177,9 +214,8 @@ def calc_tec(cur_date):
     st = datetime.strptime(cur_date, "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
     t = 0
-    while (st <= fn):
+    while st <= fn:
         global test_date
         test_date = st
         weather = get_weather_by_time(st)
@@ -187,7 +223,7 @@ def calc_tec(cur_date):
         st += timedelta(seconds=1800)
 
     t = int(t / 48)
-    print(" t tec = ", t)
+    # print(" t tec = ", t)
 
     if t in tec:
         t1, t2 = tec[t]
@@ -203,9 +239,8 @@ def calc_ctp(cur_date):
     st = datetime.strptime(cur_date, "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
-    res = 0.
     t = 0
-    while (st <= fn):
+    while st <= fn:
         global test_date
         test_date = st
         weather = get_weather_by_time(st)
@@ -213,7 +248,7 @@ def calc_ctp(cur_date):
         st += timedelta(seconds=1800)
 
     t = int(t / 48)
-    print(" t ctp = ", t)
+    # print(" t ctp = ", t)
 
     if t in ctp:
         t1, t2 = ctp[t]
@@ -236,9 +271,8 @@ def add_to_excel(dict_res):
     global df
     df = pd.concat([df, pd.Series(dict_res)], axis=1, ignore_index=True)
 
+
 def create_excel():
-    global df
-    df = pd.DataFrame()
     column = {
         'cur_date': 'Дата',
         'heat_los_win': 'Теплопотери трансмиссионные через окна',
@@ -257,7 +291,8 @@ def create_excel():
         'heat_gains_GVS': 'Теплопритоки от неизолированных трубопроводов ГВС',
         'heat_gains_pipelines': 'Теплопритоки от неизолированных трубопроводов отопления'
     }
-
+    global df
+    df = pd.DataFrame()
     df = pd.concat([df, pd.Series(column)], axis=1, ignore_index=True)
 
 
@@ -432,8 +467,6 @@ def calc_add_heatcosts():
     return toGCal(q_all)
 
 
-#######################################################################################################################
-
 def Q_wnd():
     this_date = test_date
     weather = get_weather_by_time(this_date)
@@ -457,7 +490,6 @@ def Q_wnd_inf():
     return 1.005 * dt * 2.388458966275e-7 * (int(cur_info['temp_inside']) - weather.T) * int(cur_info['count_windows']) * \
            (2 * int(cur_info['length_windows']) + 2 * int(cur_info['height_windows'])) * window_type.q * window_type.a
 
-#######################################################################################################################
 
 def Q_doors_():
     this_date = test_date
@@ -475,7 +507,6 @@ def Q_doors_():
     return (float(cur_info['temp_inside']) - weather.T) * (1.1 + door_type.beta * float(cur_info['height_wall']) * float(cur_info['floors'])) * \
            float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors']) * k * 8.5984e-7 * dt / door_type.R
 
-#######################################################################################################################
 
 def Q_doors_inf():
     this_date = test_date
@@ -485,7 +516,6 @@ def Q_doors_inf():
     return 1.005 * dt * 2.388458966275e-7 * (float(cur_info['temp_inside']) - weather.T) * float(cur_info['count_doors']) * \
            (2 * float(cur_info['length_doors']) + 2 * float(cur_info['height_doors'])) * door_type.q * door_type.a
 
-#######################################################################################################################
 
 def Q_constructs():
     energoeff = get_one_from_table(Energoeff, int(cur_info['class_energoeff']))
@@ -506,7 +536,6 @@ def Q_constructs():
                         float(cur_info['count_doors']) * float(cur_info['length_doors']) * float(cur_info['height_doors'])) * \
            k * 8.5984e-7 * dt / energoeff.R
 
-#######################################################################################################################
 
 def Q_roof():
     this_date = test_date
@@ -516,7 +545,6 @@ def Q_roof():
            8.5984e-7 * dt / energoeff.R
 
 #######################################################################################################################
-
 # ТЕПЛОПРИТОКИ
 
 def Q_hws_pipes():
@@ -563,6 +591,7 @@ def Q_hws_showers():
     n_children = k_children * int(cur_info['count_children'])
     return 0.00018 * 1000 * 4190 * (n_men + n_women + n_children) * \
            500 * (60 - 15) / 84600 * 8.5984e-7 * dt
+
 
 def Q_electro():
     # if cur_info['elec_consumption_by_period'] is None:
