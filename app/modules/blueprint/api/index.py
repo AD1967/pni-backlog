@@ -42,11 +42,8 @@ def api_save_cur():
     parametrs_of_build = request.json.get('parametrs_of_build')
     results = request.json.get('results')
     dop_results = request.json.get('dop_results')
-    # build = [param.get(key) for param in parametrs_of_build for key in param]
     build = list(parametrs_of_build.values())
-    # res = [item['val'] for item in results]
     res = list(results.values())
-    # dop = [item['val'] for item in dop_results]
     dop = list(dop_results.values())
     data = res[2:17] + dop[:3] + dop[4:6] + res[17:] + dop[3:4] + dop[6:]
     save(build, data)

@@ -102,7 +102,6 @@ test_temp = -20
 k_men = 0.98
 k_women = 0.98
 k_children = 0.98
-coun_room_with_sinks = 4
 air_humidity = 0.7
 P0 = 101325
 cur_info = {}
@@ -124,10 +123,6 @@ def update_cur_info(data):
 # Сохранение текущих расчётов
 def save(build, results):
     res_excel = 'cur_results.xlsx'
-    # global cur_info
-    # print(cur_info)
-    # build = cur_info.copy()
-    # del build["cur_date"]
     # build.pop(0)
     df1 = pd.DataFrame()
     column_build = ['id здания', 'Название здания', 'Этажность здания', 'Длина здания, м', 'Ширина здания, м',
@@ -192,7 +187,7 @@ def calc_tec(cur_date):
         st += timedelta(seconds=1800)
 
     t = int(t / 48)
-    # print(" t tec = ", t)
+    print(" t tec = ", t)
 
     if t in tec:
         t1, t2 = tec[t]
@@ -218,7 +213,7 @@ def calc_ctp(cur_date):
         st += timedelta(seconds=1800)
 
     t = int(t / 48)
-    # print(" t ctp = ", t)
+    print(" t ctp = ", t)
 
     if t in ctp:
         t1, t2 = ctp[t]

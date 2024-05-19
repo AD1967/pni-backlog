@@ -4,9 +4,10 @@ import load_funcs from '@/connect/load_funcs'
 import export_funcs from './export_funcs'
 
 import $ from 'jquery'
-//let server_url = "http://127.0.0.1:5000"
-let server_url = window.location.href + "api"
-function start(self) {       // ,self)
+let server_url = "http://127.0.0.1:5000"
+// let server_url = window.location.href + "api"
+
+function start(self) {
     if (localStorage.getItem("this_build_id") === null) {
         let result = requests.default_sget_request("/data/build/test?" + $.param({ id_build: '' }), self)       // ,self)
         if (result['fail']) {
