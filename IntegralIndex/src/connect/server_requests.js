@@ -1,7 +1,14 @@
 import $ from 'jquery'
 
-let server_url = "http://127.0.0.1:5000"
-// let server_url = window.location.href + "api"
+export var isProd = false
+let server_url = ""
+if (isProd){
+    server_url = window.location.href + "api"
+}
+else {
+    server_url = "http://127.0.0.1:5000"
+}
+console.log('server_url ', server_url)
 
 //дефотная проверка результата запроса
 //возвращает {"fail": true, "error": "connect"} - ошибка соединения/код 500
@@ -30,25 +37,29 @@ function default_check(result/*, self*/){     // , self)
 //async_flag - синхронно/асинзронно
 //data - данные, null - без них
 function gen_ajax(type, url, json_flag, auth_flag, async_flag, data = null){
-//    let params
-//    if(url =="") {
-//        params = {
-//            type: type,
-//            url: server_url,
-//            async: async_flag
-//        }
-//    }
-//    else {
-//        params = {
-//            type: type,
-//            url: server_url + "api" + url,
-//            async: async_flag
-//        }
-//    }
-    let params = {
+    let params
+    if (isProd){
+        if(url =="") {
+            params = {
+                type: type,
+                url: server_url,
+                async: async_flag
+            }
+        }
+        else {
+            params = {
+                type: type,
+                url: server_url + "api" + url,
+                async: async_flag
+            }
+        }
+    }
+    else {
+        params = {
         type: type,
         url: server_url+url,
         async: async_flag
+        }
     }
     if(auth_flag){
         params.headers = {Authorization: " Bearer " + localStorage.getItem("token")}
@@ -131,27 +142,31 @@ function default_sput_request(url, data, self){       // , self)
 
 //АСИНХРОННЫЙ PROMISE запрос GET к серверу по url  на входе и json на выходе (промис),
 async function async_json_promise_get(url){
-    return $.ajax({
+    if (isProd){
+        if (url == "") {
+            return $.ajax({
+                type: "GET",
+                url: server_url,
+                headers: {Authorization: " Bearer " + localStorage.getItem("token")},
+                async: true
+            })
+        } else {
+            return $.ajax({
+                type: "GET",
+                url: server_url + "api" + url,
+                headers: {Authorization: " Bearer " + localStorage.getItem("token")},
+                async: true
+            })
+        }
+    }
+    else {
+        return $.ajax({
         type: "GET",
         url: server_url+url,
         headers: {Authorization: " Bearer " + localStorage.getItem("token")},
         async: true
-    })
-//    if (url == "") {
-//        return $.ajax({
-//            type: "GET",
-//            url: server_url,
-//            headers: {Authorization: " Bearer " + localStorage.getItem("token")},
-//            async: true
-//        })
-//    } else {
-//        return $.ajax({
-//            type: "GET",
-//            url: server_url + "api" + url,
-//            headers: {Authorization: " Bearer " + localStorage.getItem("token")},
-//            async: true
-//        })
-//    }
+        })
+    }
 }
 
 //функция проверки для результата async_json_promise_get (доп обработка)

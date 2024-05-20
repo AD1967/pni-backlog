@@ -1,11 +1,17 @@
 import requests from '@/connect/server_requests'
+import {isProd} from '@/connect/server_requests'
 import id_mappers from '@/connect/id_mappers'
 import load_funcs from '@/connect/load_funcs'
 import export_funcs from './export_funcs'
 
 import $ from 'jquery'
-let server_url = "http://127.0.0.1:5000"
-// let server_url = window.location.href + "api"
+var server_url
+if (isProd){
+    server_url = window.location.href + "api"
+}
+else {
+    server_url = "http://127.0.0.1:5000"
+}
 
 function start(self) {
     if (localStorage.getItem("this_build_id") === null) {
@@ -136,7 +142,14 @@ function check_token_before_render(data) {
 
 function download_excel() {
     const fetch = require('node-fetch');
-    let url = server_url + '/download'
+    let url
+    if (isProd){
+        url = server_url + "api" + '/download'
+    }
+    else {
+        url = server_url + '/download'
+    }
+
     fetch(url, {
         method: 'POST',
         headers: {
@@ -167,7 +180,14 @@ function download_excel() {
 function save_cur(parametrs_of_build, results, dop_results) {
     const fetch = require('node-fetch');
 
-    let url = server_url + '/save_cur'
+    let url
+    if (isProd){
+        url = server_url + "api" + '/save_cur'
+    }
+    else {
+        url = server_url + '/save_cur'
+    }
+
     fetch(url, {
         method: 'POST',
         headers: {
