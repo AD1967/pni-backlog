@@ -377,7 +377,8 @@ import func from '@/connect/funcs'
       return parts.join(".");
     },
     printVal(val, ue){
-      return this.numberWithSpaces(parseFloat(val).toFixed(3)) + ' ' +  ue;
+      var res = this.numberWithSpaces(parseFloat(val).toFixed(3));
+        return res + ' ' +  ue;
     },
 
     calc_dop_results(){

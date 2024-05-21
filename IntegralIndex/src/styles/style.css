@@ -15,6 +15,9 @@ html{
   background: var(--global-fon);
 } 
 
+h2{
+  margin-bottom: 6px;
+}
 
 .app{
   display: flex;
@@ -350,6 +353,8 @@ body::-webkit-scrollbar-thumb {
 
 /* суммарные теплопотери и теплопритоки------------------ */
 .sum-block{
+  display: flex;
+  flex-direction: column;
   background-color: var(--global-fon); 
   margin: 2%;
   margin-left:  8%;
@@ -360,23 +365,28 @@ body::-webkit-scrollbar-thumb {
   box-shadow: 0 0 10px var(--red-shadow-color);
 }
 
-#sum-minus {
+#sum-minus{
 float: left; 
-display: block;
-width: 44%;
+display: flex;
+flex-direction: column;
+width: 35%;
 margin-left: 4%;
 position: relative;
-justify-content: space-between;
 }
+
+
 
 #sum-plus {
 float: right;
 display: block;
-width: 44%;
+width: 35%;
 margin-left: 4%;
 margin-right: 4%;
 position: relative;
 justify-content: space-between;
+}
+#sum-plus h2{
+  margin-bottom: 20px;
 }
 
 .block-title{
@@ -384,23 +394,55 @@ justify-content: space-between;
   color: var(--red-shadow-color);
 }
 
-.sum-text{
-  color: var(--red-shadow-color);
-  vertical-align: text-bottom ;
-  display: inline;
-  font-size: 26px;
+.block-suptitles{
+  display: flexbox;
+  float: left;
+  width:100%;
+  font-weight: 600;
 }
+
 .sum-titles{
   display: flexbox;
   float: left;
   width: 68%;
 }
+
 .sum-results{
   display: flexbox;
   float: right;
   width: 30%;
   margin-right: 2%;
   text-align: right;
+}
+
+.borders{
+  margin-left: 4%;
+}
+
+.flex-between-sumlos{
+  width: 37%;
+  padding-right: 10px;
+}
+.flex-between-sumadd{
+  width: 37%;
+  margin-right: 4%;
+}
+.sum-text-text{
+  color: var(--red-shadow-color);
+  vertical-align: text-bottom ;
+  display: flexbox;
+  float: left;
+  font-size: 26px;
+  width: 50%;
+}
+.sum-text-res{
+  color: var(--red-shadow-color);
+  vertical-align: text-bottom ;
+  display: flexbox;
+  float: right;
+  text-align: right;
+  font-size: 26px;
+  width: 50%;
 }
 
 

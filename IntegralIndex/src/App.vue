@@ -278,82 +278,84 @@
             <div>
               <div id="sum-minus">
                 <div class="block-title"> Теплопотери</div><br> 
-                <div class="sum-titles">
-                  <h1> трансмиссионные через окна <sub> </sub> </h1>
-                  <h1> инфильтрационные через окна  <sub> </sub></h1>
-                  <h1> трансмиссионные через входную группу<sub> </sub></h1>
-                  <h1> инфильтрационные через входную группу<sub> </sub></h1>
-                  <h1> теплопроводность через стены<sub> </sub></h1>
-                  <h1> теплопроводность через кровлю<sub> </sub></h1>
-                  <h1> теплопроводность через пол<sub> </sub></h1>
-                  <h1> через систему вытяжной вентиляции <sub> </sub> </h1>
-                  <h1> прогрев здания перед рабочим днем <sub> </sub></h1>
-                </div>  
-                <div class="sum-results">
-                  <div v-if="results.heat_los_win != ''">
-                    <h1><sub> {{printVal(results.heat_los_win, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.inf_win, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.heat_los_inpgr, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.inf_inpgr, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.heat_los_heatcond_benv, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.heat_los_heatcond_roof, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.heat_los_floor, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.heat_los_vent, 'Гкал')}}  </sub> </h1>
-                    <h1><sub> {{printVal(results.add_heatcosts, 'Гкал')}} </sub> <sub></sub> </h1> 
+                <div class="block-suptitles"> Потери через ограждающие конструкции (трансмиссионные)<br><hr><br></div> 
+                  <div class="flex-between">  
+                    <div class="sum-titles">
+                      <h2> окна</h2>
+                      <h2> входная группа (двери)</h2>
+                      <h2> стены</h2>
+                      <h2> кровля</h2>
+                      <h2> пол и фундамент</h2>
+                    </div>
+                    <div v-if="results.heat_los_win != ''" class="sum-results">
+                      <h2>{{printVal(results.heat_los_win, 'Гкал') ?? ""}}    </h2>
+                      <h2>{{printVal(results.heat_los_inpgr, 'Гкал') ?? ""}}  </h2>
+                      <h2>{{printVal(results.heat_los_heatcond_benv, 'Гкал') ?? ""}} </h2>
+                      <h2>{{printVal(results.heat_los_heatcond_roof, 'Гкал') ?? ""}} </h2>
+                      <h2>{{printVal(results.heat_los_floor, 'Гкал') ?? ""}}  </h2>
+                    </div>  
+                  </div> 
+                <div class="block-suptitles"> <br> Потери инфильтрационные<br><hr><br></div>
+                  <div class="flex-between">  
+                    <div class="sum-titles">
+                      <h2> окна </h2>
+                      <h2> входная группа (двери) </h2>
+                      <h2> ограждающие конструкции с учётом ветровой нагрузки</h2>
+                      <h2> система естественной вентиляции </h2>
+                    </div>
+                    <div v-if="results.inf_win != ''" class="sum-results">
+                      <h2>{{printVal(results.inf_win, 'Гкал') ?? ""}}  </h2>
+                      <h2> {{printVal(results.inf_inpgr, 'Гкал') ?? ""}}   </h2>
+                      <h2 style="color: var(--global-fon); margin:0"> space</h2>
+                      <h2 v-if="results.inf_inpgr != ''"> 100 Гкал </h2>  
+                      <h2>{{printVal(results.heat_los_vent, 'Гкал') ?? ""}}  </h2>
+                    </div> 
                   </div>
-                </div>              
+                  <div class="flex-between">  
+                    <div class="sum-titles">
+                      <br><h2 style="font-weight: 600;"> Прогрев здания перед рабочим днем </h2><hr><br>
+                    </div>
+                    <div v-if="results.add_heatcosts != ''" class="sum-results">
+                      <br><h2>{{printVal(results.add_heatcosts, 'Гкал') ?? ""}}</h2><br>
+                    </div>
+                  </div>
               </div>            
+                     
               <div id="sum-plus">
                 <div class="block-title"> Теплопритоки</div><br> 
+                <div class="block-suptitles" style="color: var(--global-fon); margin:0"> space<br><br></div> 
                 <div class="sum-titles">
-                  <h1> от людей <sub> </sub></h1>
-                  <h1> от ГВС рукомойников <sub> </sub></h1>
-                  <h1> от ГВС душевых <sub> </sub></h1>
-                  <h1> от электрооборудования <sub> </sub></h1>
-                  <h1> от неизолированных трубопроводов ГВС<sub> </sub></h1>
-                  <h1> от неизолированных трубопроводов отопления<sub> </sub></h1>
+                  <h2> от людей </h2>
+                  <h2> от магистральных трубопроводов и стояков ГВС к рукомойникам</h2>
+                  <h2> от магистральных трубопроводов и стояков ГВС к душевым</h2>
+                  <h2> от электрооборудования </h2>
+                  <h2> от неизолированных трубопроводов ГВС</h2>
+                  <h2> от неизолированных трубопроводов отопления</h2>
                 </div>
                 
-                <div class="sum-results">
-                  <div v-if="results.heat_gains_people != ''">
-                    <h1><sub>{{printVal(results.heat_gains_people, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results.heat_gains_washstands, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results.heat_gains_showers, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results.heat_gains_electriclighting, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results.heat_gains_GVS, 'Гкал')}} </sub> </h1>
-                    <h1><sub>{{printVal(results.heat_gains_pipelines, 'Гкал')}} </sub> </h1>
-                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                    <h1><sub style="color: #e5e5dc;">.</sub> </h1>
-                  </div>
+                <div v-if="results.heat_gains_people != ''" class="sum-results">       
+                    <h2>{{printVal(results.heat_gains_people, 'Гкал') ?? ""}} </h2>
+                    <h2 style="color: var(--global-fon); margin:0"> space</h2>
+                    <h2>{{printVal(results.heat_gains_washstands, 'Гкал') ?? ""}} </h2>
+                    <h2 style="color: var(--global-fon); margin:0"> space</h2>
+                    <h2>{{printVal(results.heat_gains_showers, 'Гкал') ?? ""}} </h2>
+                    <h2>{{printVal(results.heat_gains_electriclighting, 'Гкал') ?? ""}}</h2>
+                    <h2>{{printVal(results.heat_gains_GVS, 'Гкал') ?? ""}}</h2>
+                    <h2 style="color: var(--global-fon); margin:0"> space</h2>
+                    <h2>{{printVal(results.heat_gains_pipelines, 'Гкал') ?? ""}}</h2> 
                 </div>                            
               </div> 
             </div>
 
             <!-- Вывод суммарных теплопотерь и теплопритоков --------------------------------------->
-            <div v-if="dop_results.sum_los !== ''" >
-              <h1 style="color:var(--white-text-color)">.</h1>
-              <div class="flex-between">
-                <hr style="width: 45%; margin-left:4%; margin-right:2%;">
-                <hr style="width: 45%; margin-right:4%">
+            <div v-if="dop_results.sum_add != '' && dop_results.sum_los != ''" class="flex-between borders">
+              <div class="flex-between flex-between-sumlos">
+                  <div class="sum-text-text"> &Sum; <sub>теплопотерь</sub></div>
+                  <div class="sum-text-res"> {{printVal(dop_results.sum_los, 'Гкал')}} </div>
               </div>
-              <div class="flex-between">         
-                <div style="width: 45%; margin-left: 4%; margin-right: 0;" class="flex-between">
-                  <div>
-                    <h1 class="sum-text"> &Sum;<sub style="font-size:20px">теплопотерь</sub></h1>   
-                  </div>
-                  <div> 
-                    <h1 class="sum-text"> <sub> {{printVal(dop_results.sum_los, 'Гкал')}} </sub> </h1>
-                  </div>
-                </div>
-                <div style="width: 45%; margin-right:4%;" class="flex-between">
-                  <div> 
-                    <h1 class="sum-text"> &Sum;<sub style="font-size:20px">теплопритоков</sub> </h1> 
-                  </div>
-                  <div>
-                    <h1 class="sum-text"> <sub> {{printVal(dop_results.sum_add, 'Гкал')}} </sub> </h1>
-                  </div> 
-                </div>
+              <div class="flex-between flex-between-sumadd">
+                  <div class="sum-text-text"> &Sum; <sub>теплопритоков</sub></div>
+                  <div class="sum-text-res"> {{printVal(dop_results.sum_add, 'Гкал')}} </div>
               </div>
             </div>
             <!-- /Вывод суммарных теплопотерь и теплопритоков --------------------------------------->
