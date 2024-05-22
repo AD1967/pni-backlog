@@ -220,9 +220,9 @@
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_children">
 
           <h1 class="settings-param-name">Среднее время пребывания посетителей</h1>
-          <h1 class="settings-param-name">в сутки</h1>
-          <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.time_guests">
-
+          <h1 class="settings-param-name">в сутки, ч</h1>
+          <input class="settings-param-input" type="number" min=0 max=24  v-model="parametrs_of_build.time_guests">       
+          
           <h1 class="settings-param-name">Количество помещений с раковинами </h1>
           <h1 class="settings-param-name">на этаже</h1>
           <input class="settings-param-input" type="text" v-model.number="parametrs_of_build.count_sink">
