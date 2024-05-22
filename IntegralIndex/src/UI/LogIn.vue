@@ -1,5 +1,4 @@
 <template>
-<!-- <div class="dialog" v-if="show[0]" @click.stop="hide_dialog"> -->
 <div class="dialog" v-if="show[0]">
   <div @click.stop class="dialog_main">
     <div class="dialog_header">
@@ -120,7 +119,7 @@ export default {
 }
 .dialog_buttons{
   display: flex;
-  justify-content: center;
+  justify-content:center;
 }
 .dialog_btn{
   display: flex;
@@ -132,6 +131,8 @@ export default {
   box-shadow: 0 0 10px #1e3a49;
   color: #e5e5dc;
   transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 .dialog_btn:hover{
   display: flex;

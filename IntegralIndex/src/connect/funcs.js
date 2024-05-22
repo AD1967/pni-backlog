@@ -62,6 +62,7 @@ function import_from_server(self) {
 }
 
 function calc(id, self, selectedYear) {
+    self.showProgress = true;
     //основные расчеты
     let export_build_r = export_funcs.export_build(self)
     var result = requests.default_sput_request("/data/cur_build", export_build_r.result, self)
@@ -77,8 +78,10 @@ function calc(id, self, selectedYear) {
             progress +=1;
             let formattedDate = `${index.getFullYear()}-${String(index.getMonth() + 1).padStart(2, '0')}-${String(index.getDate()).padStart(2, '0')}`
             setTimeout(function(id,  self, progress, formattedDate){
-                document.getElementById('loading_calc').innerHTML = "Прогресс расчета: " + (progress * mul).toFixed(3).toString() + " %"
-                let result = requests.default_spost_request(id_mappers.calc_map[id], { "cur_date": formattedDate }, self)
+                document.getElementById('loading_name').innerHTML = id_mappers.calc_name_map[id];
+                document.getElementById('loading_calc').innerHTML = ((progress*mul).toFixed(3)!= 100)? "Прогресс расчета: " + (progress * mul).toFixed(3).toString() + " %" : "";
+                self.showProgress = ((progress*mul).toFixed(3)!= 100)
+                let result = requests.default_spost_request(id_mappers.calc_map[id], { "cur_date": formattedDate }, self);
                 if (!result['fail']) {
                     for (var key1 in result["result"]) { 
                         res[key1] = (key1 in res)? res[key1] + result["result"][key1] : result["result"][key1]   

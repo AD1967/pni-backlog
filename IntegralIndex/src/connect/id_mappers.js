@@ -44,9 +44,17 @@ let yearsMap = {
     "2021-22": [new Date('2021-09-01 00:00:00'), new Date('2022-05-31 23:59:59')],
     "2022-23": [new Date('2022-09-01 00:00:00'), new Date('2023-05-31 23:59:59')]
 }
+
+let calc_name_map ={
+    "formula_calc":                 "Расчет по СП 50.13330.2012",
+    "reliability":                  "Расчёт надёжности",
+    "tec":                          "Расчёт отпуска тепловой энергии ТЭЦ",
+    "ctp":                          "Расчёт потребления тепловой энергии от ЦТП"
+}
+
 let id_mappers = {};
 id_mappers.input_mapper = input_mapper
 id_mappers.calc_map = calc_map
 id_mappers.yearsMap = yearsMap
-
+id_mappers.calc_name_map = calc_name_map
 export default id_mappers
