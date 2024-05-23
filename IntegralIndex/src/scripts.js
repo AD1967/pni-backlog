@@ -3,6 +3,7 @@ import func from '@/connect/funcs'
   export default{
     data(){
       return {
+        ins_model : 1,
         showProgress : false,
         url_to_download_math : "",
         login_reg_check:[false,false],

@@ -392,16 +392,17 @@
             <div class="math-calc-block">
               <div class="flex-between">
 
-                <div style="display: block;">
+                <div style="display: block">
                   <button class="btn-calc" style="width: 100%" @click="calc_INS()">
                     <div class=btn-calc-text id="neuro_calc_id"> Расчет искусственной нейронной сетью </div>
                   </button>
-
-                  <!-- <select v-if="choise_NM == true" class="btn-calc" style="width: 100%; margin: 8px; margin-left:0; margin-right: 0;">
-                    <option>Модель 1</option>
-                    <option>Модель 2</option>
-                    <option>Модель 3</option>
-                  </select> -->
+                  <br>
+                  <br>
+                  <select v-model="ins_model" class="btn-calc btn-calc-text" style="width: 100%;">
+                    <option value=1>128-128-128 50 MAE sigmoid 0,6%</option>
+                    <option value=2>64-256 100 MAE tanh 7,8%</option>
+                    <option value=3>64-256 150 MAE tanh 7,9%</option>
+                  </select>
                 </div>
 
                 <a @click="download_excel()" class="btn-calc btn-download" href="#" :download=url_to_download_math>
