@@ -3,7 +3,10 @@ import math
 import os
 from ..db.common_gets import *
 from ..db.model import *
+from .neural import UseModel
 import pandas as pd
+import numpy as np
+import time
 
 count_of_point = 3  # Количество выводимых знаков после запятой
 dt = 1  # Единичный временной промежуток
@@ -208,6 +211,15 @@ def save(parameters_of_build, data_results, name_excel):
         worksheet.set_column('A:A', 58)
         worksheet.set_column('B:B', 10)
 
+
+def calc_ner(model):
+    print(model)
+    print("START")
+
+    df_stat = pd.read_excel("neur/" + str(model) + "Stat.xlsx")
+    np_mean = [row[0] for row in df_stat.to_numpy()]
+    np_std = [row[1] for row in df_stat.to_numpy()]
+    return UseModel("neur/" + str(model) + ".h5", "neur/basa.xlsx", np_mean, np_std) 
 
 # Расчёт ТЭЦ
 def calc_tec(cur_date):

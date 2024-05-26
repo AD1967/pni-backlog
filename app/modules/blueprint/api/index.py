@@ -2,7 +2,7 @@ from .. import main
 from flask import request, jsonify, send_file
 #from flask_login import login_required
 from ...calculations.index import calc_index
-from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, set_count_of_point, get_excel
+from ...calculations.efficiency import save, calc_tec, calc_ctp, calc_eff, set_count_of_point, get_excel, calc_ner
 from .responses import default_json_response
 
 # ТОКЕНЫ
@@ -85,3 +85,15 @@ def api_calc_eff():
 
     # print('efficiency ', data)
     return default_json_response(not data is None, "error" if data is None else data)
+
+
+
+@main.route("/calc_ner", methods=["POST"])
+@token_auth.login_required
+def api_calc_ner():
+    try:
+        data = calc_ner(request.json["model"])
+    except:
+        data = None
+    return default_json_response(not data is None, "error" if data is None else data)
+
