@@ -6,7 +6,7 @@ from ..db.model import *
 from .neural import UseModel
 import pandas as pd
 import numpy as np
-import time
+
 
 count_of_point = 3  # Количество выводимых знаков после запятой
 dt = 1  # Единичный временной промежуток
@@ -215,10 +215,16 @@ def save(parameters_of_build, data_results, name_excel):
 def calc_ner(model):
     print(model)
     print("START")
-
+    file_path = "neur/" + str(model) + "Stat.xlsx"
+    if os.path.exists(file_path):
+        print(f"Файл {file_path} существует")
+    else:
+        print(f"Файл {file_path} не существует")
     df_stat = pd.read_excel("neur/" + str(model) + "Stat.xlsx")
+    print("START2")
     np_mean = [row[0] for row in df_stat.to_numpy()]
     np_std = [row[1] for row in df_stat.to_numpy()]
+    print("START3")
     return UseModel("neur/" + str(model) + ".h5", "neur/basa.xlsx", np_mean, np_std) 
 
 # Расчёт ТЭЦ
@@ -321,12 +327,12 @@ def get_excel(name_excel):
 
 
 def calc_eff(cur_date):
+    print("AAAAAAAAAAAA egn")
     results = []
     global const_calc
     global funcs
     global result_keys
     global is_first_day
-
     for name in funcs[:8]:
         func = globals()[name]
         st = datetime.strptime(cur_date, "%Y-%m-%d")
@@ -339,7 +345,6 @@ def calc_eff(cur_date):
             res += func()
             st += timedelta(seconds=1800)
         results.append(set_count_of_point(res))
-    
     if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
         for name in funcs[8:]:
             func = globals()[name]
@@ -352,7 +357,6 @@ def calc_eff(cur_date):
         is_first_day = False
     else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
         results.extend(const_calc)
-
     dict_results = dict(zip(result_keys, results))
     dict_results['cur_date'] = cur_date
     add_to_excel(dict_results)

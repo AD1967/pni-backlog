@@ -1,9 +1,9 @@
 import $ from 'jquery'
 
-export var isProd = false
+export var isProd = true
 let server_url = ""
 if (isProd){
-    server_url = window.location.href + "api"
+    server_url = window.location.href
 }
 else {
     server_url = "http://127.0.0.1:5000"
