@@ -167,24 +167,28 @@ def save(parameters_of_build, data_results, name_excel):
         "type_pipe": "Тип трубы"
     }
     name_results = {
-        'heat_los_win': 'Теплопотери трансмиссионные через окна',
-        'inf_win': 'Теплопотери инфильтрационные через окна',
-        'heat_los_inpgr': 'Теплопотери трансмиссионные через входную группу',
-        'inf_inpgr': 'Теплопотери инфильтрационные через входную группу',
-        'heat_los_heatcond_benv': 'Теплопотери теплопроводность через стены',
-        'heat_los_heatcond_roof': 'теплопроводность через кровлю',
-        'heat_los_floor': 'теплопроводность через пол',
-        'heat_los_vent': 'через систему вытяжной вентиляции',
+        'loss': 'ТЕПЛОПРИТОКИ',
+        'loss_trans': 'Потери через ограждающие конструкции (трансмиссионные)',
+        'heat_los_win': 'окна',
+        'heat_los_inpgr': 'входная группа (двери)',
+        'heat_los_heatcond_benv': 'стены',
+        'heat_los_heatcond_roof': 'кровля',
+        'heat_los_floor': 'пол и фундамент',
+        'loss_inf': 'Потери инфильтрационные',
+        'inf_win': 'окна',
+        'inf_inpgr': 'входная группа (двери)',
+        'heat_los_vent': 'система естественной вентиляции',
         'add_heatcosts': 'прогрев здания перед рабочим днем',
-        'heat_gains_people': 'Теплопритоки от людей',
-        'heat_gains_washstands': 'Теплопритоки от ГВС рукомойников',
-        'heat_gains_showers': 'Теплопритоки от ГВС душевых',
-        'heat_gains_electriclighting': 'Теплопритоки от электрооборудования',
-        'heat_gains_GVS': 'Теплопритоки от неизолированных трубопроводов ГВС',
-        'heat_gains_pipelines': 'Теплопритоки от неизолированных трубопроводов отопления',
-        'sum_los': 'Сумма теплопотерь',
-        'sum_add': 'Сумма теплопритоков',
-        'razn_los_add': 'Разница теплопотерь и теплопритоков',
+        'sum_los': 'СУММА теплопотерь',
+        'gains': 'ТЕПЛОПОТЕРИ',
+        'heat_gains_people': 'от людей',
+        'heat_gains_washstands': 'от магистральных трубопроводов и стояков ГВС к рукомойникам',
+        'heat_gains_showers': 'от магистральных трубопроводов и стояков ГВС к душевым',
+        'heat_gains_electriclighting': 'от электрооборудования',
+        'heat_gains_GVS': 'от неизолированных трубопроводов ГВС',
+        'heat_gains_pipelines': 'от неизолированных трубопроводов отопления',
+        'sum_add': 'СУММА теплопритоков',
+        'razn_los_add': 'РАЗНИЦА теплопотерь и теплопритоков',
         'eclg_sp_tut': 'Эк. ущерб СП т.у.т ',
         'eclg_sp_co2': 'Эк. ущерб СП CO2',
         'tec': 'Расчет ТЭЦ',
@@ -196,8 +200,8 @@ def save(parameters_of_build, data_results, name_excel):
 
     build = pd.DataFrame.from_dict({name_parameters[key]: parameters_of_build[key] for key in name_parameters.keys()
                                       if parameters_of_build[key] != ''}, orient='index')
-    results = pd.DataFrame.from_dict({name_results[key]: data_results[key] for key in name_results.keys()
-                                      if data_results[key] != ''}, orient='index')
+    results = pd.DataFrame.from_dict({name_results[key]: data_results.get(key, '') for key in name_results.keys()
+                                      if data_results.get(key, ' ') != ''}, orient='index')
 
     with pd.ExcelWriter('app/' + name_excel, engine='xlsxwriter') as writer:
         build.to_excel(writer, sheet_name='Build')
@@ -227,8 +231,9 @@ def calc_ner(model):
     print("START3")
     return UseModel("neur/" + str(model) + ".h5", "neur/basa.xlsx", np_mean, np_std) 
 
-# Расчёт ТЭЦ
-def calc_tec(cur_date):
+
+# Расчёт ТЭЦ и ЦТП
+def calc_tec_ctp(cur_date):
     st = datetime.strptime(cur_date, "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -241,40 +246,22 @@ def calc_tec(cur_date):
         st += timedelta(seconds=1800)
 
     t = int(t / 48)
-    # print(" t tec = ", t)
+    # print(" t tec ctp = ", t)
 
     if t in tec:
         t1, t2 = tec[t]
     else:
         t1, t2 = 0, 0
 
-    res = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
-    return {'tec': res}
-
-
-# Расчёт ЦТП
-def calc_ctp(cur_date):
-    st = datetime.strptime(cur_date, "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    t = 0
-    while st <= fn:
-        global test_date
-        test_date = st
-        weather = get_weather_by_time(st)
-        t += weather.T
-        st += timedelta(seconds=1800)
-
-    t = int(t / 48)
-    # print(" t ctp = ", t)
+    t_tec = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
 
     if t in ctp:
         t1, t2 = ctp[t]
     else:
         t1, t2 = 0, 0
 
-    res = 0.0643 * 4190 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
-    return {'ctp': res}
+    t_ctp = 0.0643 * 4190 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
+    return {'tec': t_tec, 'ctp': t_ctp}
 
 
 funcs = ['Q_wnd', 'Q_wnd_inf', 'Q_doors_', 'Q_doors_inf', 'Q_constructs', 'Q_roof', 'Q_floor_', 'Q_vent',
@@ -327,7 +314,6 @@ def get_excel(name_excel):
 
 
 def calc_eff(cur_date):
-    print("AAAAAAAAAAAA egn")
     results = []
     global const_calc
     global funcs
@@ -361,6 +347,43 @@ def calc_eff(cur_date):
     dict_results['cur_date'] = cur_date
     add_to_excel(dict_results)
     return dict(zip(result_keys, results))
+    results_all_day = [0]*15
+
+    st = datetime.strptime(cur_date, "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    while st <= fn:
+        global test_date
+        results = []
+        test_date = st
+        for i, name in enumerate(funcs[:8]):
+            func = globals()[name]
+            res = set_count_of_point(func())
+            results_all_day[i] += res
+            results.append(res)
+    
+        if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
+            for i, name in enumerate(funcs[8:]):
+                func = globals()[name]
+                if name == 'calc_add_heatcosts':
+                    res = set_count_of_point(func())
+                else:
+                    res = set_count_of_point(48 * func())
+                results_all_day[i] += res
+                results.append(res)
+            const_calc = results[8:]
+            is_first_day = False
+        else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
+            results.extend(const_calc)
+
+        dict_results = dict(zip(result_keys, results))
+        dict_results['cur_date'] = st
+        add_to_excel(dict_results)
+
+        st += timedelta(seconds=1800)
+
+    return dict(zip(result_keys, results_all_day))
+
 
 
 ######################################################################################################################

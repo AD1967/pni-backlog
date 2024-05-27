@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-export var isProd = true
+export var isProd = false  // false - если запускается локально, true - если запускается глобально в продакшн
 let server_url = ""
 if (isProd){
     server_url = window.location.href
