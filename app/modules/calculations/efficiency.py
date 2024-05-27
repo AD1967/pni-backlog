@@ -308,42 +308,46 @@ def get_excel(name_excel):
 
 
 def calc_eff(cur_date):
-    results = []
     global const_calc
     global funcs
     global result_keys
     global is_first_day
+    results_all_day = [0]*15
 
-    for name in funcs[:8]:
-        func = globals()[name]
-        st = datetime.strptime(cur_date, "%Y-%m-%d")
-        st = datetime.combine(st.date(), time(0, 0, 0))
-        fn = datetime.combine(st.date(), time(23, 59, 59))
-        res = 0.
-        while (st <= fn):
-            global test_date
-            test_date = st
-            res += func()
-            st += timedelta(seconds=1800)
-        results.append(set_count_of_point(res))
-    
-    if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
-        for name in funcs[8:]:
+    st = datetime.strptime(cur_date, "%Y-%m-%d")
+    st = datetime.combine(st.date(), time(0, 0, 0))
+    fn = datetime.combine(st.date(), time(23, 59, 59))
+    while st <= fn:
+        global test_date
+        results = []
+        test_date = st
+        for i, name in enumerate(funcs[:8]):
             func = globals()[name]
-            if name == 'calc_add_heatcosts':
-                res = func()
-            else:
-                res = 48 * func()
-            results.append(set_count_of_point(res))
-        const_calc = results[8:]
-        is_first_day = False
-    else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
-        results.extend(const_calc)
+            res = set_count_of_point(func())
+            results_all_day[i] += res
+            results.append(res)
+    
+        if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
+            for i, name in enumerate(funcs[8:]):
+                func = globals()[name]
+                if name == 'calc_add_heatcosts':
+                    res = set_count_of_point(func())
+                else:
+                    res = set_count_of_point(48 * func())
+                results_all_day[i] += res
+                results.append(res)
+            const_calc = results[8:]
+            is_first_day = False
+        else:  # Если вычисляется уже не первый день, то используем ранее вычисленные данные, которые не зависят от даты
+            results.extend(const_calc)
 
-    dict_results = dict(zip(result_keys, results))
-    dict_results['cur_date'] = cur_date
-    add_to_excel(dict_results)
-    return dict(zip(result_keys, results))
+        dict_results = dict(zip(result_keys, results))
+        dict_results['cur_date'] = st
+        add_to_excel(dict_results)
+
+        st += timedelta(seconds=1800)
+
+    return dict(zip(result_keys, results_all_day))
 
 
 ######################################################################################################################
