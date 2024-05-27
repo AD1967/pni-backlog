@@ -31,8 +31,7 @@ let calc_map = {
     "general":                      "",
     "formula_calc":                 "/calc_efficiency",
     "reliability":                  "/calc_index",
-    "tec":                          "/calc_tec",
-    "ctp":                          "/calc_ctp"
+    "tec":                          "/calc_tec_ctp",
 }
 
 let yearsMap = {

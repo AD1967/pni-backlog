@@ -151,13 +151,8 @@ function check_token_before_render(data) {
 
 function download_excel() {
     const fetch = require('node-fetch');
-    let url
-    if (isProd){
-        url = server_url + "api" + '/download'
-    }
-    else {
-        url = server_url + '/download'
-    }
+    let url = server_url + '/download'
+    console.log('url download', url)
 
     fetch(url, {
         method: 'POST',
@@ -189,13 +184,8 @@ function download_excel() {
 function save_cur(parametrs_of_build, results, dop_results) {
     const fetch = require('node-fetch');
 
-    let url
-    if (isProd){
-        url = server_url + "api" + '/save_cur'
-    }
-    else {
-        url = server_url + '/save_cur'
-    }
+    let url = server_url + '/save_cur'
+    console.log('url save cur', url)
 
     fetch(url, {
         method: 'POST',

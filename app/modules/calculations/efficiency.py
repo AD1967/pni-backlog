@@ -225,8 +225,9 @@ def calc_ner(model):
     np_std = [row[1] for row in df_stat.to_numpy()]
     return UseModel("neur/" + str(model) + ".h5", "neur/basa.xlsx", np_mean, np_std) 
 
-# Расчёт ТЭЦ
-def calc_tec(cur_date):
+
+# Расчёт ТЭЦ и ЦТП
+def calc_tec_ctp(cur_date):
     st = datetime.strptime(cur_date, "%Y-%m-%d")
     st = datetime.combine(st.date(), time(0, 0, 0))
     fn = datetime.combine(st.date(), time(23, 59, 59))
@@ -239,40 +240,22 @@ def calc_tec(cur_date):
         st += timedelta(seconds=1800)
 
     t = int(t / 48)
-    # print(" t tec = ", t)
+    # print(" t tec ctp = ", t)
 
     if t in tec:
         t1, t2 = tec[t]
     else:
         t1, t2 = 0, 0
 
-    res = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
-    return {'tec': res}
-
-
-# Расчёт ЦТП
-def calc_ctp(cur_date):
-    st = datetime.strptime(cur_date, "%Y-%m-%d")
-    st = datetime.combine(st.date(), time(0, 0, 0))
-    fn = datetime.combine(st.date(), time(23, 59, 59))
-    t = 0
-    while st <= fn:
-        global test_date
-        test_date = st
-        weather = get_weather_by_time(st)
-        t += weather.T
-        st += timedelta(seconds=1800)
-
-    t = int(t / 48)
-    # print(" t ctp = ", t)
+    t_tec = 0.0643 * 4190 / 3 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
 
     if t in ctp:
         t1, t2 = ctp[t]
     else:
         t1, t2 = 0, 0
 
-    res = 0.0643 * 4190 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
-    return {'ctp': res}
+    t_ctp = 0.0643 * 4190 * (t1 - t2) * 8.5984 * 10 ** (-7) * 24
+    return {'tec': t_tec, 'ctp': t_ctp}
 
 
 funcs = ['Q_wnd', 'Q_wnd_inf', 'Q_doors_', 'Q_doors_inf', 'Q_constructs', 'Q_roof', 'Q_floor_', 'Q_vent',
