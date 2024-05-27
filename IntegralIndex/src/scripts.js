@@ -435,7 +435,7 @@ import func from '@/connect/funcs'
       },
 
       calc_INS(){
-        this.results.ins1 = 5;
+        this.results.ins1 = func.calc_ner(this.ins_model);
       },
       calc_tec(){
         let self = this

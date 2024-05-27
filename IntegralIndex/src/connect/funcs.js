@@ -115,6 +115,12 @@ function calc_reliability(parametrs_of_reliability) {
     }
 }
 
+function calc_ner(model) {
+    let self = this
+    let result = requests.default_spost_request("/calc_ner", {"model": model}, self)
+    console.log(result)
+    return result.result
+}
 
 //
 function check_token_before_render(data) {
@@ -229,5 +235,6 @@ funcs.download_excel = download_excel
 funcs.save_cur = save_cur
 funcs.import = import_from_server
 funcs.check_token_before_render = check_token_before_render
+funcs.calc_ner = calc_ner
 export default funcs
 

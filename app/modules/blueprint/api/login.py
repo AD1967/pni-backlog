@@ -36,7 +36,7 @@ def api_registration():
     # Простенькая проверка логинов и паролей при регистрации
     if len(request.json['name']) > 4 \
         and len(request.json['psw']) > 4 and request.json['psw'] == (request.json['psw2']):
-        hash = generate_password_hash(request.json['psw'])
+        hash = generate_password_hash(request.json['psw'], method = 'pbkdf2')
         res = addUser(request.json['name'], hash)
         if res:
             print("Вы успешно зарегистрировались")
