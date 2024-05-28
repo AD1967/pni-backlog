@@ -442,11 +442,6 @@ import func from '@/connect/funcs'
         let year = document.getElementById('years-selector');
         setTimeout(func.calc, 100, "tec", self, year.value)
       },
-      calc_ctp(){
-        let self = this
-        let year = document.getElementById('years-selector');
-        setTimeout(func.calc, 100, "ctp", self, year.value)
-      },
     download_excel(){
       let downl_res = func.download_excel()
       console.log(downl_res)        

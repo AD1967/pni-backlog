@@ -416,7 +416,7 @@
             <!-- Отпуск тепловой энергии ТЭЦ -->
             <div class="math-calc-block">
               <button class="btn-calc btn-TC" @click="calc_tec()">
-                <div class=btn-calc-text> Отпуск тепловой энергии ТЭЦ </div>
+                <div class=btn-calc-text> Расчет ТЭЦ и ЦТП </div>
               </button>
               <div v-if="results.tec != '' || results.tec == '0'">
                 <input class="output-field" type="text" :value="printVal(results.tec, 'Гкал')" readonly>
@@ -424,16 +424,6 @@
               </div>
             </div>
 
-            <!-- Потребление тепловой энергии от ЦТП  -->
-            <div class="math-calc-block">
-              <button class="btn-calc btn-TC" @click="calc_ctp()">
-                <div class=btn-calc-text> Потребление тепловой энергии от ЦТП </div>
-              </button>
-              <div v-if="results.ctp != '' || results.ctp == '0'">
-                <input class="output-field" type="text" :value="printVal(results.ctp, 'Гкал')" readonly>
-                <p class="comment-text">Расчет ЦТП</p>
-              </div>
-            </div>
           </div>
 
           <div class="razn-TC-CTP-block" v-if="dop_results.razn_tec_ctp !== ''">

@@ -329,15 +329,15 @@ def calc_eff(cur_date):
         test_date = st
         for i, name in enumerate(funcs[:8]):
             func = globals()[name]
-            res = set_count_of_point(func())
+            res = func()
             results_all_day[i] += res
             results.append(res)
 
         if is_first_day:  # Если вычисления в первый день, то вычисляем также то, что не зависит от даты, и потом сохраняем в массив
             for i, name in enumerate(funcs[8:]):
                 func = globals()[name]
-                res = set_count_of_point(func())
-                results_all_day[i] += res
+                res = func()
+                results_all_day[8+i] += res
                 results.append(res)
             const_calc = results[8:]
             is_first_day = False
