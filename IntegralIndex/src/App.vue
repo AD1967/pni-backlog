@@ -371,7 +371,6 @@
 
           <!-- Пространство кнопок расчетов  ------------------------------------------------------>
           <div class="buttons-for-calc">
-            
             <!-- Формульный расчет по СП -->
             <div class="math-calc-block">
               <div class="flex-between">
@@ -382,11 +381,6 @@
                   <img class="img-download" src="@/download.png">
                 </a>
               </div>
-
-              <div v-if="dop_results.razn_los_add != ''">
-                <input class="output-field" type="text" :value="printVal(dop_results.razn_los_add, 'Гкал')" readonly>
-                <p class="comment-text">Разница теплопотерь и теплопритоков</p>
-              </div>
             </div>
 
             <!-- Расчет искусственной нейронной сетью -->
@@ -396,19 +390,17 @@
                 <button class="btn-calc btn-calc-INS" @click="calc_INS()">
                   <div class=btn-calc-text id="neuro_calc_id"> Расчет искусственной нейронной сетью </div>
                 </button>
-                
+
                 <select class="select-INS" v-model="ins_model" id="neuro_select_id">
                   <option value=1>128-128-128 50 MAE sigmoid 0.6%</option>
                   <option value=2>64-256 100 MAE tanh 7.8%</option>
                   <option value=3>64-256 150 MAE tanh 7.9%</option>
                 </select>
-            
-                <a @click="download_excel()" class="btn-calc btn-download" href="#" :download=url_to_download_math> 
+
+                <a @click="download_excel()" class="btn-calc btn-download" href="#" :download=url_to_download_math>
                   <img class="img-download" src="@/download.png">
                 </a>
               </div>
-              <input v-if="results.ins1 !== ''" class="output-field" type="text" :value="printVal(results.ins1, 'Гкал')"
-                readonly>
             </div>
 
             <!-- Отпуск тепловой энергии ТЭЦ -->
@@ -416,26 +408,26 @@
               <button class="btn-calc btn-TC" @click="calc_tec()">
                 <div class=btn-calc-text> Расчет ТЭЦ и ЦТП </div>
               </button>
-              <div v-if="results.tec != '' || results.tec == '0'">
+              <!-- <div v-if="results.tec != '' || results.tec == '0'">
                 <input class="output-field" type="text" :value="printVal(results.tec, 'Гкал')" readonly>
                 <p class="comment-text">Расчет ТЭЦ</p>
-              </div>
+              </div> -->
             </div>
 
           </div>
 
-          <div class="razn-TC-CTP-block" v-if="dop_results.razn_tec_ctp !== ''">
+          <!-- <div class="razn-TC-CTP-block" v-if="dop_results.razn_tec_ctp !== ''">
             <input class="output-field" type="text" :value="printVal(dop_results.razn_tec_ctp, 'Гкал')" readonly>
             <p class="comment-text">Разница ТЭЦ и ЦТП</p>
-          </div>
+          </div> -->
 
           <!-- Экологический ущерб ------------------------>
-          <div class="ecology-block" v-if="(dop_results.razn_los_add !== '') || (dop_results.razn_tec_ctp !== '')">
+          <!-- <div class="ecology-block" v-if="(dop_results.razn_los_add !== '') || (dop_results.razn_tec_ctp !== '')">
             <p class="block-title">Экологический ущерб </p>
             <div class="flex-between">
               <div v-if="(dop_results.razn_los_add !== '')" class="math-calc-block">
-                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_tut, 'т.у.т')" readonly>
-                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_co2, 'кг CO2/год')"
+                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_tut, 'т.у.т')        " readonly>
+                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_co2, 'кг CO2/год') "
                   readonly>
               </div>
 
@@ -446,10 +438,89 @@
                   readonly>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Экологический ущерб ------------------------>
           <!-- /Пространство кнопок расчетов---------------------------------------------------->
 
+
+          <div v-if="showResults" class="sum-block">
+            <div>
+              <div id="sum-minus">
+                <div class="block-title"> Результаты расчётов</div><br>
+                <div v-if="dop_results.razn_los_add != ''" class="res-subblock">
+                  <div class="block-suptitles"> Формульный расчет по СП 50.13330.2012 <br>
+                    <hr><br>
+                  </div>
+                  <div class="flex-between">
+                    <div class="sum-titles">
+                      <h2> Разница теплопотерь и теплопритоков</h2>
+                    </div>
+                    <div class="sum-results">
+                      <h2>{{ printVal(dop_results.razn_los_add, 'Гкал') ?? "" }} </h2>
+                    </div>
+                  </div>
+                </div>
+
+                <div v-if="results.ins != ''" class="res-subblock">
+                  <div class="block-suptitles"> Расчет искуственной нейронной сетью <br><hr><br></div>
+                  <div class="flex-between">
+                    <div class="sum-titles">
+                      <h2> Разница теплопотерь и теплопритоков</h2>
+                    </div>
+                    <div class="sum-results">
+                      <h2>{{ printVal(results.ins, 'Гкал') ?? "" }} </h2>
+                    </div>
+                  </div>
+                </div>
+
+                <div v-if="dop_results.razn_tec_ctp !== ''" class="res-subblock">
+                  <div class="block-suptitles"> Расчет ТЭЦ и ЦТП <br><hr><br></div>
+                  <div class="flex-between">
+                    <div class="sum-titles">
+                      <h2> ТЭЦ</h2>
+                      <h2> ЦТП</h2>
+                      <h2> Разница ТЭЦ и ЦТП</h2>
+                    </div>
+                    <div class="sum-results">
+                      <h2>{{ printVal(results.tec, 'Гкал') ?? "" }} </h2>
+                      <h2>{{ printVal(results.ctp, 'Гкал') ?? "" }} </h2>
+                      <h2>{{ printVal(dop_results.razn_tec_ctp, 'Гкал') ?? "" }} </h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="sum-plus">
+                <div class="block-title"> Экологический ущерб</div><br>
+                <div v-if="dop_results.razn_los_add != ''" class="res-subblock">
+                  <div class="block-suptitles"> Формульный расчет по СП 50.13330.2012 <br>
+                    <hr><br>
+                  </div>
+                  <div class="flex-between">       
+                    <h2>{{ printVal(dop_results.eclg_sp_tut, 'т.у.т')  ?? "" }} </h2>
+                    <h2>{{ printVal(dop_results.eclg_sp_co2, 'кг CO2/год') ?? "" }} </h2>    
+                 </div>
+                </div>
+
+                <div v-if="results.ins != ''" class="res-subblock">
+                  <div class="block-suptitles"> Расчет искуственной нейронной сетью <br><hr><br></div>
+                  <div class="flex-between">
+                    <h2>{{ printVal(dop_results.eclg_ins_tut, 'т.у.т') ?? "" }} </h2>
+                    <h2>{{ printVal(dop_results.eclg_ins_co2, 'кг CO2/год') ?? "" }} </h2>
+                  </div>
+                </div>
+
+                <div v-if="dop_results.razn_tec_ctp !== ''" class="res-subblock">
+                  <div class="block-suptitles"> Расчет ТЭЦ и ЦТП <br><hr><br></div>
+                  <div class="flex-between">
+                    <h2>{{ printVal(dop_results.eclg_tec_ctp_tut, 'т.у.т') ?? "" }} </h2>
+                    <h2>{{ printVal(dop_results.eclg_tec_ctp_co2, 'кг CO2/год') ?? "" }} </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <h1>: Разница теплопотерь и теплопритоков</h1>  -->
+          </div>
 
           <!--Отрисовка информационных блоков--------------------------------------------------->
           <div v-if="show_dop_info_title" class="informations-glob-title"> Дополнительная информация о расчетах </div>
@@ -641,9 +712,9 @@
     </dialogbox-reg>
     <!-- модальное окно вывода прогресса расчетов p.s. в идеале было сделать в виде отдельного компонента, но у меня не получилось :( -->
     <div class="progress-window" v-if="showProgress">
-      <div class="progress-main"  >
-        <h1  id='loading_name'>Вид расчёта</h1>
-        <h1  id='loading_calc'>Прогресс расчёта</h1>
+      <div class="progress-main">
+        <h1 id='loading_name'>Вид расчёта</h1>
+        <h1 id='loading_calc'>Прогресс расчёта</h1>
       </div>
     </div>
     <!-- модальное окно -->

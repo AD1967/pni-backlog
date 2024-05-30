@@ -375,8 +375,6 @@ margin-left: 4%;
 position: relative;
 }
 
-
-
 #sum-plus {
 float: right;
 display: block;
@@ -390,7 +388,7 @@ justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.block-title, .res-block-title{
+.block-title{
   margin-top:2%;
   font-size: 26px;
   color: var(--red-shadow-color);
@@ -448,9 +446,11 @@ justify-content: space-between;
 }
 
 /* результаты*/
-.res-block-title{
-  margin: 2%;
-  margin-left: 4%;
+
+.res-subblock{
+  display:flex;
+  flex-direction: column;
+  margin-bottom:30px;
 }
 
 /* пространство кнопок------------------- */
@@ -464,8 +464,8 @@ justify-content: space-between;
 }
 
 .math-calc-block{
-  width:23%;
-  margin-right:2%;
+  width: 26%;
+  margin-right:1%;
 }
 
 .math-calc-block-INS{
@@ -474,7 +474,8 @@ justify-content: space-between;
 
 .math-calc-block-CTP{
   margin-right:0;
-  margin-left:2%;
+  width:23%;
+  margin-left:1%;
 }
 .btn-calc{
   width: 76%; 
@@ -539,6 +540,7 @@ justify-content: space-between;
   border: 3px, var(--header-color) solid;
   border-radius: 10px;
   text-align: center;
+  background-color: var(--global-fon);
 }
 
 

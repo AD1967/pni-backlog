@@ -183,7 +183,7 @@ import func from '@/connect/funcs'
           heat_gains_pipelines:         '', 
           tec:                          '', 
           ctp:                          '',
-          ins1:                         ''
+          ins:                          ''
         },
         dop_results:{
           sum_los:             '', 
@@ -192,6 +192,8 @@ import func from '@/connect/funcs'
           razn_tec_ctp:        '', 
           eclg_sp_tut:         '', 
           eclg_sp_co2:         '', 
+          eclg_ins_tut:        '', 
+          eclg_ins_co2:        '',
           eclg_tec_ctp_tut:    '', 
           eclg_tec_ctp_co2:    '', 
         },
@@ -390,6 +392,8 @@ import func from '@/connect/funcs'
         this.dop_results.razn_los_add = this.dop_results.sum_los - this.dop_results.sum_add
         this.dop_results.eclg_sp_tut  = this.dop_results.razn_los_add * 0.1486
         this.dop_results.eclg_sp_co2  = this.dop_results.razn_los_add * 276.28 
+        this.dop_results.eclg_ins_tut = parseFloat(this.results.ins) * 0.1486
+        this.dop_results.eclg_ins_co2 = parseFloat(this.results.ins) * 276.28
         this.dop_results.razn_tec_ctp = parseFloat(this.results.tec) - parseFloat(this.results.ctp)
         this.dop_results.eclg_tec_ctp_tut = this.dop_results.razn_tec_ctp * 0.1486
         this.dop_results.eclg_tec_ctp_co2 = this.dop_results.razn_tec_ctp * 276.28
@@ -443,7 +447,9 @@ import func from '@/connect/funcs'
       },
 
       calc_INS(){
-        this.results.ins1 = func.calc_ner(this.ins_model);
+        this.results.ins = func.calc_ner(this.ins_model);
+        this.calc_dop_results();
+        this.showResults = true;
       },
       calc_tec(){
         let self = this
