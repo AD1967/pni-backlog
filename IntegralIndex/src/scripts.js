@@ -5,6 +5,7 @@ import func from '@/connect/funcs'
       return {
         ins_model : 1,
         showProgress : false,
+        showResults: false,
         url_to_download_math : "",
         login_reg_check:[false,false],
         menu_check: '0',
@@ -395,8 +396,9 @@ import func from '@/connect/funcs'
         
         for (var key in this.dop_results)
         {
-          if (isNaN(this.dop_results[key]))
-            this.dop_results[key] = ''
+          if (isNaN(this.dop_results[key])){
+            this.dop_results[key] = '';
+          } 
         }
     },
       logout(){
@@ -411,10 +413,16 @@ import func from '@/connect/funcs'
 
       left_panel_show(){
         let elem = document.getElementById('neuro_calc_id')
+        
         if (getComputedStyle(elem).fontSize == '18px')
-          elem.style = 'font-size: 16px'
-        else
-           elem.style = 'font-size: 18px'
+        {
+          elem.style = 'font-size: 16px';
+          document.getElementById('neuro_select_id').style = 'font-size: 16px';
+        }
+        else{
+           elem.style = 'font-size: 18px';
+           document.getElementById('neuro_select_id').style = 'font-size: 18px';
+        }   
       },
       set_all_check_left_panel(flag){
           this.sections.forEach(function(item){

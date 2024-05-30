@@ -365,6 +365,7 @@ body::-webkit-scrollbar-thumb {
   box-shadow: 0 0 10px var(--red-shadow-color);
 }
 
+
 #sum-minus{
 float: left; 
 display: flex;
@@ -389,7 +390,8 @@ justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.block-title{
+.block-title, .res-block-title{
+  margin-top:2%;
   font-size: 26px;
   color: var(--red-shadow-color);
 }
@@ -445,6 +447,11 @@ justify-content: space-between;
   width: 50%;
 }
 
+/* результаты*/
+.res-block-title{
+  margin: 2%;
+  margin-left: 4%;
+}
 
 /* пространство кнопок------------------- */
 
@@ -453,15 +460,22 @@ justify-content: space-between;
   justify-content: space-between;
   color: var(--white-text-color);
   margin-left: 8%;
-  margin-right: 7%;
-  width: 85%;
+  margin-right: 8%;
 }
 
 .math-calc-block{
-  width:24%;
-  margin-right: 1%;
+  width:23%;
+  margin-right:2%;
 }
 
+.math-calc-block-INS{
+  width:45%;
+}
+
+.math-calc-block-CTP{
+  margin-right:0;
+  margin-left:2%;
+}
 .btn-calc{
   width: 76%; 
   background-color: var(--header-color); 
@@ -473,6 +487,11 @@ justify-content: space-between;
   min-height: 50px;
   max-height: 50px;
 }
+
+.btn-calc-INS{
+  width:40%;
+}
+
 .btn-calc:hover, .btn-save-cur:hover{
   background-color: var(--left-panel-color); 
   border: 4px solid var(--left-panel-hover-color);
@@ -488,8 +507,7 @@ justify-content: space-between;
 }
 
 .btn-download{
-  margin-left: 4%;
-  padding-top:2%;
+  padding-top:7px;
   min-width: 71px;
   max-width: 71px;
 }
@@ -517,6 +535,12 @@ justify-content: space-between;
   text-align: right;
   margin-top:1%;
 }
+.select-INS{
+  border: 3px, var(--header-color) solid;
+  border-radius: 10px;
+  text-align: center;
+}
+
 
 .btn-TC{
   width: 100%;

@@ -93,10 +93,11 @@ function calc(id, self, selectedYear) {
     setTimeout(function(res, self){
         //сохранение
         for (var key2 in res) {
-            self.results[key2] = res[key2]
+            self.results[key2] = res[key2];
         }
         //доп вычисления
-        self.calc_dop_results()
+        self.calc_dop_results();
+        self.showResults = true;
     }, 10, res, self)
     
 }
