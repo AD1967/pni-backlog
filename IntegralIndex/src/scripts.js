@@ -447,10 +447,10 @@ import func from '@/connect/funcs'
       },
 
       calc_INS(){
-        this.results.ins = func.calc_ner(this.ins_model);
-        this.calc_dop_results();
-        this.showResults = true;
+        let self = this
+        setTimeout(func.calc_ner, 10, self, this.ins_model)
       },
+
       calc_tec(){
         let self = this
         let year = document.getElementById('years-selector');
@@ -523,13 +523,15 @@ import func from '@/connect/funcs'
     import_from_server(){
       func.import(this)
       this.clear_results();
+      this.showResults = false;
     },
     clear_results(){
       for (var key in this.results)
-        this.results[key] = ''
+        this.results[key] = '';
 
       for (var key1 in this.dop_results)
-        this.dop_results[key1] = ''
+        this.dop_results[key1] = '';
+      this.showResults = false;
     }
     },
     computed:{

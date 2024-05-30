@@ -115,12 +115,35 @@ function calc_reliability(parametrs_of_reliability) {
         return [result.result, result.result];
     }
 }
+function random(min, max) {
+    return min + Math.random() * (max - min);
+}
 
-function calc_ner(model) {
-    let self = this
-    let result = requests.default_spost_request("/calc_ner", {"model": model}, self)
-    console.log(result)
-    return result.result
+function ins_progress(progress, elem_name, elem_count){
+    elem_name.innerHTML = id_mappers.calc_name_map["ins"];
+    elem_count.innerHTML = "Прогресс расчета: " + progress.toFixed(3).toString() + " %";
+    progress += random(2,6);
+    if (progress < 100)
+        setTimeout(ins_progress, 100, progress, elem_name, elem_count);
+    
+}
+
+function calc_ner(self, model) {
+    self.showProgress = true;  
+    setTimeout(function() {
+        let progress = 0;
+        let elem_name = document.getElementById('loading_name')
+        let elem_count = document.getElementById('loading_calc')
+        setTimeout(ins_progress, 100, progress, elem_name, elem_count);
+    }, 10);
+    
+    setTimeout(function(self){
+        let result = requests.default_spost_request("/calc_ner", {"model": model}, self);
+        self.results.ins = result.result;
+        self.showResults = true;
+        self.showProgress = false;
+        self.calc_dop_results();
+    }, 3000, self)
 }
 
 //

@@ -408,42 +408,12 @@
               <button class="btn-calc btn-TC" @click="calc_tec()">
                 <div class=btn-calc-text> Расчет ТЭЦ и ЦТП </div>
               </button>
-              <!-- <div v-if="results.tec != '' || results.tec == '0'">
-                <input class="output-field" type="text" :value="printVal(results.tec, 'Гкал')" readonly>
-                <p class="comment-text">Расчет ТЭЦ</p>
-              </div> -->
             </div>
-
           </div>
-
-          <!-- <div class="razn-TC-CTP-block" v-if="dop_results.razn_tec_ctp !== ''">
-            <input class="output-field" type="text" :value="printVal(dop_results.razn_tec_ctp, 'Гкал')" readonly>
-            <p class="comment-text">Разница ТЭЦ и ЦТП</p>
-          </div> -->
-
-          <!-- Экологический ущерб ------------------------>
-          <!-- <div class="ecology-block" v-if="(dop_results.razn_los_add !== '') || (dop_results.razn_tec_ctp !== '')">
-            <p class="block-title">Экологический ущерб </p>
-            <div class="flex-between">
-              <div v-if="(dop_results.razn_los_add !== '')" class="math-calc-block">
-                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_tut, 'т.у.т')        " readonly>
-                <input class="output-field" type="text" :value="printVal(dop_results.eclg_sp_co2, 'кг CO2/год') "
-                  readonly>
-              </div>
-
-              <div v-if="(dop_results.razn_tec_ctp !== '')" class="math-calc-block">
-                <input class="output-field" type="text" :value="printVal(dop_results.eclg_tec_ctp_tut, 'т.у.т')"
-                  readonly>
-                <input class="output-field" type="text" :value="printVal(dop_results.eclg_tec_ctp_co2, 'кг СО2/год')"
-                  readonly>
-              </div>
-            </div>
-          </div> -->
-          <!-- /Экологический ущерб ------------------------>
           <!-- /Пространство кнопок расчетов---------------------------------------------------->
 
 
-          <div v-if="showResults" class="sum-block">
+          <div v-if="showResults === true" class="sum-block">
             <div>
               <div id="sum-minus">
                 <div class="block-title"> Результаты расчётов</div><br>
