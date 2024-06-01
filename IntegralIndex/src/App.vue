@@ -683,8 +683,8 @@
     <!-- модальное окно вывода прогресса расчетов p.s. в идеале было сделать в виде отдельного компонента, но у меня не получилось :( -->
     <div class="progress-window" v-if="showProgress">
       <div class="progress-main">
-        <h1 id='loading_name'>Вид расчёта</h1>
-        <h1 id='loading_calc'>Прогресс расчёта</h1>
+        <h1 id='loading_name'>Выполняется расчёт</h1>
+        <h1 id='loading_calc'>Прогресс</h1>
       </div>
     </div>
     <!-- модальное окно -->

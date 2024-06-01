@@ -266,7 +266,8 @@ import func from '@/connect/funcs'
         {id: 5,  val: 'Офисный центр, 13 этажей, 2020г'},
         {id: 6,  val: 'МКД панельная, 9 этажей, 3 подъезда, 2012г.'},
         {id: 7,  val: 'Школа тип Самолёт, 1980г.'},
-        {id: 8,  val: 'Школа тип Самолёт, 2020г.'} 
+        {id: 8,  val: 'Школа тип Самолёт, 2020г.'},
+        {id: 9,  val: 'Корпус Е университета' } 
       ],
 
       type_windows:[
@@ -502,23 +503,6 @@ import func from '@/connect/funcs'
       }
                   
     },
-
-    //это тоже удалить потом
-    validate_input(val, type){
-      if(type == 'str'){
-        return val.length > 0
-      }
-      else if(type == 'uint'){
-        let num = Number(val)
-        return val != "" && !isNaN(num) && num >= 0
-      }
-      else  if(type == 'int'){
-        let num = Number(val)
-        return val != "" && !isNaN(num)
-      }
-      return true
-    },
-
     
     import_from_server(){
       func.import(this)
