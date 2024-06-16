@@ -267,7 +267,8 @@ import func from '@/connect/funcs'
         {id: 6,  val: 'МКД панельная, 9 этажей, 3 подъезда, 2012г.'},
         {id: 7,  val: 'Школа тип Самолёт, 1980г.'},
         {id: 8,  val: 'Школа тип Самолёт, 2020г.'},
-        {id: 9,  val: 'Корпус Е университета' } 
+        {id: 9,  val: 'Корпус А университета' }, 
+        {id: 10,  val: 'Корпус Е университета' } 
       ],
 
       type_windows:[
@@ -388,7 +389,7 @@ import func from '@/connect/funcs'
     },
 
     calc_dop_results(){
-        this.dop_results.sum_los      = parseFloat(this.results.heat_los_win)  + parseFloat(this.results.inf_win)  + parseFloat(this.results.heat_los_inpgr)  + parseFloat(this.results.inf_inpgr)  + parseFloat(this.results.heat_los_heatcond_benv)  + parseFloat(this.results.heat_los_heatcond_roof) + parseFloat(this.results.heat_los_floor) + parseFloat(this.results.heat_los_vent) + parseFloat(this.results.add_heatcosts);
+        this.dop_results.sum_los      = parseFloat(this.results.heat_los_win)  + parseFloat(this.results.inf_win)  + parseFloat(this.results.heat_los_inpgr)  + parseFloat(this.results.inf_inpgr)  + parseFloat(this.results.heat_los_heatcond_benv)  + parseFloat(this.results.heat_los_heatcond_roof) + parseFloat(this.results.heat_los_floor) + parseFloat(this.results.heat_los_vent);
         this.dop_results.sum_add      = parseFloat(this.results.heat_gains_people) + parseFloat(this.results.heat_gains_washstands) + parseFloat(this.results.heat_gains_showers) + parseFloat(this.results.heat_gains_electriclighting) + parseFloat(this.results.heat_gains_GVS) + parseFloat(this.results.heat_gains_pipelines);
         this.dop_results.razn_los_add = this.dop_results.sum_los - this.dop_results.sum_add
         this.dop_results.eclg_sp_tut  = this.dop_results.razn_los_add * 0.1486

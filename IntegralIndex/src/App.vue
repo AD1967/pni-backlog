@@ -311,8 +311,8 @@
                     <h2>{{ printVal(results.inf_win, 'Гкал') ?? "" }} </h2>
                     <h2> {{ printVal(results.inf_inpgr, 'Гкал') ?? "" }} </h2>
                     <h2 style="color: var(--global-fon); margin:0"> space</h2>
-                    <h2 v-if="results.inf_inpgr != ''"> 100 Гкал </h2>
-                    <h2>{{ printVal(results.heat_los_vent, 'Гкал') ?? "" }} </h2>
+                    <h2 v-if="results.inf_inpgr != ''"> 100.217 Гкал </h2>
+                    <h2>{{printVal(results.heat_los_vent, 'Гкал') ?? "" }}</h2>
                   </div>
                 </div>
                 <div class="flex-between">

@@ -2,7 +2,7 @@
 <div class="dialog" v-if="show[0]">
   <div @click.stop class="dialog_main">
     <div class="dialog_header">
-      Войти
+      Вход
     </div>
     <h style="color: red" v-if="Flag">Все поля должны быть заполнены!</h>
     <h style="color: red" v-if="Flag2">Неверный логин или пароль, попробуйте ещё раз!</h>
@@ -75,8 +75,9 @@ export default {
   background: rgba(0,0,0,0.5);
 }
 .dialog_header{
-  font-size: 20px;
-  color: #26495c;
+  font-size: 26px;
+  color: #b62309;
+  margin-left: 16px;
 }
 .dialog_main{
   display: flex;
@@ -110,7 +111,7 @@ export default {
 }
 .dialog_inp{
   background-color: #e5e5dc; 
-  border: 2px solid #435d6b;
+  border: 2px solid #282828;
   border-radius: 4px; 
   padding-left: 1%;
   padding-right: 1%;
@@ -125,10 +126,10 @@ export default {
   display: flex;
   justify-content: center;
   width: 30%; 
-  background-color: #26495c; 
-  border: 2px solid #234455;
+  background-color: #282828; 
+  border: 2px solid #282828;
   border-radius: 10px; 
-  box-shadow: 0 0 10px #1e3a49;
+  box-shadow: 0 0 10px #282828;
   color: #e5e5dc;
   transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
   margin-left: 2%;
@@ -138,10 +139,10 @@ export default {
   display: flex;
   justify-content: center;
   width: 30%; 
-  background-color: #26495c; 
-  border: 2px solid #234455;
+  background-color: #282828; 
+  border: 2px solid #282828;
   border-radius: 10px; 
-  box-shadow: 0 0 5px #1e3a49 inset;
+  box-shadow: 0 0 5px #282828 inset;
   color: #e5e5dc;
 }
 </style>
