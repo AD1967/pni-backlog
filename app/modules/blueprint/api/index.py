@@ -29,7 +29,7 @@ def api_save_cur():
     parameters_of_build = request.json.get('parametrs_of_build')
     results = request.json.get('results')
     dop_results = request.json.get('dop_results')
-    data = results | dop_results
+    data = {**results, **dop_results}
     save(parameters_of_build, data, name_excel)
 
     print('Данные успешно сохранены в файл ', name_excel)
