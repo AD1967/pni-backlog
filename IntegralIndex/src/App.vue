@@ -395,6 +395,13 @@
                   <option value=1>128-128-128 50 MAE sigmoid 0.6%</option>
                   <option value=2>64-256 100 MAE tanh 7.8%</option>
                   <option value=3>64-256 150 MAE tanh 7.9%</option>
+                  
+                  <option value=4>A - 256-64  50 MSE sigmoid 1.3%</option>
+                  <option value=5>A - 256-64 50 MSE tanh 1.79%</option>
+                  <option value=6>A - 256-256  100 MSE tanh 1.72%</option>
+                  <option value=7>Е - 256-256  100 MAPE sigmoid 1,33%</option>
+                  <option value=8>Е - 256-256  100 MАE sigmoid 0,71%</option>
+                  <option value=9>Е - 256-256  100 MАE tanh  0,89%</option>
                 </select>
 
                 <a @click="download_excel()" class="btn-calc btn-download" href="#" :download=url_to_download_math>
